@@ -1,0 +1,14 @@
+{
+  "name": "flyboard",
+  "version": "0.0.1",
+  "description": "Data analyzer and reporter.",
+  "keywords": [],
+  "author": "perfectworks <perfectworks@fenbi.com>",
+  "repository": { "type": "git", "url": "git://github.com/perfectworks/flyboard.git" },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "main": "index"
+}
