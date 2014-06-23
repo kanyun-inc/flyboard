@@ -18,5 +18,4 @@ app.use(require('./controllers/indexController'));
 app.use(require('./controllers/errorController').notFound);
 app.use(require('./controllers/errorController').errorHandler);
 
-
 module.exports = app;
