@@ -4,6 +4,9 @@
   "description": "Data analyzer and reporter.",
   "keywords": [],
   "author": "yuantiku <techbd@fenbi.com>",
+  "scripts": {
+      "test": "mocha"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/yuantiku/flyboard.git"
