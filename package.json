@@ -3,12 +3,15 @@
   "version": "0.0.1",
   "description": "Data analyzer and reporter.",
   "keywords": [],
-  "author": "perfectworks <perfectworks@fenbi.com>",
-  "repository": { "type": "git", "url": "git://github.com/perfectworks/flyboard.git" },
+  "author": "yuantiku <techbd@fenbi.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yuantiku/flyboard.git"
+  },
   "dependencies": {},
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1"
   },
   "main": "index"
 }

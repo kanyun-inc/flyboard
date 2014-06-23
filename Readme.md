@@ -1,7 +1,6 @@
-
 # flyboard
 
-  Data analyzer and reporter.
+Data analyzer and reporter.
 
 ## License 
 
