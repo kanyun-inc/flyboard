@@ -6,7 +6,7 @@ Flyboard 是一套数据可视化系统。通常的数据可视化系统往往�
 
 Flyboard 可以很方便的在本地进行调试，运行步骤如下:
 
-```javascript
+```bash
 git clone git://github.com/yuantiku/flyboard.git
 cd flyboard
 npm install
