@@ -1,6 +1,6 @@
 'use strict';
 
-var knex = require('../lib/knex');
+var knex = require('../src/lib/knex');
 var assert = require('chai').assert;
 
 describe('knex', function () {

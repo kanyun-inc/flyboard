@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha",
+    "test-coverage": "YOURPACKAGE_COVERAGE=1 ./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
   },
   "main": "app.js",
   "dependencies": {
@@ -19,6 +20,19 @@
     "static-favicon": "~1.0.0"
   },
   "devDependencies": {
-    "chai": "^1.9.1"
+    "blanket": "^1.1.6",
+    "chai": "^1.9.1",
+    "coveralls": "^2.10.1",
+    "mariasql": "^0.1.21",
+    "mocha": "^1.20.1",
+    "mocha-lcov-reporter": "0.0.1",
+    "mysql": "^2.3.2",
+    "pq": "0.0.3",
+    "sqlite3": "^2.2.3"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "src"
+    }
   }
 }
