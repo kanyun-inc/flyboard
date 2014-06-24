@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - '0.10'
-  - '0.11'
 before_script:
   - cp configs/database.example.js configs/database.js
 after_script:
