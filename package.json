@@ -17,5 +17,8 @@
     "morgan": "~1.0.0",
     "q": "^1.0.1",
     "static-favicon": "~1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^1.9.1"
   }
 }
