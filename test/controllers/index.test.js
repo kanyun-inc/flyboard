@@ -3,7 +3,7 @@
 process.env.UNIT_TEST = true;
 
 var request = require('supertest');
-var app = require('../src/app');
+var app = require('../../src/app');
 
 describe('GET /', function () {
     it('respond with 200', function (done) {

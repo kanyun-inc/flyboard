@@ -3,8 +3,8 @@
 process.env.UNIT_TEST = true;
 
 var assert = require('chai').assert;
-var staticFile = require('../src/lib/staticFile');
-var middleware = require('../src/middlewares/staticFile');
+var staticFile = require('../../src/lib/staticFile');
+var middleware = require('../../src/middlewares/staticFile');
 
 describe('staticFile#url', function () {
     it('should return a url with file hash', function (done) {

@@ -11,6 +11,10 @@ exports.notFound = function (req, res, next) {
 exports.errorHandler = function (err, req, res, next) {
     res.status(err.status || 500);
 
+    if (process.env.UNIT_TEST && err.status !== 404) {
+        console.error(err.stack || err);
+    }
+
     if (req.url.indexOf('/api') === 0) {
         res.send({
             message: err.message,
