@@ -3,4 +3,5 @@ node_js:
   - '0.10'
 before_script:
   - npm install -g mocha
+  - npm install sqlite3
   - cp configs/database.example.js configs/database.js
