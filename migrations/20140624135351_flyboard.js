@@ -34,10 +34,8 @@ exports.up = function (knex, Promise) {
             table.timestamps();
 
             table.integer('project_id');
-            table.string('key');
-            table.text('config');
-            table.integer('type');
-            table.text('hash');
+            table.string('name');
+            table.string('guid');
         }),
 
         knex.schema.dropTableIfExists('records'),
