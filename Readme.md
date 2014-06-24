@@ -1,5 +1,6 @@
 # Flyboard
 
+[![NPM version](https://badge.fury.io/js/flyboard.svg)](http://badge.fury.io/js/flyboard)
 [![Build Status](https://travis-ci.org/yuantiku/flyboard.png?branch=master)](https://travis-ci.org/yuantiku/flyboard)
 [![Coverage Status](https://coveralls.io/repos/yuantiku/flyboard/badge.png?branch=master)](https://coveralls.io/r/yuantiku/flyboard?branch=master)
 
