@@ -27,6 +27,7 @@
     "jshint": "^2.5.1",
     "knex": "^0.6.17",
     "morgan": "~1.0.0",
+    "node-uuid": "^1.4.1",
     "static-favicon": "~1.0.0"
   },
   "devDependencies": {
