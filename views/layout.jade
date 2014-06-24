@@ -2,6 +2,9 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    each style in styles
+      link(rel = 'stylesheet', href = style)
+    each script in scripts
+      script(src = script, type = 'text/javascript')
   body
     block content

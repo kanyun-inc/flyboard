@@ -16,8 +16,9 @@ if ('development' === app.get('env')) {
 } else {
     app.use(logger());
 }
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
+app.use(require('./middlewares/staticFile')());
 app.use(require('./controllers/indexController'));
 app.use(require('./controllers/errorController').notFound);
 app.use(require('./controllers/errorController').errorHandler);

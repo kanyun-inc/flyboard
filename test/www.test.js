@@ -1,6 +1,7 @@
 'use strict';
 
 process.env.UNIT_TEST = true;
+process.env.PORT = 0;
 
 var assert = require('chai').assert;
 
