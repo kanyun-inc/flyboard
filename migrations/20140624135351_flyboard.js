@@ -7,7 +7,7 @@ exports.up = function (knex, Promise) {
             table.increments();
             table.timestamps();
 
-            table.string('name');
+            table.string('name').notNullable();
         }),
 
         knex.schema.dropTableIfExists('dashboards'),
@@ -15,7 +15,7 @@ exports.up = function (knex, Promise) {
             table.increments();
             table.timestamps();
 
-            table.string('name');
+            table.string('name').notNullable();
         }),
 
         knex.schema.dropTableIfExists('widgets'),
@@ -23,9 +23,14 @@ exports.up = function (knex, Promise) {
             table.increments();
             table.timestamps();
 
-            table.integer('dashboard_id');
-            table.text('config');
-            table.integer('type');
+            table
+                .integer('dashboard_id')
+                .notNullable()
+                .unsigned()
+                .references('id')
+                .inTable('dashboards');
+            table.json('config').notNullable();
+            table.integer('type').notNullable();
         }),
 
         knex.schema.dropTableIfExists('data_sources'),
@@ -33,9 +38,20 @@ exports.up = function (knex, Promise) {
             table.increments();
             table.timestamps();
 
-            table.integer('project_id');
-            table.string('name');
-            table.string('guid');
+            table.string('name').notNullable();
+
+            table
+                .integer('project_id')
+                .notNullable()
+                .unsigned()
+                .references('id')
+                .inTable('projects');
+
+            table
+                .uuid('uuid')
+                .unique()
+                .index()
+                .notNullable();
         }),
 
         knex.schema.dropTableIfExists('records'),
@@ -43,25 +59,30 @@ exports.up = function (knex, Promise) {
             table.increments();
             table.timestamps();
 
-            table.integer('data_source_id');
-            table.integer('value');
+            table
+                .integer('data_source_id')
+                .notNullable()
+                .unsigned()
+                .references('id')
+                .inTable('data_sources');
 
-            table.integer('year');
-            table.integer('month');
-            table.integer('day');
-            table.integer('hour');
-            table.integer('minute');
-            table.integer('second');
+            table.integer('value').notNullable();
+            table.integer('year').nullable();
+            table.integer('month').nullable();
+            table.integer('day').nullable();
+            table.integer('hour').nullable();
+            table.integer('minute').nullable();
+            table.integer('second').nullable();
         })
     ]);
 };
 
 exports.down = function (knex, Promise) {
     return Promise.all([
-        knex.schema.dropTable('projects'),
-        knex.schema.dropTableIfExists('dashboards'),
-        knex.schema.dropTableIfExists('widgets'),
-        knex.schema.dropTableIfExists('data_sources'),
-        knex.schema.dropTableIfExists('records')
+        knex.schema.dropTable('records'),
+        knex.schema.dropTable('data_sources'),
+        knex.schema.dropTable('widgets'),
+        knex.schema.dropTable('dashboards'),
+        knex.schema.dropTable('projects')
     ]);
 };

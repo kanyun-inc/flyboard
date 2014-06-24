@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.UNIT_TEST = true;
+
 var request = require('supertest');
 var app = require('../src/app');
 

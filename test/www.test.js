@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.UNIT_TEST = true;
+
 var assert = require('chai').assert;
 
 describe('www', function () {

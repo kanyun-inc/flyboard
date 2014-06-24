@@ -21,6 +21,7 @@
   "node": true,
   "globals": {
     "describe": true,
+    "after": true,
     "it": true
   }
 }

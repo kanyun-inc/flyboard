@@ -1,10 +1,13 @@
 'use strict';
 
+process.env.UNIT_TEST = true;
+
 var knex = require('../src/lib/knex');
 var Migrate = require('knex/lib/migrate');
 var path = require('path');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
+var fs = require('fs');
 
 describe('knex', function () {
     describe('migrate', function () {
@@ -48,5 +51,9 @@ describe('knex', function () {
     it('should work', function () {
         assert.isFunction(knex);
         assert.isFunction(knex.select);
+    });
+
+    after(function (done) {
+        fs.unlink(path.join(__dirname, '../flyboard.sqlite'), done);
     });
 });
