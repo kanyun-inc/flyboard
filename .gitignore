@@ -2,3 +2,4 @@
 node_modules
 *.sock
 configs/database.js
+*.sqlite

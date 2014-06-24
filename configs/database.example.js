@@ -23,5 +23,12 @@ module.exports = {
         connection: {
             filename: './flyboard.sqlite'
         }
+    },
+
+    test: {
+        client: 'mysql',
+        connection: {
+            database: 'flyboard'
+        }
     }
 };
