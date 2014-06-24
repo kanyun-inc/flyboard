@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - '0.10'
 before_script:
+  - npm run test-jshint
   - cp configs/database.example.js configs/database.js
 after_script:
   - npm run test-coverage
