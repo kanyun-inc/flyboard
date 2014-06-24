@@ -11,7 +11,11 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');
 
 app.use(favicon());
-app.use(logger('dev'));
+if ('development' === app.get('env')) {
+    app.use(logger('dev'));
+} else {
+    app.use(logger());
+}
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(require('./controllers/indexController'));

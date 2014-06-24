@@ -4,7 +4,7 @@
   "private": true,
   "author": "perfectworks <perfectworks@gmail.com",
   "contributors": [
-      "slycloud <sky_zuoyou@sina.com>"
+    "slycloud <sky_zuoyou@sina.com>"
   ],
   "scripts": {
     "start": "node ./bin/www",
@@ -34,11 +34,15 @@
     "mocha-lcov-reporter": "0.0.1",
     "mysql": "^2.3.2",
     "pq": "0.0.3",
-    "sqlite3": "^2.2.3"
+    "sqlite3": "^2.2.3",
+    "supertest": "^0.13.0"
   },
   "config": {
     "blanket": {
-      "pattern": ["src", "bin"]
+      "pattern": [
+        "src",
+        "bin"
+      ]
     }
   }
 }
