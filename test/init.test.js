@@ -19,9 +19,15 @@ before(function (callback) {
 });
 
 after(function (callback) {
-    fs.unlink(path.join(__dirname, '../flyboard.sqlite'), function () {
-        callback();
-    });
+    var migrate = new Migrate(knex);
+
+    migrate.rollback({
+        directory: path.join(__dirname, '../migrations')
+    }).then(function () {
+        fs.unlink(path.join(__dirname, '../flyboard.sqlite'), function () {
+            callback();
+        });
+    }).catch(callback);
 });
 
 describe('test init', function () {

@@ -37,6 +37,7 @@
     "coveralls": "^2.10.1",
     "mariasql": "^0.1.21",
     "mocha": "^1.20.1",
+    "mocha-cov-reporter": "^0.2.3",
     "mocha-lcov-reporter": "0.0.1",
     "mysql": "^2.3.2",
     "pq": "0.0.3",
@@ -45,7 +46,11 @@
   },
   "config": {
     "blanket": {
-      "pattern": "src"
+      "pattern": [
+        "/src/",
+        "/bin/",
+        "/migrations/"
+      ]
     }
   }
 }
