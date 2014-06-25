@@ -1,7 +1,7 @@
 'use strict';
 
 var Widget = require('../../src/logicals/widget');
-var Dashboard = require('../../src/logicals/Dashboard');
+var Dashboard = require('../../src/logicals/dashboard');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
