@@ -2,7 +2,7 @@
 
 var Record = require('../../src/logicals/record');
 var DataSource = require('../../src/logicals/dataSource');
-var Project = require('../../src/logicals/Project');
+var Project = require('../../src/logicals/project');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
