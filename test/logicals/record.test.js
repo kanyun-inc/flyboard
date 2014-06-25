@@ -1,7 +1,7 @@
 'use strict';
 
 var Record = require('../../src/logicals/record');
-var DataSource = require('../../src/logicals/DataSource');
+var DataSource = require('../../src/logicals/dataSource');
 var Project = require('../../src/logicals/Project');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
