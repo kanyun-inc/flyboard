@@ -8,6 +8,11 @@ exports.up = function (knex, Promise) {
             table.timestamps();
 
             table.string('name').notNullable();
+            table
+                .uuid('uuid')
+                .unique()
+                .index()
+                .notNullable();
         }),
 
         knex.schema.dropTableIfExists('dashboards'),
@@ -48,9 +53,8 @@ exports.up = function (knex, Promise) {
                 .inTable('projects');
 
             table
-                .uuid('uuid')
+                .string('key')
                 .unique()
-                .index()
                 .notNullable();
         }),
 

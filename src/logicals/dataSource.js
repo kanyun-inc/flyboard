@@ -1,6 +1,5 @@
 'use strict';
 
-var uuid = require('node-uuid');
 var knex = require('../lib/knex');
 
 exports.find = function () {
@@ -12,8 +11,6 @@ exports.get = function (id) {
 };
 
 exports.save = function (obj) {
-    obj.uuid = uuid.v1();
-
     return knex('data_sources').insert(obj).returning('id').then(function (ret) {
         return ret[0];
     });
