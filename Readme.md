@@ -3,6 +3,7 @@
 [![NPM version](https://badge.fury.io/js/flyboard.svg)](http://badge.fury.io/js/flyboard)
 [![Build Status](https://travis-ci.org/yuantiku/flyboard.png?branch=master)](https://travis-ci.org/yuantiku/flyboard)
 [![Coverage Status](https://coveralls.io/repos/yuantiku/flyboard/badge.png?branch=master)](https://coveralls.io/r/yuantiku/flyboard?branch=master)
+[![Code Climate](https://codeclimate.com/github/yuantiku/flyboard.png)](https://codeclimate.com/github/yuantiku/flyboard)
 
 简单、灵活、友好的数据可视化系统。
 

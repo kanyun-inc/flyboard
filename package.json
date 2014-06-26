@@ -10,7 +10,7 @@
     "start": "node ./bin/www",
     "test-jshint": "./node_modules/.bin/jshint src views bin configs",
     "test": "./node_modules/.bin/mocha --recursive",
-    "test-coverage": "./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
+    "test-coverage": "./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js; ./node_modules/.bin/mocha --require blanket --reporter mocha-lcov-reporter | CODECLIMATE_REPO_TOKEN=df91e9bfccd459dc75647430afc397ae522bce45168e8a44ac2be70f842ae1d6 ./node_modules/.bin/codeclimate",
     "migrate:latest": "./node_modules/.bin/knex --knexfile ./configs/database.js --cwd . migrate:latest",
     "migrate:make": "./node_modules/.bin/knex --knexfile ./configs/database.js --cwd . migrate:make flyboard",
     "migrate:rollback": "./node_modules/.bin/knex --knexfile ./configs/database.js --cwd . migrate:rollback",
@@ -34,6 +34,7 @@
   "devDependencies": {
     "blanket": "^1.1.6",
     "chai": "^1.9.1",
+    "codeclimate-test-reporter": "0.0.3",
     "coveralls": "^2.10.1",
     "mariasql": "^0.1.21",
     "mocha": "^1.20.1",
