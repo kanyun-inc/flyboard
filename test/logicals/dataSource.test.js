@@ -19,11 +19,13 @@ describe('data_sources model', function () {
             return Promise.all([
                 DataSource.save({
                     name: 'foo',
-                    project_id: id
+                    project_id: id,
+                    key: "loginNumber"
                 }),
                 DataSource.save({
                     name: 'bar',
-                    project_id: id
+                    project_id: id,
+                    key: "loginTime"
                 })
             ]);
         }).then(function (ret) {
@@ -65,7 +67,8 @@ describe('data_sources model', function () {
         it('should save new object', function (done) {
             DataSource.save({
                 name: 'baz',
-                project_id: projectId
+                project_id: projectId,
+                key: "logoutTime"
             }).then(function (id) {
                 return DataSource.get(id);
             }).then(function (ret) {
@@ -90,7 +93,8 @@ describe('data_sources model', function () {
         it('should save new object', function (done) {
             DataSource.save({
                 name: 'baz',
-                project_id: projectId
+                project_id: projectId,
+                key: 'logoutTime'
             }).then(function (id) {
                 return DataSource.update(id, {
                     name: 'xxx'
