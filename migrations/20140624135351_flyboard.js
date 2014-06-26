@@ -55,6 +55,7 @@ exports.up = function (knex, Promise) {
             table
                 .string('key')
                 .unique()
+                .index()
                 .notNullable();
         }),
 
