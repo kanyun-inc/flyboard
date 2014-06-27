@@ -7,9 +7,12 @@ describe('record controller', function(){
     var ProjectUuid = null;
     var Key = null;
 <<<<<<< HEAD
+<<<<<<< HEAD
     var DataSourceId = null;
 =======
 >>>>>>> FETCH_HEAD
+=======
+>>>>>>> 01b6787216883226b5df9400e61c59bbab07b760
 
     describe('POST /api/projects/:uuid/data_sources/:key', function (){
         it('should create a record', function (done){
@@ -42,9 +45,12 @@ describe('record controller', function(){
                             }
                             Key = res.body.key;
 <<<<<<< HEAD
+<<<<<<< HEAD
                             DataSourceId = res.body.id;
 =======
 >>>>>>> FETCH_HEAD
+=======
+>>>>>>> 01b6787216883226b5df9400e61c59bbab07b760
 
                             request(app)
                                 .post('/api/projects/' + ProjectUuid + '/data_sources/' + Key)
@@ -53,6 +59,7 @@ describe('record controller', function(){
                                 })
                                 .expect(200)
                                 .expect('content-type', /json/)
+<<<<<<< HEAD
 <<<<<<< HEAD
                                 .end(function (err, res) {
                                     if (err) {
@@ -64,6 +71,8 @@ describe('record controller', function(){
         });
     });
 =======
+=======
+>>>>>>> 01b6787216883226b5df9400e61c59bbab07b760
                                 .end(function (err, res){
                                     if(err){
                                         return done(err);
@@ -74,5 +83,8 @@ describe('record controller', function(){
                 });
         });
     })
+<<<<<<< HEAD
 >>>>>>> FETCH_HEAD
+=======
+>>>>>>> 01b6787216883226b5df9400e61c59bbab07b760
 });

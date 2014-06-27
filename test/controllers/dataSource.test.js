@@ -2,21 +2,16 @@
 
 var app = require('../../src/app');
 var request = require('supertest');
-<<<<<<< HEAD
-var assert = require('chai').assert;
 var DataSource = require('../../src/logicals/dataSource');
 var Project = require('../../src/logicals/project');
 var Record = require('../../src/logicals/record');
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
-=======
->>>>>>> FETCH_HEAD
 
 describe('dataSource controller', function(){
     var projectId = null;
     var dataSourceId = null;
 
-<<<<<<< HEAD
     before(function (done) {
         Project
             .save({name: 'ape'})
@@ -71,9 +66,6 @@ describe('dataSource controller', function(){
     });
 
     describe.skip('GET /api/data_sources', function(){
-=======
-    describe('GET /api/data_sources', function(){
->>>>>>> FETCH_HEAD
         it('should return dataSource list', function(done){
             request(app)
                 .get('/api/data_sources')
@@ -85,7 +77,6 @@ describe('dataSource controller', function(){
     describe('POST /api/data_sources', function(){
         it('should create a dataSource', function (done){
             request(app)
-<<<<<<< HEAD
                 .post('/api/data_sources')
                 .send({
                     project_id: projectId,
@@ -95,38 +86,6 @@ describe('dataSource controller', function(){
                 .expect(200)
                 .expect('content-type', /json/)
                 .end(done);
-=======
-                .post('/api/projects')
-                .send({
-                    name: 'apt'
-                })
-                .expect(200)
-                .expect('content-type', /json/)
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-
-                    projectId = res.body.id;
-
-                    request(app)
-                        .post('/api/data_sources')
-                        .send({
-                            project_id: projectId,
-                            name: '登录时间',
-                            key: 'loginTime'
-                        })
-                        .expect(200)
-                        .expect('content-type', /json/)
-                        .end(function (err, res) {
-                            if(err){
-                                return done(err);
-                            }
-                            dataSourceId = res.body.id;
-                            done();
-                        });
-                });
->>>>>>> FETCH_HEAD
         });
     });
 
@@ -157,28 +116,17 @@ describe('dataSource controller', function(){
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res){
-                    if(err){
-                        return done(err);
-                    }
-                    done();
-                });
+                .end(done);
         });
     });
 
-<<<<<<< HEAD
     describe('GET /api/data_sources/:id/records', function(){
         it('should return limit numbers of record', function (done){
             request(app)
                 .get('/api/data_sources/' + dataSourceId + '/records?limit=4')
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res) {
-                    if(err){
-                        return done(err);
-                    }
-                    done();
-                });
+                .end(done);
         });
 
         it('should return  record list', function (done){
@@ -186,17 +134,10 @@ describe('dataSource controller', function(){
                 .get('/api/data_sources/' + dataSourceId + '/records')
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res) {
-                    if(err){
-                        return done(err);
-                    }
-                    done();
-                });
+                .end(done);
         });
     });
 
-=======
->>>>>>> FETCH_HEAD
     describe('DELETE /api/data_sources/:id', function (){
         it('should delete a dataSource', function(done){
             request(app)

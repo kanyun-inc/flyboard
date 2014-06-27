@@ -6,10 +6,7 @@ module.exports = router;
 var bodyParser = require('body-parser');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
-<<<<<<< HEAD
 var Record = require('../logicals/record');
-=======
->>>>>>> FETCH_HEAD
 
 router.get(
     '/api/data_sources',
@@ -35,7 +32,6 @@ router.get(
     }
 );
 
-<<<<<<< HEAD
 router.get(
     '/api/data_sources/:id/records',
     function(req, res, next){
@@ -53,8 +49,6 @@ router.get(
     }
 );
 
-=======
->>>>>>> FETCH_HEAD
 router.post(
     '/api/data_sources',
     bodyParser.json(),
