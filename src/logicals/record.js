@@ -2,8 +2,15 @@
 
 var knex = require('../lib/knex');
 
-exports.find = function () {
-    return knex('records').select();
+exports.find = function (query, limit) {
+    query = query || {};
+    var ret = knex('records').where(query).select();
+
+    if (limit) {
+        ret = ret.limit(limit);
+    }
+
+    return ret;
 };
 
 exports.get = function (id) {

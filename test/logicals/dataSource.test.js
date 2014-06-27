@@ -20,12 +20,12 @@ describe('data_sources model', function () {
                 DataSource.save({
                     name: 'foo',
                     project_id: id,
-                    key: "loginNumber"
+                    key: 'loginNumber'
                 }),
                 DataSource.save({
                     name: 'bar',
                     project_id: id,
-                    key: "loginTime"
+                    key: 'loginTime'
                 })
             ]);
         }).then(function (ret) {
@@ -68,7 +68,7 @@ describe('data_sources model', function () {
             DataSource.save({
                 name: 'baz',
                 project_id: projectId,
-                key: "logoutTime"
+                key: 'logoutTime'
             }).then(function (id) {
                 return DataSource.get(id);
             }).then(function (ret) {

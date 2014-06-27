@@ -2,12 +2,70 @@
 
 var app = require('../../src/app');
 var request = require('supertest');
+var DataSource = require('../../src/logicals/dataSource');
+var Project = require('../../src/logicals/project');
+var Record = require('../../src/logicals/record');
+var Promise = require('bluebird');
+var knex = require('../../src/lib/knex');
 
 describe('dataSource controller', function(){
     var projectId = null;
     var dataSourceId = null;
 
-    describe('GET /api/data_sources', function(){
+    before(function (done) {
+        Project
+            .save({name: 'ape'})
+            .then(function (id) {
+                projectId = id;
+
+                return DataSource.save({
+                    name: 'loginUser',
+                    key: 'loginUser',
+                    project_id: id
+                });
+            })
+            .then(function (id) {
+                dataSourceId = id;
+
+                return Promise.all([
+                    Record.save({
+                        data_source_id: id,
+                        value: 98,
+                        year: 2014,
+                        month: 6,
+                        day: 28
+                    }),
+                    Record.save({
+                        data_source_id: id,
+                        value: 99,
+                        year: 2014,
+                        month: 6,
+                        day: 29
+                    }),
+                    Record.save({
+                        data_source_id: id,
+                        value: 100,
+                        year: 2014,
+                        month: 6,
+                        day: 30
+                    })
+                ]);
+            }).then(function () {
+                done();
+            }).catch(done);
+    });
+
+    after(function (done) {
+        return Promise.all([
+            knex('records').del(),
+            knex('data_sources').del(),
+            knex('projects').del()
+        ]).then(function () {
+            done();
+        }).catch(done);
+    });
+
+    describe.skip('GET /api/data_sources', function(){
         it('should return dataSource list', function(done){
             request(app)
                 .get('/api/data_sources')
@@ -19,36 +77,15 @@ describe('dataSource controller', function(){
     describe('POST /api/data_sources', function(){
         it('should create a dataSource', function (done){
             request(app)
-                .post('/api/projects')
+                .post('/api/data_sources')
                 .send({
-                    name: 'apt'
+                    project_id: projectId,
+                    name: '登录时间',
+                    key: 'loginTime'
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-
-                    projectId = res.body.id;
-
-                    request(app)
-                        .post('/api/data_sources')
-                        .send({
-                            project_id: projectId,
-                            name: '登录时间',
-                            key: 'loginTime'
-                        })
-                        .expect(200)
-                        .expect('content-type', /json/)
-                        .end(function (err, res) {
-                            if(err){
-                                return done(err);
-                            }
-                            dataSourceId = res.body.id;
-                            done();
-                        });
-                });
+                .end(done);
         });
     });
 
@@ -79,12 +116,25 @@ describe('dataSource controller', function(){
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res){
-                    if(err){
-                        return done(err);
-                    }
-                    done();
-                });
+                .end(done);
+        });
+    });
+
+    describe('GET /api/data_sources/:id/records', function(){
+        it('should return limit numbers of record', function (done){
+            request(app)
+                .get('/api/data_sources/' + dataSourceId + '/records?limit=4')
+                .expect(200)
+                .expect('content-type', /json/)
+                .end(done);
+        });
+
+        it('should return  record list', function (done){
+            request(app)
+                .get('/api/data_sources/' + dataSourceId + '/records')
+                .expect(200)
+                .expect('content-type', /json/)
+                .end(done);
         });
     });
 

@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>Controlfrog - Meaningful Metrics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/controlfrog.css" rel="stylesheet" media="screen">   
+	<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	
+	<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>    
+	<script src="js/moment.js"></script>	
+	<script src="js/easypiechart.js"></script>	
+	<script src="js/gauge.js"></script>			
+	<script src="js/chart.js"></script>	
+	<script src="js/jquery.sparklines.js"></script>		
+    <script src="js/bootstrap.js"></script>
+    <script src="js/controlfrog-plugins.js"></script>
+
+    <!--[if lt IE 9]>
+		<script src="js/respond.min.js"></script>
+		<script src="js/excanvas.min.js"></script>
+	<![endif]-->
+    
+    <script>
+		var themeColour = 'black';
+	</script>
+    <script src="js/controlfrog.js"></script>
+</head>
+<body>
+
+	<div class="container docs">
+		<div class="row docs-header">
+			<div class="col-sm-9 col-sm-offset-3">
+				<h1>Controlfrog documentation</h1>
+				<p>Everything you need to know... if there is something missing, drop an email to <a href="mailto:froghelp@bengoodyear.com">froghelp@bengoodyear.com</a>.</p>
+			</div>
+		</div>
+	
+		<div class="row">
+
+			<div class="col-sm-3 sidebar-nav">
+				<ul class="nav nav-stacked">
+					<li><a href="#styles">Changing the theme style</a></li>																	
+					<li><a href="#navigation">Navigation</a></li>																						
+					<li><a href="#nolength">Large metric display</a></li>																						
+					<li>
+						<a href="#cfmodules">Modules</a>
+						<ul class="nav">
+							<li><a href="#cfmodule-timedate">Time &amp; date</a></li>
+							<li><a href="#cfmodule-singlemetricchange">Single metric &amp; change</a></li>
+							<li><a href="#cfmodule-svmc-sparkline">Single metric, change &amp; sparkline</a></li>												
+							<li><a href="#cfmodule-singlevaluepie">Single value pie</a></li>
+							<li><a href="#cfmodule-gauge">Gauge</a></li>
+							<li><a href="#cfmodule-line">Line chart</a></li>												
+							<li><a href="#cfmodule-pie">Pie chart</a></li>
+							<li><a href="#cfmodule-rss">RSS feeds</a></li>
+							<li><a href="#cfmodule-funnel">Funnel chart</a></li>												
+							<li><a href="#cfmodule-rag">R.A.G Bars</a></li>
+							<li><a href="#cfmodule-yn">Yes or no</a></li>		
+						</ul>
+					</li>
+				</ul>
+			</div>
+	
+			<div class="col-sm-9">
+				<section id="styles">
+					<h2>Changing the theme style</h2>
+					<hr />
+					<p>There are two theme styles, black and white.</p>
+					<p>To change the style between the two you must alter two things in the header of the page:</p>
+					<pre>
+&lt;script&gt;
+	var themeColour = 'black';
+&lt;/script&gt;
+&lt;script src="../../js/controlfrog.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body class="black"&gt;					
+					</pre>
+				</section>
+				<section id="navigation">
+					<h2>Navigation</h2>
+					<hr />
+					<p>They say no man is an island, perhaps the same is true for your pages. With that in mind Controlfrog includes an optional sidebar/off canvas navigation.</p>
+					<p>See one of the layout pages for the complete code. Here are a few key points.</p>
+					<p>You can choose to have a list of shortcut links which show in the navs minimum state, and on expansion of the menu a larger list of links. Add the class <code>cf-nav-shortcut</code> to a nav <code>li</code> element for it to show as a shortcut.</p>
+					<p>If you're using the navigation you need to add a class of <code>cf-nav-active</code> to the <code>div class="cf-container"</code>.</p>
+					
+					
+					
+				</section>
+				<section id="nolength">
+					<h2>Metric character length</h2>
+					<hr />
+					<p>The large metrics have been designed to fit best with four characters.</p>
+					<p>If you have metrics longer than this there is a JS function which attempts to trim them down to 4.</p>
+					<h4>Example usage:</h4>
+					<pre>
+var bigNumber = 3295432;
+var smallNumber = prettyNumbers(bigNumber);				
+
+// returns smallNumber as '3.3M'
+					</pre>
+				</section>
+				<section id="cfmodule-timedate">
+					<h2>Modules</h2>
+					<hr />
+					<p>Controlfrog comes with 11 different modules you can use to show your data. More will be coming in the future. Should have any specific requirements for a new module, or change to an existing one, please send your ideas to <a href="mailto:froghelp@bengoodyear.com">froghelp@bengoodyear.com</a>.</p>
+				</section>
+				<section id="cfmodule-timedate">
+					<h2>Module: Time &amp; Date</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-timedate-24.png" alt="Module: Time and date 24hr" class="img-responsive" />
+					<!--<img src="img/module-screenshots/cf-timedate-12.png" alt="Module: Time and date 12hr" />-->
+
+					<p>Displays the current time and date in either 12hr or 24hr format. It defaults to 24hr format, to use the 12hr format add the class <code>cf-td-12</code> to the <code>cf-td</code> div. </p>
+					
+					<div class="panel-group" id="cf-td">
+					  <div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-td" href="#cf-td-1">
+							  HTML source code - 24hr format
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-td-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Time &amp; date&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-td"&gt;
+		&lt;div class="cf-td-time metric"&gt;12:00&lt;/div&gt;
+		&lt;div class="cf-td-dd"&gt;
+			&lt;p class="cf-td-day metric-small"&gt;Monday&lt;/p&gt;
+			&lt;p class="cf-td-date metric-small"&gt;1st October, 2013&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					 <div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-td" href="#cf-td-2">
+							  HTML source code - 12hr format
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-td-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Time &amp; date&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-td cf-td-12"&gt;
+		&lt;div class="cf-td-time metric"&gt;12:00&lt;/div&gt;
+		&lt;div class="cf-td-dd"&gt;
+			&lt;p class="cf-td-day metric-small"&gt;Monday&lt;/p&gt;
+			&lt;p class="cf-td-date metric-small"&gt;1st October, 2013&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>					  
+					</div>
+					
+					<h4>Tests</h4>
+					<ul>
+						<li>Black - 24hr:</li>
+						<li><a href="tests/cf-time-date/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-time-date/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-time-date/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-time-date/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>Black - 12hr:</li>
+						<li><a href="tests/cf-time-date-12/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-time-date-12/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-time-date-12/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-time-date-12/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White - 24hr:</li>
+						<li><a href="tests/cf-time-date/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-time-date/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-time-date/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-time-date/wl4.html">Layout 4</a></li>				
+					</ul>											
+					<ul>
+						<li>White - 12hr</li>
+						<li><a href="tests/cf-time-date-12/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-time-date-12/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-time-date-12/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-time-date-12/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>			
+				<section id="cfmodule-singlemetricchange">
+					<h2>Module: Single metric &amp; change</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-svmc.png" alt="Module: Single value metric and change" class="img-responsive" />
+
+					<p>Displays a single metric and a value of change, either up or down.</p>
+					
+					<div class="panel-group" id="cf-svmc">
+					  <div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svmc" href="#cf-svmc-1">
+							  HTML source code - Change up (green)
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-svmc-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Single metric &amp; change&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-svmc"&gt;
+		&lt;div class="metric"&gt;3292&lt;/div&gt;
+		&lt;div class="change m-green metric-small"&gt;
+			&lt;div class="arrow-up"&gt;&lt;/div&gt;
+			&lt;span class="large"&gt;32&lt;span class="small"&gt;.45%&lt;/span&gt;&lt;/span&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svmc" href="#cf-svmc-2">
+							  HTML source code - Change down (red)
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-svmc-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Single metric &amp; change&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-svmc"&gt;
+		&lt;div class="metric"&gt;3292&lt;/div&gt;
+		&lt;div class="change m-red metric-small"&gt;
+			&lt;div class="arrow-down"&gt;&lt;/div&gt;
+			&lt;span class="large"&gt;32&lt;span class="small"&gt;.45%&lt;/span&gt;&lt;/span&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					  
+					</div>
+
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black - Down:</li>
+						<li><a href="tests/cf-svmc-down/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svmc-down/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svmc-down/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svmc-down/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>Black - Up:</li>
+						<li><a href="tests/cf-svmc-up/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svmc-up/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svmc-up/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svmc-up/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White - Down:</li>
+						<li><a href="tests/cf-svmc-down/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svmc-down/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svmc-down/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svmc-down/wl4.html">Layout 4</a></li>				
+					</ul>											
+					<ul>
+						<li>White - Up:</li>
+						<li><a href="tests/cf-svmc-up/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svmc-up/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svmc-up/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svmc-up/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-svmc-sparkline">
+					<h2>Module: Single metric &amp; change with sparkline</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-svmc-sparkline.png" alt="Module: Single value metric, change and sparkline" class="img-responsive" />
+
+					<p>Displays a single metric, a value of change and a sparkline. Each sparkline must be given a unique ID.</p>
+					<p>This chart uses the <a href="http://omnipotent.net/jquery.sparkline/#s-about">jQuery sparklines</a> plugin, refer there for information on customisation of options if required. The theme sets some default options, but they can be overridden and added to per sparkline.</p>
+					<p>The data and options for each sparkline are passed in the js.</p>
+					
+					<div class="panel-group" id="cf-svmc-spark">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svmc-spark" href="#cf-svmc-spark-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-svmc-spark-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Metric &amp; Sparkline&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-svmc-sparkline"&gt;
+		&lt;div class="cf-svmc"&gt;
+			&lt;div class="metric"&gt;3292&lt;/div&gt;
+			&lt;div class="change m-green metric-small"&gt;
+				&lt;div class="arrow-up"&gt;&lt;/div&gt;
+				&lt;span class="large"&gt;32&lt;span class="small"&gt;.45%&lt;/span&gt;&lt;/span&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;div class="cf-sparkline clearfix"&gt;
+			&lt;div id="spark-1" class="sparkline"&gt;&lt;/div&gt;
+			&lt;div class="sparkline-value"&gt;
+				&lt;div class="metric-small"&gt;0&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svmc-spark" href="#cf-svmc-spark-2">
+							  JS source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-svmc-spark-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+// Initialise sparklines
+/*
+*	Copy the each() function for each sparkline you have
+* 	e.g. $('#spark-1').each(function(){.....}
+*/
+$('.sparkline').each(function(){
+	
+	/*
+	// Set custom options and merge with default
+	customSparkOptions = {};
+	customSparkOptions.minSpotColor = true;
+	var sparkOptions = cf_defaultSparkOpts;
+	var sparkOptions = $.extend({}, cf_defaultSparkOpts, customSparkOptions);
+	*/
+	
+	// No custom options
+	var sparkOptions = cf_defaultSparkOpts;
+		
+	data = 	[5,5,2,1,4,4,7,5,6,9,6,4,3,3,2,4];
+	createSparkline($(this), data, sparkOptions);
+});	
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-svmc-sparkline/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svmc-sparkline/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svmc-sparkline/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svmc-sparkline/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-svmc-sparkline/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svmc-sparkline/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svmc-sparkline/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svmc-sparkline/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-singlevaluepie">
+					<h2>Module: Single value pie chart / donut</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-svp.png" alt="Module: Single value pie" class="img-responsive" />					
+
+					<p>Displays a single value pie or donut chart.</p>
+					
+					<p>Each chart must have a unique ID. An initial value can be set via a data attribute in the HTML. However, it is also possible to update the chart value via JS.</p>
+					
+					<p>This chart uses the <a href="http://rendro.github.io/easy-pie-chart/">easy pie chart</a> plugin. A small modification to the plugin was made to update the data attribute when calling the plugins update function. This is needed to correctly redraw the chart to make it responsive.</p>
+					
+					<p>There is a <code>data-layout</code> attribute which is used to alter the chart display depending on it's location in the layouts.</p>
+					
+					<div class="panel-group" id="cf-svp">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svp" href="#cf-svp-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-svp-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Single value pie chart&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content cf-svp clearfix" id="svp-1"&gt;
+	&lt;div class="chart" data-percent="72" data-layout="l-6-i"&gt;&lt;/div&gt;
+	&lt;div class="metrics"&gt;
+		&lt;span class="metric"&gt;72&lt;/span&gt;
+		&lt;span class="metric-small"&gt;%&lt;/span&gt;
+	&lt;/div&gt;						
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svp" href="#cf-svp-2">
+							  JS update source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-svp-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+// Update a single value pie chart
+// -- Example of how to update a chart, can be used in other cases than from a button click, for example after you have the data you want for the chart
+$('.svp-update').click( function(){
+	var element = $(this).data('update');
+	
+	// Call EasyPieChart update function
+	cf_rSVPs[element].chart.update(12);
+	// Update the data-percent so it redraws on resize properly
+	$('#svp-1 .chart').data('percent', 12);
+	// Update the UI metric
+	$('.metric', $('#'+element)).html('12');
+});
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-svp/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svp/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svp/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svp/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-svp/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-svp/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-svp/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-svp/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-gauge">
+					<h2>Module: Gauge</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-gauge.png" alt="Module: Gauge" class="img-responsive" />										
+
+					<p>Display a gauge with a needle pointing at a specified number between two bounds.</p>
+					
+					<p>This chart requires you set three unique id's per chart. One on the container, one for the current value and one for the canvas.</p>
+					
+					<p>Once the charts are initialised, with default values and options (the default values could be set to 0,0,0), you can update the chart with the correct values you want to use.</p>
+					
+					<p>This chart uses the <a href="http://bernii.github.io/gauge.js/">gauge.js</a> plugin.</p>
+					
+					<div class="panel-group" id="cf-gauge">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-svp" href="#cf-gauge-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-gauge-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Gauge&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content cf-gauge" id="cf-gauge-1"&gt;
+	&lt;div class="val-current"&gt;
+		&lt;div class="metric" id="cf-gauge-1-m"&gt;0&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="canvas"&gt;
+		&lt;canvas id="cf-gauge-1-g"&gt;&lt;/canvas&gt;
+	&lt;/div&gt;
+	&lt;div class="val-min"&gt;
+		&lt;div class="metric-small"&gt;0&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="val-max"&gt;
+		&lt;div class="metric-small"&gt;0&lt;/div&gt;						
+	&lt;/div&gt;
+&lt;/div&gt;							
+							</pre>
+						  </div>
+						</div>
+					  </div>
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-gauge" href="#cf-gauge-2">
+							  JS update source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-gauge-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+/*
+*	Set or update a Gauge
+*	@param gauge 	string 		ID of gauge container
+*	@param opts 	object		JSON object of options
+*/
+function gaugeUpdate(gauge, opts){
+	if(opts.minVal){
+		$('.val-min .metric-small', $('#'+gauge)).html(opts.minVal);		
+		cf_rGs[gauge].minValue = opts.minVal;
+	}
+	if(opts.maxVal){
+		cf_rGs[gauge].maxValue = opts.maxVal;
+		$('.val-max .metric-small', $('#'+gauge)).html(opts.maxVal);
+	}
+	if(opts.newVal){
+		cf_rGs[gauge].set(parseInt(opts.newVal));
+	}
+}
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-gauge/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-gauge/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-gauge/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-gauge/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-gauge/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-gauge/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-gauge/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-gauge/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-line">
+					<h2>Module: Line chart</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-line.png" alt="Module: Line chart" class="img-responsive" />
+
+					<p>Displays a line chart.</p>
+					
+					<p>The chart requires you to set two ID's. An ID on the container and one on the canvas.</p>
+
+					<p>This chart uses the <a href="http://www.chartjs.org/">Chart.js</a> library. A small modification has been made to the library to add a custom option to line charts which allows you to display only the min and max values on the y axis of a chart. The option is <code>scaleMaxMinLabels</code>.</p>
+
+					<div class="panel-group" id="cf-line">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-line" href="#cf-line-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-line-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Line chart&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content cf-line" id="cf-line-5"&gt;
+	&lt;canvas id="cf-line-5-c" width="0" height="0"&gt;&lt;/canvas&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-line" href="#cf-line-2">
+							  JS source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-line-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+
+// Initialise chart
+/*
+*	Copy the each() function for each line chart you have
+* 	e.g. $('#line-1').each(function(){.....}
+*/	
+$('.cf-line').each(function(){
+	// Data for line chart
+	var ldata = {
+		labels : ["5/13","","","","","","11/13"],
+		datasets : [
+			{
+				strokeColor : metric,
+				data : [65,59,40,81,56,55,90]
+			}
+		]
+	}
+
+	var $container = $(this);
+	var lId = $container.prop('id');
+	
+	// Store chart information
+	cf_rLs[lId] = {};
+	cf_rLs[lId].data = ldata;
+	
+	/*
+	// Set options per chart
+	customOptions = {};
+	customOptions.scaleMaxMinLabels = false;
+	cf_rLs[lId].options = customOptions;
+	*/
+	
+	// Create chart
+	createLineChart($container);
+});
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					</div>
+
+					<h4>Tests</h4>					
+
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-line/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-line/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-line/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-line/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-line/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-line/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-line/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-line/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-pie">
+					<h2>Module: Pie chart</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-pie.png" alt="Module: Pie chart" class="img-responsive" />					
+					
+					<p>Displays a pie chart with legend.</p>
+					
+					<p>The chart requires you to set two ID's. An ID on the container and one on the canvas.</p>
+					
+					<p>This chart uses the <a href="http://www.chartjs.org/">Chart.js</a> library. This library does not support pie charts with labels or legends. The legend on these charts are created with a custom function. All you need to do is pass the label name in the dataset.</p>
+					
+					<div class="panel-group" id="cf-pie">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-pie" href="#cf-pie-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-pie-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Pie chart&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content cf-pie" id="cf-pie-1"&gt;
+	&lt;canvas id="cf-pie-1-c" width="0" height="0"&gt;&lt;/canvas&gt;
+&lt;/div&gt;	
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-pie" href="#cf-pie-2">
+							  JS source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-pie-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+
+// Initialise chart
+/*
+*	Copy the each() function for each line chart you have
+* 	e.g. $('#pie-1').each(function(){.....}
+*/
+$('.cf-pie').each(function(){
+	// Data for pie chart
+	var pdata = [
+		{
+			value : 30,
+			color : pieSegColors[3],
+			label: 'Label 1'
+		},
+		{
+			value : 50,
+			color : pieSegColors[2],
+			label: 'Label 2'			
+		},
+		{
+			value: 100,
+			color: pieSegColors[1],
+			label: 'Label 3'			
+		}
+	]
+
+	var $container = $(this);
+	var pId = $container.prop('id');
+	
+	// Store chart information
+	cf_rPs[pId] = {};
+	cf_rPs[pId].data = pdata;
+	
+	/*
+	// Set options per chart		
+	customOptions = {};
+	customOptions.animation = false;
+	cf_rPs[pId].options = customOptions;
+	*/
+	
+	// Create chart
+	createPieChart($container);
+});
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-pie/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-pie/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-pie/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-pie/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-pie/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-pie/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-pie/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-pie/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-rss">
+					<h2>Module: RSS</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-rss.png" alt="Module: RSS feed" class="img-responsive" />										
+					
+					<p>Displays items in a carousel. This implementation shows a how a Twitter feed might appear.</p>
+					
+					<div class="panel-group" id="cf-rss">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-rss" href="#cf-rss-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-rss-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;div id="cf-rss-1" class="carousel slide" data-ride="carousel"&gt;
+		&lt;div class="carousel-inner"&gt;
+			&lt;div class="item active"&gt;
+				&lt;-- item content --&gt;
+			&lt;/div&gt;
+			&lt;div class="item"&gt;
+				&lt;-- item content --&gt;
+			&lt;/div&gt;
+			&lt;div class="item"&gt;
+				&lt;-- item content --&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;ol class="carousel-indicators"&gt;
+			&lt;li data-target="#cf-rss-1" data-slide-to="0" class="active"&gt;&lt;/li&gt;
+			&lt;li data-target="#cf-rss-1" data-slide-to="1"&gt;&lt;/li&gt;
+			&lt;li data-target="#cf-rss-1" data-slide-to="2"&gt;&lt;/li&gt;
+		&lt;/ol&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-rss/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-rss/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-rss/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-rss/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-rss/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-rss/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-rss/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-rss/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>	
+				<section id="cfmodule-funnel">
+					<h2>Module: Funnel chart</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-funnel.png" alt="Module: Funnel chart" class="img-responsive" />															
+
+					<p>Displays a funnel of 5 steps with corresponding value and label. Steps 2 through 5 are a percentage value of step 1.</p>
+					
+					<p>However, the funnel chart can be configured with any number of steps. The layout can be switched to show the bars on the right as well as the left.</p>
+					
+					
+					<p>The Funnel Chart module is custom built for Controlfrog.</p>					
+					
+					
+					<div class="panel-group" id="cf-funnel">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-funnel" href="#cf-funnel-1">
+										HTML source code
+									</a>
+								</h5>
+							</div>
+							<div id="cf-funnel-1" class="panel-collapse collapse">
+								<div class="panel-body">
+									<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Funnel Chart&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div id="cf-funnel-1" class="cf-funnel"&gt;&lt;/div&gt;
+&lt;/div&gt;
+									</pre>
+								</div>
+							</div>
+						</div>					  
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-funnel" href="#cf-funnel-2">
+										JS source code
+									</a>
+								</h5>
+							</div>
+							<div id="cf-funnel-2" class="panel-collapse collapse">
+								<div class="panel-body">
+									<pre>
+/*
+*	Copy the each() function for each Funnel chart you have
+* 	e.g. $('#cf-funnel-1').each(function(){.....}
+*/								
+
+$('.cf-funnel').each(function(){
+
+	// Dummy data for Funnel chart
+	funData = [3000,1500,500,250,10];
+	funLabels = ['Visits','Cart','Checkout','Purchase','Refund'];
+	funOptions = {barOpacity:true, layout:'right'};
+	
+	cf_rFunnels[$(this).prop('id')] = new FunnelChart($(this).prop('id'), funData, funLabels, funOptions);
+});
+									</pre>
+								</div>
+							</div>
+						</div>					  
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-funnel" href="#cf-funnel-3">
+										Options
+									</a>
+								</h5>
+							</div>
+							<div id="cf-funnel-3" class="panel-collapse collapse">
+								<div class="panel-body">
+									<dl>
+										<dt>layout</dt>
+										<dd>String e.g. <em>right</em>. Default layout is funnel on the left.</dd>
+										<dt>barOpacity</dt>
+										<dd>Boolean <em>true</em> or <em>false</em><br> Pass the option as true if you want the bar background color to decrease in opacity from step 1.</dd>
+										<dt>metricOpacity</dt>
+										<dd>Boolean <em>true</em> or <em>false</em><br> Pass the option as true if you want the metric color to decrease in opacity from step 1.</dd>
+										<dt>customColors</dt>
+										<dd>
+											Array of hex codes e.g. <em>['#1ccc22','#f13d19','#f25e02','#1182f0']</em>
+											<br>
+											You can pass a single colour which is used for all bars, or one per bar.
+										</dd>
+									</dl>
+								</div>
+							</div>
+						</div>				
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-funnel" href="#cf-funnel-4">
+										Updating
+									</a>
+								</h5>
+							</div>
+							<div id="cf-funnel-4" class="panel-collapse collapse">
+								<div class="panel-body">
+									<p>Funnel charts can easily be updated after creation.</p>
+									<p>An array of updated values is passed to the funnel chart instance:</p>
+<pre>
+newData = [null,1200,490,200,0];
+cf_rFunnels['cf-funnel-1'].update(newData);
+</pre>
+									<p>If a value has not changed, pass <code>null</code>.</p>
+								</div>
+							</div>
+						</div>					  							  
+					</div>
+					
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-funnel/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-funnel/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-funnel/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-funnel/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-funnel/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-funnel/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-funnel/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-funnel/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>
+				<section id="cfmodule-rag">
+					<h2>Module: R.A.G Bars</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-rag.png" alt="Module: R.A.G Bars" class="img-responsive" />
+
+					<p>Displays a chart with three coloured bars, Red, Amber and Green along with a corresponding value and label.</p>
+					
+					<p>However, it can also be configured to display more or less than three items, with custom colours or no bar at all.</p>
+					
+					<p>The R.A.G module is custom built for Controlfrog.</p>
+					
+					
+					<div class="panel-group" id="cf-rag">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-rag" href="#cf-rag-1">
+							  HTML source code
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-rag-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;RAG Bars&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div id="cf-rag-1" class="cf-rag"&gt;&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-rag" href="#cf-rag-2">
+									JS source code
+									</a>
+								</h5>
+							</div>
+							<div id="cf-rag-2" class="panel-collapse collapse">
+								<div class="panel-body">
+								<pre>
+/*
+*	Copy the each() function for each R.A.G chart you have
+* 	e.g. $('#cf-rag-1').each(function(){.....}
+*/								
+								
+$('.cf-rag').each(function(){
+	// Dummy data for RAG
+	ragData = [60,30,10];
+	ragLabels = ['Success','Bounce','Abandoned'];
+	ragOpts = {postfix:'%'}
+
+	cf_rRags[$(this).prop('id')] = new RagChart($(this).prop('id'), ragData, ragLabels, ragOpts);
+});
+								
+								</pre>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-rag" href="#cf-rag-3">
+									Options
+									</a>
+								</h5>
+							</div>
+							<div id="cf-rag-3" class="panel-collapse collapse">
+								<div class="panel-body">
+									<dl>
+										<dt>figsOnly</dt>
+										<dd>Boolean <em>true</em> or <em>false</em><br> Pass the option as true if you want to hide the bars.</dd>
+									
+										<dt>postfix</dt>
+										<dd>String e.g. <em>%</em><br>Keep postfix size to a minimum, 1 or 2 characters max.</dd>
+									
+										<dt>customColor</dt>
+										<dd>
+											Array of hex codes e.g. <em>['#1ccc22','#f13d19','#f25e02','#1182f0']</em>
+											<br>
+											If not enough colours are passed, a default colour will be used.
+										</dd>
+									
+										<dt>rgaLength</dt>
+										<dd>Integer e.g. <em>4</em><br> If you want to display less than or more than 3 items you must pass the desired amount using this option.</dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h5 class="panel-title">
+									<a data-toggle="collapse" data-parent="#cf-rag" href="#cf-rag-4">
+									Updating
+									</a>
+								</h5>
+							</div>
+							<div id="cf-rag-4" class="panel-collapse collapse">
+								<div class="panel-body">
+									<p>R.A.G charts can easily be updated after creation.</p>
+									<p>An array of updated values is passed to the R.A.G chart instance:</p>
+<pre>
+newData = [60,null,20];
+cf_rRags['cf-rag-1'].update(newData);
+</pre>
+									<p>If a value has not changed, pass <code>null</code>.</p>
+								</div>
+							</div>
+						</div>						
+					</div>
+					
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black:</li>
+						<li><a href="tests/cf-rag/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-rag/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-rag/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-rag/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White:</li>
+						<li><a href="tests/cf-rag/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-rag/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-rag/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-rag/wl4.html">Layout 4</a></li>				
+					</ul>											
+				</section>					
+				<section id="cfmodule-yn">
+					<h2>Module: Yes / No</h2>
+					<hr />
+					<img src="img/module-screenshots/cf-yn.png" alt="Module: Yes or No" class="img-responsive" />																									
+					
+					<p>Displays either a big 'Yes' or a big 'No'.</p>
+					
+					<div class="panel-group" id="cf-yn">
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-yn" href="#cf-yn-1">
+							  HTML source code - Yes
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-yn-1" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Yes or no&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-yn yn-y"&gt;
+		&lt;div class="metric m-green"&gt;
+			Yes
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+							</pre>
+						  </div>
+						</div>
+					  </div>
+						<div class="panel panel-default">
+						<div class="panel-heading">
+						  <h5 class="panel-title">
+							<a data-toggle="collapse" data-parent="#cf-yn" href="#cf-yn-2">
+							  HTML source code - No
+							</a>
+						  </h5>
+						</div>
+						<div id="cf-yn-2" class="panel-collapse collapse">
+						  <div class="panel-body">
+							<pre>
+&lt;header&gt;
+	&lt;p&gt;&lt;span&gt;&lt;/span&gt;Yes or no&lt;/p&gt;
+&lt;/header&gt;
+&lt;div class="content"&gt;
+	&lt;div class="cf-yn"&gt;
+		&lt;div class="metric m-red"&gt;
+			No
+		&lt;/div&gt;
+	&lt;/div&gt;
+&lt;/div&gt;							
+							</pre>
+						  </div>
+						</div>
+					  </div>					  
+					</div>
+					
+					<h4>Tests</h4>					
+					<ul>
+						<li>Black - Yes:</li>
+						<li><a href="tests/cf-yn-y/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-yn-y/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-yn-y/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-yn-y/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White - Yes:</li>
+						<li><a href="tests/cf-yn-y/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-yn-y/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-yn-y/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-yn-y/wl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>Black - No:</li>
+						<li><a href="tests/cf-yn-n/bl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-yn-n/bl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-yn-n/bl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-yn-n/bl4.html">Layout 4</a></li>				
+					</ul>								
+					<ul>
+						<li>White - No:</li>
+						<li><a href="tests/cf-yn-n/wl1.html">Layout 1</a>,</li>
+						<li><a href="tests/cf-yn-n/wl2.html">Layout 2</a>,</li>
+						<li><a href="tests/cf-yn-n/wl3.html">Layout 3</a>,</li>
+						<li><a href="tests/cf-yn-n/wl4.html">Layout 4</a></li>				
+					</ul>								
+				</section>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

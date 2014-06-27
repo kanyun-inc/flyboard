@@ -6,6 +6,7 @@ var request = require('supertest');
 describe('record controller', function(){
     var ProjectUuid = null;
     var Key = null;
+    var DataSourceId = null;
 
     describe('POST /api/projects/:uuid/data_sources/:key', function (){
         it('should create a record', function (done){
@@ -37,6 +38,7 @@ describe('record controller', function(){
                                 return done(err);
                             }
                             Key = res.body.key;
+                            DataSourceId = res.body.id;
 
                             request(app)
                                 .post('/api/projects/' + ProjectUuid + '/data_sources/' + Key)
@@ -45,14 +47,9 @@ describe('record controller', function(){
                                 })
                                 .expect(200)
                                 .expect('content-type', /json/)
-                                .end(function (err, res){
-                                    if(err){
-                                        return done(err);
-                                    }
-                                    done();
-                                })
+                                .end(done);
                         });
                 });
         });
-    })
+    });
 });

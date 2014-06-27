@@ -6,6 +6,7 @@ module.exports = router;
 var bodyParser = require('body-parser');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
+var Record = require('../logicals/record');
 
 router.get(
     '/api/data_sources',
@@ -27,6 +28,23 @@ router.get(
             }
 
             res.send(dataSource);
+        }).catch(next);
+    }
+);
+
+router.get(
+    '/api/data_sources/:id/records',
+    function(req, res, next){
+        var id = parseInt(req.param('id', 10));
+        var limit = parseInt(req.param('limit') || 0, 10);
+
+        DataSource.get(id).then(function(dataSource){
+            if(!dataSource){
+                return res.send(404);
+            }
+            Record.find({data_source_id: id}, limit).then(function(records){
+                res.send(records);
+            });
         }).catch(next);
     }
 );
