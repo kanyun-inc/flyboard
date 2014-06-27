@@ -52,6 +52,24 @@ describe('project controller', function () {
         });
     });
 
+    describe('PUT /api/projects/:id', function(){
+        it('should update a project', function(done){
+            request(app)
+                .put('/api/projects/' + projectId)
+                .send({
+                    name: 'apt'
+                })
+                .expect(200)
+                .expect('content-type', /json/)
+                .end(function(err, res){
+                    if(err){
+                        return done(err);
+                    }
+                    done();
+                });
+        });
+    });
+
     describe('DELETE /api/projects/:id', function () {
         it('should remove project', function (done) {
             request(app)

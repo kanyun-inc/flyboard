@@ -8,9 +8,12 @@ function objToDb(widget) {
         return widget;
     }
 
-    return _.extend({}, widget, {
-        config: JSON.stringify(widget.config)
-    });
+    var newWidget = {};
+    if (widget.config) {
+        newWidget.config = JSON.stringify(widget.config);
+    }
+
+    return _.defaults(newWidget, widget);
 }
 
 function dbToObj(widget) {
@@ -23,8 +26,9 @@ function dbToObj(widget) {
     });
 }
 
-exports.find = function () {
-    return knex('widgets').select().map(dbToObj);
+exports.find = function (query) {
+    query = query || {};
+    return knex('widgets').where(query).select().map(dbToObj);
 };
 
 exports.get = function (id) {
