@@ -10,11 +10,25 @@ var staticFiles = {
         'bower_components/angular-route/angular-route.min.js',
         'bower_components/angular-resource/angular-resource.min.js',
         'bower_components/angular-resource/angular-resource.min.js',
-        'bower_components/bootstrap/dist/js/bootstrap.min.js'
+        'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'controlfrog/js/chart.js',
+
+        'controlfrog/js/easypiechart.js',
+        'controlfrog/js/excanvas.min.js',
+        'controlfrog/js/gauge.js',
+        'controlfrog/js/jquery.sparklines.js',
+        'controlfrog/js/moment.js',
+        'controlfrog/js/respond.min.js',
+        'controlfrog/js/controlfrog-plugins.js',
+        'controlfrog/js/controlfrog.js',
+
+        'widgets/number.js'
     ],
 
     css: [
-        'bower_components/bootstrap/dist/css/bootstrap.min.css'
+        'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'controlfrog/css/controlfrog.css',
+        'controlfrog/css/controlfrog.scss'
     ]
 };
 

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>Controlfrog - Meaningful Metrics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../../css/bootstrap.css" rel="stylesheet">
+    <link href="../../css/controlfrog.css" rel="stylesheet" media="screen">   
+	<link href="../../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	
+	<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>    
+	<script src="../../js/moment.js"></script>	
+	<script src="../../js/easypiechart.js"></script>
+	<script src="../../js/gauge.js"></script>	
+	<script src="../../js/chart.js"></script>
+	<script src="../../js/jquery.sparklines.js"></script>			
+    <script src="../../js/bootstrap.js"></script>
+    <script src="../../js/controlfrog-plugins.js"></script>
+    
+    <!--[if lt IE 9]>
+		<script src="../../js/respond.min.js"></script>
+		<script src="../../js/excanvas.min.js"></script>
+	<![endif]-->
+    
+    
+	<script>
+		var themeColour = 'white';
+	</script>
+    <script src="../../js/controlfrog.js"></script>
+</head>
+<body class="white">
+	
+	<div class="cf-container">
+
+		<div class="row">
+			<div class="col-sm-6 cf-item">
+				<header>
+					<p><span></span>Gauge</p>
+				</header>
+				<div class="content cf-gauge" id="cf-gauge-1">
+					<div class="val-current">
+						<div class="metric" id="cf-gauge-1-m">0</div>
+					</div>
+					<div class="canvas">
+						<canvas id="cf-gauge-1-g"></canvas>
+					</div>
+					<div class="val-min">
+						<div class="metric-small">0</div>
+					</div>
+					<div class="val-max">
+						<div class="metric-small">0</div>						
+					</div>
+				</div>
+			</div> <!-- //end col -->
+			<div class="col-sm-6 cf-item">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-6 cf-item">
+								<header>
+									<p><span></span>Gauge</p>
+								</header>
+								<div class="content cf-gauge" id="cf-gauge-2">
+									<div class="val-current">
+										<div class="metric" id="cf-gauge-2-m">0</div>
+									</div>
+									<div class="canvas">
+										<canvas id="cf-gauge-2-g"></canvas>
+									</div>
+									<div class="val-min">
+										<div class="metric-small">0</div>
+									</div>
+									<div class="val-max">
+										<div class="metric-small">0</div>						
+									</div>
+								</div>
+							</div> <!-- //end cf-item -->
+							<div class="col-sm-6 cf-item">
+								<header>
+									<p><span></span>Gauge</p>
+								</header>
+								<div class="content cf-gauge" id="cf-gauge-3">
+									<div class="val-current">
+										<div class="metric" id="cf-gauge-3-m">0</div>
+									</div>
+									<div class="canvas">
+										<canvas id="cf-gauge-3-g"></canvas>
+									</div>
+									<div class="val-min">
+										<div class="metric-small">0</div>
+									</div>
+									<div class="val-max">
+										<div class="metric-small">0</div>						
+									</div>
+								</div>
+							</div> <!-- //end cf-item -->
+						</div> <!-- //end row -->
+						<div class="row">
+							<div class="col-sm-6 cf-item">
+								<header>
+									<p><span></span>Gauge</p>
+								</header>
+								<div class="content cf-gauge" id="cf-gauge-4">
+									<div class="val-current">
+										<div class="metric" id="cf-gauge-4-m">0</div>
+									</div>
+									<div class="canvas">
+										<canvas id="cf-gauge-4-g"></canvas>
+									</div>
+									<div class="val-min">
+										<div class="metric-small">0</div>
+									</div>
+									<div class="val-max">
+										<div class="metric-small">0</div>						
+									</div>
+								</div>
+							</div> <!-- //end cf-item -->
+							<div class="col-sm-6 cf-item">
+								<header>
+									<p><span></span>Gauge</p>
+								</header>
+								<div class="content cf-gauge" id="cf-gauge-5">
+									<div class="val-current">
+										<div class="metric" id="cf-gauge-5-m">0</div>
+									</div>
+									<div class="canvas">
+										<canvas id="cf-gauge-5-g"></canvas>
+									</div>
+									<div class="val-min">
+										<div class="metric-small">0</div>
+									</div>
+									<div class="val-max">
+										<div class="metric-small">0</div>						
+									</div>
+								</div>
+							</div> <!-- //end cf-item -->
+						</div> <!-- //end row -->						
+					</div> <!-- //end col -->
+				</div> <!-- //end row -->
+			</div> <!-- // end cf-item -->
+		</div> <!-- //end row -->
+
+	</div> <!-- //end cf-container -->
+</body>
+</html>

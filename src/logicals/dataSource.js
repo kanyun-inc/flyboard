@@ -2,8 +2,18 @@
 
 var knex = require('../lib/knex');
 
-exports.find = function () {
-    return knex('data_sources').select();
+exports.find = function (query) {
+    query = query || {};
+    return knex('data_sources').where(query).select();
+};
+
+exports.getByUUIDAndKey = function (uuid, key) {
+    return knex('data_sources')
+        .join('projects', 'projects.id', '=', 'data_sources.project_id')
+        .where({
+            'projects.uuid': uuid,
+            'data_sources.key': key
+        }).first();
 };
 
 exports.get = function (id) {

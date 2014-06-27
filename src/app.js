@@ -8,7 +8,7 @@ var logger = require('morgan');
 var app = express();
 
 app.set('views', path.join(__dirname, '../views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 app.use(favicon());
 if (!process.env.UNIT_TEST) {
@@ -30,6 +30,10 @@ app.use(function (req, res, next) {
 app.use(require('./middlewares/staticFile')());
 app.use(require('./controllers/index'));
 app.use(require('./controllers/project'));
+app.use(require('./controllers/dashboard'));
+app.use(require('./controllers/widget'));
+app.use(require('./controllers/dataSource'));
+app.use(require('./controllers/record'));
 app.use(require('./controllers/error').notFound);
 app.use(require('./controllers/error').errorHandler);
 

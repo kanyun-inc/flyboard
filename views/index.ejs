@@ -1,0 +1,42 @@
+<!DOCTYPE html/>
+<html>
+<head>
+    <% styles.forEach(function (style) { %>
+        <link rel="stylesheet" href="<%= style %>" />
+    <% }) %>
+    <script type="text/javascript">
+        var themeColour = 'black';
+    </script>
+    <% scripts.forEach(function (script) { %>
+        <script type="text/javascript" src="<%= script %>"></script>
+    <% }) %>
+</head>
+<body class="black">
+<div class="cf-container cf-nav-active">
+    <div class="row">
+        <div class="col-sm-12 cf-item widget" data-config="{dataSourceId: 1}" data-type="1">
+            <header>
+                <p><span></span>Metric &amp; Sparkline</p>
+            </header>
+            <div class="content">
+                <div class="cf-svmc-sparkline">
+                    <div class="cf-svmc">
+                        <div class="metric">3292</div>
+                        <div class="change m-green metric-small">
+                            <div class="arrow-up"></div>
+                            <span class="large">32<span class="small">.45%</span></span>
+                        </div>
+                    </div>
+                    <div class="cf-sparkline clearfix">
+                        <div id="spark-1" class="sparkline"></div>
+                        <div class="sparkline-value">
+                            <div class="metric-small">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
