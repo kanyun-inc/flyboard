@@ -1,0 +1,21 @@
+<div class="col-sm-6 cf-item widget" data-config='<%= JSON.stringify(widget.config) %>' data-type="1">
+    <header>
+        <p><span></span><%= widget.config.name %></p>
+    </header>
+    <div class="content">
+        <div class="cf-svmc-sparkline">
+            <div class="cf-svmc">
+                <div class="metric"></div>
+                <div class="change m-green metric-small">
+                    <div class="arrow"></div>
+                    <span class="large"></span><span class="small"></span>
+                </div>
+            </div>
+            <div class="cf-sparkline clearfix">
+                <div class="sparkline">
+                    <canvas></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
