@@ -1,6 +1,7 @@
 <!DOCTYPE html/>
 <html>
 <head>
+    <title><%= title %></title>
     <% styles.forEach(function (style) { %>
         <link rel="stylesheet" href="<%= style %>" />
     <% }) %>
@@ -12,30 +13,61 @@
     <% }) %>
 </head>
 <body class="black">
+<div class="cf-nav cf-nav-state-min">
+    <a href="" class="cf-nav-toggle">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+
+    <ul>
+        <li class="current cf-nav-shortcut">
+            <a href="layout-1.html" class="current active">
+                <span class="cf-nav-min">1</span>
+                <span class="cf-nav-max">Layout 1</span>
+            </a>
+            <!--
+            <ul>
+                <li><a href="">Sub menu</a></li>
+                <li><a href="">Sub menu</a></li>
+                <li><a href="">Sub menu</a></li>
+            </ul>
+            -->
+        </li>
+        <li class="cf-nav-shortcut">
+            <a href="layout-2.html">
+                <span class="cf-nav-min">2</span>
+                <span class="cf-nav-max">Layout 2</span>
+            </a>
+        </li>
+        <li class="cf-nav-shortcut">
+            <a href="layout-3.html">
+                <span class="cf-nav-min">3</span>
+                <span class="cf-nav-max">Layout 3</span>
+            </a>
+        </li>
+        <li class="cf-nav-shortcut">
+            <a href="layout-4.html">
+                <span class="cf-nav-min">4</span>
+                <span class="cf-nav-max">Layout 4</span>
+            </a>
+        </li>
+        <li>
+            <a href="layout-4.html">
+                <span class="cf-nav-min">•</span>
+                <span class="cf-nav-max">Example with no shortcut</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
 <div class="cf-container cf-nav-active">
     <div class="row">
-        <div class="col-sm-12 cf-item widget" data-config="{dataSourceId: 1}" data-type="1">
-            <header>
-                <p><span></span>Metric &amp; Sparkline</p>
-            </header>
-            <div class="content">
-                <div class="cf-svmc-sparkline">
-                    <div class="cf-svmc">
-                        <div class="metric">3292</div>
-                        <div class="change m-green metric-small">
-                            <div class="arrow-up"></div>
-                            <span class="large">32<span class="small">.45%</span></span>
-                        </div>
-                    </div>
-                    <div class="cf-sparkline clearfix">
-                        <div id="spark-1" class="sparkline"></div>
-                        <div class="sparkline-value">
-                            <div class="metric-small">0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <% widgets.forEach(function (widget){ %>
+            <% if(widget.type == 1) { %>
+                 <% include widgets/number %>
+            <% } %>
+        <% }) %>
     </div>
 </div>
 </body>
