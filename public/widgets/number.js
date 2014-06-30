@@ -28,16 +28,11 @@ $(function () {
         // No custom options
         var sparkOptions = cf_defaultSparkOpts;
 
-        /* dataSourceId: data_source_id
-         * limit:3 == display the newest 3 records
-         * */
-
-        var limit = 30;
         var data;
 
         function reload(){
             $.get(
-                '/api/data_sources/' + config.dataSourceId + '/records?limit=' + limit,
+                '/api/data_sources/' + config.dataSourceId + '/records?limit=' + config.limit,
                 function (resp) {
                     data = [];
                     resp.reverse().forEach(function (record) {
@@ -50,10 +45,16 @@ $(function () {
                         det = ((data[data.length-1] - lastValue)/lastValue) * 100;
                     }
                     else{
-                        det = 100;
+                        det = 0;
                     }
 
-                    $metric.html(data[data.length-1]);
+                    var value = data[data.length - 1];
+                    if (config.sum) {
+                        value = data.reduce(function (memo, prev) {
+                            return memo + prev;
+                        }, 0);
+                    }
+                    $metric.html(value);
                     if( det > 0 ){
                         $arrow.removeClass('arrow-down');
                         $arrow.addClass('arrow-up');
