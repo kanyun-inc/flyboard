@@ -13,7 +13,7 @@ exports.getByUUIDAndKey = function (uuid, key) {
         .where({
             'projects.uuid': uuid,
             'data_sources.key': key
-        }).first();
+        }).select('data_sources.id').first();
 };
 
 exports.get = function (id) {
