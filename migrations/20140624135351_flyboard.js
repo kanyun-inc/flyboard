@@ -4,6 +4,8 @@ exports.up = function (knex, Promise) {
     return Promise.all([
         knex.schema.dropTableIfExists('projects'),
         knex.schema.createTable('projects', function (table) {
+            table.charset('utf8');
+            table.engine('Innodb');
             table.increments();
             table.timestamps();
 
@@ -17,6 +19,8 @@ exports.up = function (knex, Promise) {
 
         knex.schema.dropTableIfExists('dashboards'),
         knex.schema.createTable('dashboards', function (table) {
+            table.charset('utf8');
+            table.engine('Innodb');
             table.increments();
             table.timestamps();
 
@@ -25,6 +29,8 @@ exports.up = function (knex, Promise) {
 
         knex.schema.dropTableIfExists('widgets'),
         knex.schema.createTable('widgets', function (table) {
+            table.charset('utf8');
+            table.engine('Innodb');
             table.increments();
             table.timestamps();
 
@@ -40,6 +46,8 @@ exports.up = function (knex, Promise) {
 
         knex.schema.dropTableIfExists('data_sources'),
         knex.schema.createTable('data_sources', function (table) {
+            table.charset('utf8');
+            table.engine('Innodb');
             table.increments();
             table.timestamps();
 
@@ -61,6 +69,8 @@ exports.up = function (knex, Promise) {
 
         knex.schema.dropTableIfExists('records'),
         knex.schema.createTable('records', function (table) {
+            table.charset('utf8');
+            table.engine('Innodb');
             table.increments();
             table.timestamps();
 
