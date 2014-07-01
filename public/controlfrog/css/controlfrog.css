@@ -11,6 +11,7 @@ a:hover {
 .cf-container {
   width: 100%;
   padding: 0 15px;
+  height: 100%;
   margin: 0 auto;
   overflow: hidden;
   left: 0;
@@ -98,6 +99,9 @@ a:hover {
   -o-transition: width 0.3s ease;
   transition: width 0.3s ease; }
 
+.cf-item {
+  height: 100%;
+  position: relative; }
 .cf-item header {
   text-transform: uppercase;
   border-bottom: solid 1px; }
@@ -111,11 +115,14 @@ a:hover {
       margin-bottom: 2px;
       margin-right: 5px; }
 .cf-item .content {
+  box-sizing: border-box;
   width: 100%;
   margin: 0 auto;
-  padding: 10px 0;
-  height: 90%;
-  position: relative; }
+  padding: 10px;
+  height: auto;
+  top: 23px;
+  bottom: 0;
+  position: absolute; }
 
 @media (min-width: 768px) {
   .row [class*="col"] .inner {
@@ -388,8 +395,8 @@ body.white {
   border-style: solid;
   border-width: 21.7px 12.5px 0 12.5px; }
 
-/****************** 
- Widget definitions 
+/******************
+ Widget definitions
 *******************/
 /** MODULE: Single value metric with change **/
 .cf-svmc {
@@ -1280,3 +1287,5 @@ body.white {
 
 .intro p {
   font-size: 16px; }
+
+/* vim:set sw=2 ts=2 sts=2: */
