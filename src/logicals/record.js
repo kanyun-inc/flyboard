@@ -4,7 +4,13 @@ var knex = require('../lib/knex');
 
 exports.find = function (query, limit) {
     query = query || {};
-    var ret = knex('records').where(query).select().orderBy('year', 'desc').orderBy('month', 'desc').orderBy('day', 'desc');
+    var ret = knex('records').where(query).select()
+        .orderBy('year', 'desc')
+        .orderBy('month', 'desc')
+        .orderBy('day', 'desc')
+        .orderBy('hour', 'desc')
+        .orderBy('minute', 'desc')
+        .orderBy('second', 'desc');
 
     if (limit) {
         ret = ret.limit(limit);
