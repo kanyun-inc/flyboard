@@ -21,12 +21,15 @@ exports.get = function (id) {
 };
 
 exports.save = function (obj) {
+    obj.created_at = new Date();
+    obj.updated_at = obj.created_at;
     return knex('data_sources').insert(obj).returning('id').then(function (ret) {
         return ret[0];
     });
 };
 
 exports.update = function (id, obj) {
+    obj.updated_at = new Date();
     return knex('data_sources').where('id', id).update(obj);
 };
 
