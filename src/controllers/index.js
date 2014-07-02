@@ -4,7 +4,7 @@ var router = require('express').Router();
 module.exports = router;
 
 var Widget = require('../logicals/widget');
-var Dashboard = require('../logicals/Dashboard');
+var Dashboard = require('../logicals/dashboard');
 var Promise = require('bluebird');
 
 function indexCtrl(req, res, next) {
