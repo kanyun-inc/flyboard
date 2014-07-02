@@ -21,43 +21,14 @@
     </a>
 
     <ul>
-        <li class="current cf-nav-shortcut">
-            <a href="layout-1.html" class="current active">
-                <span class="cf-nav-min">1</span>
-                <span class="cf-nav-max">Layout 1</span>
-            </a>
-            <!--
-            <ul>
-                <li><a href="">Sub menu</a></li>
-                <li><a href="">Sub menu</a></li>
-                <li><a href="">Sub menu</a></li>
-            </ul>
-            -->
-        </li>
-        <li class="cf-nav-shortcut">
-            <a href="layout-2.html">
-                <span class="cf-nav-min">2</span>
-                <span class="cf-nav-max">Layout 2</span>
+        <% dashboards.forEach(function (item, index) { %>
+        <li class="<%= item.id === dashboard.id ? 'current ' : null%>cf-nav-shortcut">
+            <a href="/dashboards/<%=item.id%>" class="<%= item.id === dashboard.id ? 'current active' : null%>">
+                <span class="cf-nav-min"><%= index + 1 %></span>
+                <span class="cf-nav-max"><%= item.name %></span>
             </a>
         </li>
-        <li class="cf-nav-shortcut">
-            <a href="layout-3.html">
-                <span class="cf-nav-min">3</span>
-                <span class="cf-nav-max">Layout 3</span>
-            </a>
-        </li>
-        <li class="cf-nav-shortcut">
-            <a href="layout-4.html">
-                <span class="cf-nav-min">4</span>
-                <span class="cf-nav-max">Layout 4</span>
-            </a>
-        </li>
-        <li>
-            <a href="layout-4.html">
-                <span class="cf-nav-min">•</span>
-                <span class="cf-nav-max">Example with no shortcut</span>
-            </a>
-        </li>
+        <% }) %>
     </ul>
 </div>
 
