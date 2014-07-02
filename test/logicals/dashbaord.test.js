@@ -11,7 +11,19 @@ describe('Dashboard logical', function () {
     beforeEach(function (done) {
         Promise.all([
             Dashboard.save({
-                name: 'foo'
+                name: 'foo',
+                config: {
+                    layout: [{
+                        id: 1,
+                        columns: 12
+                    }, [{
+                        id: 2,
+                        columns: 6
+                    }, {
+                        id: 3,
+                        columns: 6
+                    }]]
+                }
             }),
             Dashboard.save({
                 name: 'bar'
@@ -33,6 +45,18 @@ describe('Dashboard logical', function () {
             Dashboard.get(ids[0]).then(function (ret) {
                 assert.isObject(ret);
                 assert.isObject(ret.config);
+                assert.deepEqual(ret.config, {
+                    layout: [{
+                        id: 1,
+                        columns: 12
+                    }, [{
+                        id: 2,
+                        columns: 6
+                    }, {
+                        id: 3,
+                        columns: 6
+                    }]]
+                });
                 assert.equal(ret.name, 'foo');
                 done();
             }).catch(done);
