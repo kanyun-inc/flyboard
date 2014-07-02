@@ -11,11 +11,13 @@ var assert = require('chai').assert;
 before(function (callback) {
     var migrate = new Migrate(knex);
 
-    migrate.latest({
-        directory: path.join(__dirname, '../migrations')
-    }).then(function () {
-        callback();
-    }).catch(callback);
+    fs.unlink(path.join(__dirname, '../flyboard.sqlite'), function () {
+        migrate.latest({
+            directory: path.join(__dirname, '../migrations')
+        }).then(function () {
+            callback();
+        }).catch(callback);
+    });
 });
 
 after(function (callback) {

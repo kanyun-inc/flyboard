@@ -10,7 +10,7 @@ function objToDb(widget) {
 
     var newWidget = {};
     if (widget.config) {
-        newWidget.config = JSON.stringify(widget.config);
+        newWidget.config = JSON.stringify(widget.config || {});
     }
 
     return _.defaults(newWidget, widget);

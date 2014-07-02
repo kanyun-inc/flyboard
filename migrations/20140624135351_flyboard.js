@@ -40,7 +40,7 @@ exports.up = function (knex, Promise) {
                 .unsigned()
                 .references('id')
                 .inTable('dashboards');
-            table.json('config').notNullable();
+            table.json('config').notNullable().defaultTo('{}');
             table.integer('type').notNullable();
         }),
 

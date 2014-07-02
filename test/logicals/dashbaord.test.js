@@ -32,6 +32,7 @@ describe('Dashboard logical', function () {
         it('should return an object', function (done) {
             Dashboard.get(ids[0]).then(function (ret) {
                 assert.isObject(ret);
+                assert.isObject(ret.config);
                 assert.equal(ret.name, 'foo');
                 done();
             }).catch(done);
