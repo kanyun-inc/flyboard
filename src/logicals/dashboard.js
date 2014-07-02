@@ -44,8 +44,9 @@ exports.save = function (obj) {
 };
 
 exports.update = function (id, obj) {
-    obj.updated_at = new Date();
-    return knex('dashboards').where('id', id).update(objToDb(obj));
+    var data = objToDb(obj);
+    data.updated_at = new Date();
+    return knex('dashboards').where('id', id).update(data);
 };
 
 exports.remove = function (id) {

@@ -88,18 +88,39 @@ describe('Dashboard logical', function () {
 
     describe('#update', function () {
         it('should save new object', function (done) {
-            Dashboard.save({
-                name: 'baz'
-            }).then(function (id) {
-                return Dashboard.update(id, {
-                    name: 'xxx'
-                }).then(function () {
-                    return id;
-                });
-            }).then(function (ret) {
-                return Dashboard.get(ret);
-            }).then(function (ret) {
-                assert.equal(ret.name, 'xxx');
+            Promise.all([
+                Dashboard.save({
+                    name: 'baz'
+                }).then(function (id) {
+                    return Dashboard.update(id, {
+                        name: 'xxx'
+                    }).then(function () {
+                        return id;
+                    });
+                }).then(function (ret) {
+                    return Dashboard.get(ret);
+                }).then(function (ret) {
+                    assert.equal(ret.name, 'xxx');
+                }),
+
+                Dashboard.save({
+                    name: 'faz'
+                }).then(function (id) {
+                    return Dashboard.update(id, {
+                        config: {
+                            layout: ['xxx']
+                        }
+                    }).then(function () {
+                        return id;
+                    });
+                }).then(function (ret) {
+                    return Dashboard.get(ret);
+                }).then(function (ret) {
+                    assert.deepEqual(ret.config, {
+                        layout: ['xxx']
+                    });
+                })
+            ]).then(function () {
                 done();
             }).catch(done);
         });

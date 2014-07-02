@@ -52,21 +52,37 @@ describe('dashboard controller', function(){
         });
     });
 
-    describe('PUT /api/dashboards/:id', function(){
-        it('should update a dashboard', function(done){
+    describe('PUT /api/dashboards/:id', function (){
+        it('should update a dashboard', function (done){
             request(app)
                 .put('/api/dashboards/' + dashboardId)
                 .send({
-                    name: "apt"
+                    name: 'apt'
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res){
-                    if(err){
-                        return done(err);
-                    }
-                    done();
-                });
+                .end(done);
+        });
+
+        it('should update config of dashboard', function (done) {
+            request(app)
+                .put('/api/dashboards/' + dashboardId)
+                .send({
+                    config: 'hello'
+                })
+                .expect(200)
+                .expect('content-type', /json/)
+                .end(done);
+        });
+
+        it('should return 400 if data is invalid', function (done) {
+            request(app)
+                .put('/api/dashboards/' + dashboardId)
+                .send({
+                    name: ''
+                })
+                .expect(400)
+                .end(done);
         });
     });
 

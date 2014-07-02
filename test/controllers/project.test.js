@@ -52,8 +52,8 @@ describe('project controller', function () {
         });
     });
 
-    describe('PUT /api/projects/:id', function(){
-        it('should update a project', function(done){
+    describe('PUT /api/projects/:id', function (){
+        it('should update a project', function (done){
             request(app)
                 .put('/api/projects/' + projectId)
                 .send({
@@ -61,12 +61,7 @@ describe('project controller', function () {
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res){
-                    if(err){
-                        return done(err);
-                    }
-                    done();
-                });
+                .end(done);
         });
     });
 

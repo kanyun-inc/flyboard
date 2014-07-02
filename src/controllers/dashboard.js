@@ -46,15 +46,15 @@ router.put(
     bodyParser.json(),
     function(req, res, next){
         var dashboard = req.body;
-        if(!dashboard.name){
-            res.send(404);
+        if (dashboard.name !== undefined && !dashboard.name) {
+            res.send(400);
         }
 
         var id = parseInt(req.param('id'), 10);
 
-        Dashboard.update(id, dashboard).then(function(){
+        Dashboard.update(id, dashboard).then(function () {
             return Dashboard.get(id);
-        }).then(function(dashboard){
+        }).then(function (dashboard) {
             res.send(dashboard);
         }).catch(next);
     }
