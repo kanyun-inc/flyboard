@@ -43,6 +43,6 @@ function indexCtrl(req, res, next) {
 router.get('/', indexCtrl);
 router.get('/dashboards/:id', indexCtrl);
 
-router.get('/admin', function (req, res, next) {
+router.get('/admin', function (req, res) {
    res.render('admin');
 });
