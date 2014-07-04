@@ -27,6 +27,11 @@ function indexCtrl(req, res, next) {
         return Widget.find({
             dashboard_id: dashboard.id
         });
+    }).then(function (widgets) {
+        return widgets.reduce(function (memo, curr) {
+            memo[curr.id] = curr;
+            return memo;
+        }, {});
     });
 
     res.locals.title = 'Flyboard';

@@ -1,0 +1,21 @@
+<% function renderLayout(layout) { %>
+    <% if (layout && layout.rows) { %>
+        <% layout.rows.forEach(function (layout) { %>
+            <div class="row">
+                <% renderLayout(layout) %>
+            </div>
+        <% }) %>
+    <% } else if (layout && layout.columns) { %>
+        <% layout.columns.forEach(function (layout) { %>
+            <div class="col-sm-<%=layout.span%> cf-item">
+                <% renderLayout(layout) %>
+            </div>
+        <% }) %>
+    <% } else if (layout && layout.id) { %>
+        <% var widget = widgets[layout.id] %>
+        <% if (widget.type === 1) { %>
+             <% include ../widgets/number %>
+        <% } %>
+    <% } %>
+<% } %>
+<% renderLayout(dashboard.config.layout) %>

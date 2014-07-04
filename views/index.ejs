@@ -32,14 +32,10 @@
     </ul>
 </div>
 
-<div class="cf-container cf-nav-active">
-    <div class="row">
-        <% widgets.forEach(function (widget){ %>
-            <% if(widget.type == 1) { %>
-                 <% include widgets/number %>
-            <% } %>
-        <% }) %>
+<% if (dashboard) { %>
+    <div class="cf-container cf-nav-active">
+        <% include dashboard/layout %>
     </div>
-</div>
+<% } %>
 </body>
 </html>
