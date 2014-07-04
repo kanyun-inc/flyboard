@@ -30,3 +30,28 @@ router.post(
         }).catch(next);
     }
 );
+
+router.get(
+    '/api/records/:id',
+    function(req, res, next){
+        var id = parseInt(req.param('id'), 10);
+
+        Record.get(id).then(function (record){
+            if(!record){
+                return res.send(404);
+            }
+
+            res.send(record);
+        }).catch(next);
+    }
+);
+
+router.delete(
+    '/api/records/:id',
+    function(req, res, next) {
+        var id = parseInt(req.param('id'), 10);
+        Record.remove(id).then(function () {
+            res.send(200);
+        }).catch(next);
+    }
+);

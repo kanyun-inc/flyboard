@@ -22,13 +22,14 @@ var staticFiles = {
         'controlfrog/js/controlfrog-plugins.js',
         'controlfrog/js/controlfrog.js',
 
+        'admin.js',
+
         'widgets/number.js'
     ],
 
     css: [
-        'bower_components/bootstrap/dist/css/bootstrap.min.css',
         'controlfrog/css/controlfrog.css',
-        'controlfrog/css/controlfrog.scss'
+        'bower_components/bootstrap/dist/css/bootstrap.min.css'
     ]
 };
 
