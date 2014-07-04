@@ -1,0 +1,45 @@
+<!DOCTYPE html/>
+<html ng-app="adminApp">
+<head>
+    <title>admin</title>
+    <% styles.forEach(function (style) { %>
+    <link rel="stylesheet" href="<%= style %>"/>
+    <% }) %>
+    <script type="text/javascript">
+        var themeColour = 'black';
+    </script>
+    <% scripts.forEach(function (script) { %>
+    <script type="text/javascript" src="<%= script %>"></script>
+    <% }) %>
+</head>
+<body>
+    <div ng-controller="NavCtrl">
+        <nav class="navbar navbar-default navbar-inverse" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">FlyBoard</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{active: active === 'dashboard'}"><a href="#dashboard">Dashboard</a></li>
+                        <li ng-class="{active: active === 'widget'}"><a href="#widget">Widget</a></li>
+                        <li ng-class="{active: active === 'dataSource'}"><a href="#dataSource">DataSource</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div ng-view>
+    </div>
+
+</body>
+</html>

@@ -2,15 +2,20 @@
 
 var knex = require('../lib/knex');
 
-exports.find = function (query, limit) {
+exports.find = function (query, limit, orderBy) {
     query = query || {};
-    var ret = knex('records').where(query).select()
-        .orderBy('year', 'desc')
-        .orderBy('month', 'desc')
-        .orderBy('day', 'desc')
-        .orderBy('hour', 'desc')
-        .orderBy('minute', 'desc')
-        .orderBy('second', 'desc');
+    var ret = knex('records').where(query).select();
+
+    if (!orderBy) {
+        ret = ret.orderBy('year', 'desc')
+            .orderBy('month', 'desc')
+            .orderBy('day', 'desc')
+            .orderBy('hour', 'desc')
+            .orderBy('minute', 'desc')
+            .orderBy('second', 'desc');
+    } else {
+        ret = ret.orderBy(orderBy, 'desc');
+    }
 
     if (limit) {
         ret = ret.limit(limit);

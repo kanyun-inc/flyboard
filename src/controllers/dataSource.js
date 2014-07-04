@@ -37,12 +37,13 @@ router.get(
     function(req, res, next){
         var id = parseInt(req.param('id', 10));
         var limit = parseInt(req.param('limit') || 0, 10);
+        var orderBy = req.param('orderBy') || undefined;
 
         DataSource.get(id).then(function(dataSource){
             if(!dataSource){
                 return res.send(404);
             }
-            Record.find({data_source_id: id}, limit).then(function(records){
+            Record.find({data_source_id: id}, limit, orderBy).then(function(records){
                 res.send(records);
             });
         }).catch(next);
