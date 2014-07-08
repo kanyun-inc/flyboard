@@ -65,13 +65,13 @@ $(function () {
                     else if(det < 0){
                         $arrow.removeClass('arrow-up');
                         $arrow.addClass('arrow-down');
-                        $arrow.removeClass('m-red');
-                        $arrow.addClass('m-green');
+                        $metricSmall.removeClass('m-red');
+                        $metricSmall.addClass('m-green');
                     }
                     else{
                         $arrow.removeClass('arrow-up arrow-down');
-                        $arrow.removeClass('m-red');
-                        $arrow.addClass('m-green');
+                        $metricSmall.removeClass('m-red');
+                        $metricSmall.addClass('m-green');
                     }
                     det = Math.abs(det).toFixed(2).toString().split('.');
                     $large.text(det[0]);

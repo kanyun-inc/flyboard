@@ -1,8 +1,42 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.css-form input.ng-invalid.ng-dirty, .css-form textarea.ng-invalid.ng-dirty, .css-form select.ng-valid.ng-dirty{
+  background-color: #FA787E;
 }
 
-a {
-  color: #00B7FF;
+.css-form input.ng-valid.ng-dirty , .css-form textarea.ng-valid.ng-dirty, .css-form select.ng-valid.ng-dirty{
+  background-color: #78FA89;
+}
+
+.show-grid{
+    margin-bottom: 3px;
+    position: relative;
+}
+
+.show-grid [class^=col-]{
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color:#eee;
+    background-color:rgba(86,61,124,.15);
+    border:1px solid #ddd;
+    border:1px solid rgba(86,61,124,.2);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.show-grid button#add-col{
+    margin: 5px 15px;
+}
+
+button#add-row{
+    margin-left: -15px;
+    margin-top: 15px;
+}
+
+button#delete-col{
+    position: absolute;
+    left: 2px;
+    top: 15px;
+}
+
+#add-widget{
+
 }
