@@ -29,7 +29,8 @@ var staticFiles = {
 
     css: [
         'controlfrog/css/controlfrog.css',
-        'bower_components/bootstrap/dist/css/bootstrap.min.css'
+        'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'stylesheets/style.css'
     ]
 };
 
