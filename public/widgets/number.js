@@ -11,6 +11,7 @@ $(function () {
     $('.widget[data-type=1]').each(function () {
         var $widget = $(this);
         var $metric = $widget.find('.metric');
+        var $metricSmall = $widget.find('.metric-small');
         var $arrow = $widget.find('.arrow');
         var $large = $widget.find('.large');
         var $small = $widget.find('.small');
@@ -58,13 +59,19 @@ $(function () {
                     if( det > 0 ){
                         $arrow.removeClass('arrow-down');
                         $arrow.addClass('arrow-up');
+                        $metricSmall.removeClass('m-green');
+                        $metricSmall.addClass('m-red');
                     }
                     else if(det < 0){
                         $arrow.removeClass('arrow-up');
                         $arrow.addClass('arrow-down');
+                        $arrow.removeClass('m-red');
+                        $arrow.addClass('m-green');
                     }
                     else{
                         $arrow.removeClass('arrow-up arrow-down');
+                        $arrow.removeClass('m-red');
+                        $arrow.addClass('m-green');
                     }
                     det = Math.abs(det).toFixed(2).toString().split('.');
                     $large.text(det[0]);
