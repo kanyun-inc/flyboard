@@ -5,12 +5,13 @@ var Promise = require('bluebird');
 
 var staticFiles = {
     js: [
-        'bower_components/jquery/dist/jquery.min.js',
-        'bower_components/angular/angular.min.js',
-        'bower_components/angular-route/angular-route.min.js',
-        'bower_components/angular-resource/angular-resource.min.js',
-        'bower_components/angular-resource/angular-resource.min.js',
-        'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'bower_components/jquery/dist/jquery.js',
+        'bower_components/jquery-ui/jquery-ui.js',
+        'bower_components/angular/angular.js',
+        'bower_components/angular-route/angular-route.js',
+        'bower_components/angular-resource/angular-resource.js',
+        'bower_components/angular-resource/angular-resource.js',
+        'bower_components/bootstrap/dist/js/bootstrap.js',
         'controlfrog/js/chart.js',
 
         'controlfrog/js/easypiechart.js',
@@ -30,6 +31,7 @@ var staticFiles = {
     css: [
         'controlfrog/css/controlfrog.css',
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css',
         'stylesheets/style.css'
     ]
 };
