@@ -646,16 +646,18 @@ function rSVP(element, options){
     generateChart();
 }
 
-$(function resizeRow() {
-    $('.row').each(function () {
-        var $row = $(this);
-        var parentHeight = $row.parent().height();
-        var count = $row.siblings('.row').size() + 1;
-        $row.height(parentHeight / count);
-    });
-
+if ($(document.body).hasClass('flyboard-app')) {
+    function resizeRow() {
+        $('.row').each(function () {
+            var $row = $(this);
+            var parentHeight = $row.parent().height();
+            var count = $row.siblings('.row').size() + 1;
+            $row.height(parentHeight / count);
+        });
+    }
+    $(resizeRow);
     $(window).resize(resizeRow);
-});
+}
 
 /*
  *	Shorten large numbers
