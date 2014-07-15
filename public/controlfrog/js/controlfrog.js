@@ -96,43 +96,43 @@ $(document).ready(function(){
      *	Copy the each() function for each line chart you have
      * 	e.g. $('#pie-1').each(function(){.....}
      */
-    $('.cf-pie').each(function(){
-        // Data for pie chart
-        var pdata = [
-            {
-            value : 30,
-            color : pieSegColors[3],
-            label: 'Label 1'
-        },
-        {
-            value : 50,
-            color : pieSegColors[2],
-            label: 'Label 2'
-        },
-        {
-            value: 100,
-            color: pieSegColors[1],
-            label: 'Label 3'
-        }
-        ]
-
-        var $container = $(this);
-        var pId = $container.prop('id');
-
-        // Store chart information
-        cf_rPs[pId] = {};
-        cf_rPs[pId].data = pdata;
-
-        /*
-        // Set options per chart
-        customOptions = {};
-        customOptions.animation = false;
-        cf_rPs[pId].options = customOptions;
-        */
-
-        // Create chart
-        createPieChart($container);
-    });
+//    $('.cf-pie').each(function(){
+//        // Data for pie chart
+//        var pdata = [
+//            {
+//            value : 30,
+//            color : pieSegColors[3],
+//            label: 'Label 1'
+//        },
+//        {
+//            value : 50,
+//            color : pieSegColors[2],
+//            label: 'Label 2'
+//        },
+//        {
+//            value: 100,
+//            color: pieSegColors[1],
+//            label: 'Label 3'
+//        }
+//        ]
+//
+//        var $container = $(this);
+//        var pId = $container.prop('id');
+//
+//        // Store chart information
+//        cf_rPs[pId] = {};
+//        cf_rPs[pId].data = pdata;
+//
+//        /*
+//        // Set options per chart
+//        customOptions = {};
+//        customOptions.animation = false;
+//        cf_rPs[pId].options = customOptions;
+//        */
+//
+//        // Create chart
+//        createPieChart($container);
+//    });
 
 }); // end doc ready
 

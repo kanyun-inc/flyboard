@@ -26,7 +26,8 @@ var staticFiles = {
 
         'admin.js',
 
-        'widgets/number.js'
+        'widgets/number.js',
+        'widgets/pie.js'
     ],
 
     css: [
