@@ -6,10 +6,16 @@
   background-color: #78FA89;
 }
 
+#dashboard-form .form-group{
+    margin-bottom: 30px;
+}
+
 .show-grid{
     margin-bottom: 3px;
     position: relative;
     overflow: hidden;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .show-grid .widget-placeholder-wrap {
@@ -45,7 +51,6 @@
 }
 
 button#add-row{
-    margin-left: -15px;
     margin-top: 15px;
 }
 
