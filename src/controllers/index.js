@@ -9,8 +9,8 @@ var Promise = require('bluebird');
 
 function indexCtrl(req, res, next) {
     var dashboards = Dashboard.find();
-    var dashboard = req.param('dashboardId') ?
-        Dashboard.get(parseInt(req.param('dashboardId'), 10)) :
+    var dashboard = req.param('id') ?
+        Dashboard.get(parseInt(req.param('id'), 10)) :
         dashboards.then(function (dashboards) {
         if (!dashboards || dashboards.length === 0) {
             return null;
@@ -49,5 +49,5 @@ router.get('/', indexCtrl);
 router.get('/dashboards/:id', indexCtrl);
 
 router.get('/admin', function (req, res) {
-   res.render('admin');
+    res.render('admin');
 });
