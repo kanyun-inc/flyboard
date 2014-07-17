@@ -1,10 +1,10 @@
-.css-form input.ng-invalid.ng-dirty, .css-form textarea.ng-invalid.ng-dirty, .css-form select.ng-invalid.ng-dirty{
-  background-color: #FA787E;
-}
+/*.css-form input.ng-invalid.ng-dirty, .css-form textarea.ng-invalid.ng-dirty, .css-form select.ng-invalid.ng-dirty{*/
+  /*background-color: #FA787E;*/
+/*}*/
 
-.css-form input.ng-valid.ng-dirty , .css-form textarea.ng-valid.ng-dirty, .css-form select.ng-valid.ng-dirty{
-  background-color: #78FA89;
-}
+/*.css-form input.ng-valid.ng-dirty , .css-form textarea.ng-valid.ng-dirty, .css-form select.ng-valid.ng-dirty{*/
+  /*background-color: #78FA89;*/
+/*}*/
 
 #dashboard-form .form-group{
     margin-bottom: 30px;
@@ -28,7 +28,7 @@
     background-color:rgba(86,61,124,.15);
     border:1px solid #ddd;
     border:1px solid rgba(86,61,124,.2);
-    padding-left: 30px;
+    padding-left: 70px;
     padding-right: 10px;
 }
 
@@ -56,6 +56,16 @@ button#add-row{
 
 .show-grid button#delete-col{
     position: absolute;
-    left: 8px;
-    top: 15px;
+    left: 30px;
+    top: 9px;
+}
+
+.show-grid button#edit-col{
+    position: absolute;
+    left: 0px;
+    top: 9px;
+}
+
+.show-grid button:hover{
+    text-decoration: none;
 }

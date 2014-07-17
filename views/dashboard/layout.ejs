@@ -15,6 +15,8 @@
         <% var widget = widgets[layout.id] %>
         <% if (widget.type === 1) { %>
              <% include ../widgets/number %>
+        <% } else if(widget.type === 2) { %>
+            <% include ../widgets/pie %>
         <% } %>
     <% } %>
 <% } %>

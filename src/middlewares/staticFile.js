@@ -13,7 +13,6 @@ var staticFiles = {
         'bower_components/angular-bootstrap/ui-bootstrap.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
-        'controlfrog/js/chart.js',
 
         'controlfrog/js/easypiechart.js',
         'controlfrog/js/excanvas.min.js',
@@ -23,10 +22,13 @@ var staticFiles = {
         'controlfrog/js/respond.min.js',
         'controlfrog/js/controlfrog-plugins.js',
         'controlfrog/js/controlfrog.js',
+        'controlfrog/js/chart.js',
 
         'admin.js',
+        'highcharts.js',
 
-        'widgets/number.js'
+        'widgets/number.js',
+        'widgets/pie.js'
     ],
 
     css: [
