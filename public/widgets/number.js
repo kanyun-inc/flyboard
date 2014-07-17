@@ -50,11 +50,6 @@ $(function () {
                     }
 
                     var value = data[data.length - 1];
-                    if (config.sum) {
-                        value = data.reduce(function (memo, prev) {
-                            return memo + prev;
-                        }, 0);
-                    }
                     $metric.html(value);
                     if( det > 0 ){
                         $arrow.removeClass('arrow-down');

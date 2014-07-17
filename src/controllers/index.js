@@ -49,5 +49,5 @@ router.get('/', indexCtrl);
 router.get('/dashboards/:id', indexCtrl);
 
 router.get('/admin', function (req, res) {
-   res.render('admin');
+    res.render('admin');
 });
