@@ -28,7 +28,7 @@
     background-color:rgba(86,61,124,.15);
     border:1px solid #ddd;
     border:1px solid rgba(86,61,124,.2);
-    padding-left: 70px;
+    padding-left: 80px;
     padding-right: 10px;
 }
 
@@ -56,7 +56,7 @@ button#add-row{
 
 .show-grid button#delete-col{
     position: absolute;
-    left: 30px;
+    left: 35px;
     top: 9px;
 }
 
@@ -68,4 +68,42 @@ button#add-row{
 
 .show-grid button:hover{
     text-decoration: none;
+}
+
+
+.widget .cf-svp .chart{
+    position: relative;
+}
+.widget .cf-svp .chart .metrics {
+    position: absolute;
+    height: 100%;
+    right: 50%;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+
+    display: -moz-box;
+    display: -moz-flex;
+
+    display: -ms-flexbox;
+
+    display: flex;
+
+    /* 水平居中*/
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-pack:center;/* IE 10 */
+
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+    /* 垂直居中 */
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-align:center;/* IE 10 */
+
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
 }

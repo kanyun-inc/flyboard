@@ -24,11 +24,14 @@ var staticFiles = {
         'controlfrog/js/controlfrog.js',
         'controlfrog/js/chart.js',
 
+        'bower_components/FitText.js/jquery.fittext.js',
+
         'admin.js',
         'highcharts.js',
 
         'widgets/number.js',
-        'widgets/pie.js'
+        'widgets/pie.js',
+        'widgets/donut.js'
     ],
 
     css: [

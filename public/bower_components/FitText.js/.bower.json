@@ -1,0 +1,22 @@
+{
+  "name": "FitText.js",
+  "main": "./jquery.fittext.js",
+  "dependencies": {
+    "jquery": ">= 1.6"
+  },
+  "ignore": [
+    "exemple.html",
+    "CONTRIBUTING.md"
+  ],
+  "homepage": "https://github.com/davatron5000/FitText.js",
+  "_release": "1eb8a337ab",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1eb8a337ab9999166ae1b328f46cda60a13b4aab"
+  },
+  "_source": "git://github.com/davatron5000/FitText.js.git",
+  "_target": "*",
+  "_originalSource": "FitText.js",
+  "_direct": true
+}

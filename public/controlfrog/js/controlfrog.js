@@ -490,27 +490,27 @@ $(document).ready(function(){
  * Single Value Pie Charts (cf-svp)
  *
  */
-$(document).ready(function(){
-
-    // Initialise single value pie charts
-    $('.cf-svp').each(function(){
-        cf_rSVPs[$(this).prop('id')] = {};
-        rSVP($(this));
-    });
-
-    // Update a single value pie chart
-    // -- Example of how to update a chart, can be used in other cases than from a button click
-    $('.svp-update').click( function(){
-        var element = $(this).data('update');
-
-        // Call EasyPieChart update function
-        cf_rSVPs[element].chart.update(12);
-        // Update the data-percent so it redraws on resize properly
-        $('#svp-1 .chart').data('percent', 12);
-        // Update the UI metric
-        $('.metric', $('#'+element)).html('12');
-    });
-});
+//$(document).ready(function(){
+//
+//    // Initialise single value pie charts
+//    $('.cf-svp').each(function(){
+//        cf_rSVPs[$(this).prop('id')] = {};
+//        rSVP($(this));
+//    });
+//
+//    // Update a single value pie chart
+//    // -- Example of how to update a chart, can be used in other cases than from a button click
+//    $('.svp-update').click( function(){
+//        var element = $(this).data('update');
+//
+//        // Call EasyPieChart update function
+//        cf_rSVPs[element].chart.update(12);
+//        // Update the data-percent so it redraws on resize properly
+//        $('#svp-1 .chart').data('percent', 12);
+//        // Update the UI metric
+//        $('.metric', $('#'+element)).html('12');
+//    });
+//});
 
 
 /*
@@ -526,7 +526,6 @@ function rSVP(element, options){
 
     // Create the chart
     function generateChart(){
-
         // Resize when width is 768 or greater
         // Remove any existing canvas
         if($('canvas', $(container)).length){
@@ -547,100 +546,27 @@ function rSVP(element, options){
                 size: 100
             };
 
-            //Alter settings depending on layout and screen width
-            var ww = $(window).width();
+            var width = $(element).width();
+            var height = $(element).height();
+            var size = Math.min(width, height);
 
-            if(ww > 767 && ww < 992){
-                rsvpOpt.size = container.width()-10;
+            rsvpOpt.size = size;
 
-                switch($(chart).data('layout')){
-                    case 'l-6':
-                        rsvpOpt.lineWidth = 30;
-                    break;
+            var lineWidth = Math.max(0, ((size - 215) / 285) * 20) + 10;
+            lineWidth = Math.min(lineWidth, 45);
 
-                    case 'l-6-i':
-                        rsvpOpt.lineWidth = 20;
-                    rsvpOpt.size = parseFloat((container.width()*0.7)-10);
-                    break;
+            rsvpOpt.lineWidth = lineWidth;
 
-                    case 'l-6-12-6':
-                        break;
+            var textWidth = size - 2 * lineWidth - 20;
+            var $metrics = $(element).find('.metrics');
+            var $metricSmall = $(element).find('.metrics .metric-small');
+            $metrics.width(textWidth).css('margin-right', -textWidth / 2).fitText(1.8);
+//            $metricSmall.css('margin-bottom', $metrics.find('.metric').css('width') * (-1)).css('margin-left', '5px');
 
-                    case 'l-6-4':
-                        rsvpOpt.lineWidth = 5;
-                    break;
-                }
-            }
-            else if(ww > 991 && ww < 1200 ){
-                rsvpOpt.size = container.width()-10;
-
-                switch($(chart).data('layout')){
-                    case 'l-6':
-                        rsvpOpt.lineWidth = 30;
-                    break;
-
-                    case 'l-6-i':
-                        rsvpOpt.lineWidth = 30;
-                    rsvpOpt.size = parseFloat((container.width()*0.75)-10);
-                    break;
-
-                    case 'l-6-12-6':
-                        rsvpOpt.lineWidth = 20;
-                    break;
-
-                    case 'l-6-4':
-                        rsvpOpt.lineWidth = 5;
-                    break;
-                }
-            }
-            else if(ww > 1199 && ww < 1399){
-                rsvpOpt.size = container.width()-10;
-
-                switch($(chart).data('layout')){
-                    case 'l-6':
-                        rsvpOpt.lineWidth = 40;
-                    break;
-
-                    case 'l-6-i':
-                        rsvpOpt.lineWidth = 30;
-                    rsvpOpt.size = parseFloat((container.width()*0.75)-10);
-                    break;
-
-                    case 'l-6-12-6':
-                        rsvpOpt.lineWidth = 20;
-                    break;
-
-                    case 'l-6-4':
-                        rsvpOpt.lineWidth = 10;
-                    break;
-                }
-            }
-            else if(ww > 1399){
-                rsvpOpt.size = container.width()-10;
-
-                switch($(chart).data('layout')){
-                    case 'l-6':
-                        rsvpOpt.lineWidth = 50;
-                    break;
-
-                    case 'l-6-i':
-                        rsvpOpt.lineWidth = 40;
-                    rsvpOpt.size = parseFloat((container.width()*0.75)-10);
-                    break;
-
-                    case 'l-6-12-6':
-                        rsvpOpt.lineWidth = 30;
-                    break;
-
-                    case 'l-6-4':
-                        rsvpOpt.lineWidth = 15;
-                    break;
-                }
-            }
             // Create and store the chart
             cf_rSVPs[$(element).attr('id')].chart = new EasyPieChart(document.querySelector(chart), rsvpOpt);
         }
-    };
+    }
 
     // Run once on first load
     generateChart();
@@ -675,7 +601,7 @@ function prettyNumber (number) {
         return x;
     }
     var prettyNumber_rec = function (number, i) {
-        if (i == prettyNumberSuffixes.length) {
+        if (i === prettyNumberSuffixes.length) {
             return addCommas(Math.round(number*1000)) + prettyNumberSuffixes[i-1];
         }
         if (number / 1000 >= 1) { // 1000+
@@ -683,7 +609,7 @@ function prettyNumber (number) {
         }
         else {
             var decimals = number - Math.floor(number);
-            if (decimals != 0) {
+            if (decimals !== 0) {
                 if (number >= 10) { // 10 - 100
                     number = Math.floor(number) + Math.round(decimals*10) / 10 + '';
                     number = number.replace(/(.*\..).*$/, '$1');
@@ -698,6 +624,6 @@ function prettyNumber (number) {
                 return Math.floor(number) + prettyNumberSuffixes[i];
             }
         }
-    }
+    };
     return prettyNumber_rec(number, 0);
 }
