@@ -139,122 +139,6 @@ a:hover {
   font-size: 1.5em;
   line-height: 1; }
 
-/* Metric sizes - Layout 1 & 2*/
-@media (min-width: 768px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 4.5em; }
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric-small {
-    font-size: 1.5em; } }
-@media (min-width: 992px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 6em; } }
-@media (min-width: 1200px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 7.5em; } }
-@media (min-width: 1400px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 9em; } }
-@media (min-width: 1600px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 10.5em; }
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric-small {
-    font-size: 2em; } }
-@media (min-width: 1800px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 12em; } }
-@media (min-width: 2000px) {
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric {
-    font-size: 13.5em; }
-  .col-sm-6 .col-sm-12 .col-sm-6 .metric-small {
-    font-size: 3em; } }
-
-@media (min-width: 768px) {
-  .col-sm-6 .metric {
-    font-size: 10em;
-    line-height: 0.9; } }
-@media (min-width: 992px) {
-  .col-sm-6 .metric {
-    font-size: 12em; } }
-@media (min-width: 1200px) {
-  .col-sm-6 .metric {
-    font-size: 16em; }
-  .col-sm-6 .metric-small {
-    font-size: 2em; } }
-@media (min-width: 1400px) {
-  .col-sm-6 .metric {
-    font-size: 19em; }
-  .col-sm-6 .metric-small {
-    font-size: 2.5em; } }
-@media (min-width: 1600px) {
-  .col-sm-6 .metric {
-    font-size: 22em; }
-  .col-sm-6 .metric-small {
-    font-size: 3.5em; } }
-@media (min-width: 1800px) {
-  .col-sm-6 .metric {
-    font-size: 25em; } }
-@media (min-width: 2000px) {
-  .col-sm-6 .metric {
-    font-size: 28em; }
-  .col-sm-6 .metric-small {
-    font-size: 4.5em; } }
-@media (min-width: 768px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 3em; }
-  .col-sm-6 .col-sm-4 .metric-small {
-    font-size: 1em; } }
-@media (min-width: 992px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 3.5em; } }
-@media (min-width: 1200px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 4.2em; } }
-@media (min-width: 1400px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 5em; } }
-@media (min-width: 1600px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 6em; } }
-@media (min-width: 1800px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 7em; }
-  .col-sm-6 .col-sm-4 .metric-small {
-    font-size: 1.5em; } }
-@media (min-width: 2000px) {
-  .col-sm-6 .col-sm-4 .metric {
-    font-size: 8em; } }
-
-/* Metric sizes - Layout 3 */
-@media (min-width: 768px) {
-  .col-sm-3 .metric {
-    font-size: 4.5em; }
-  .col-sm-3 .metric-small {
-    font-size: 1em; } }
-@media (min-width: 992px) {
-  .col-sm-3 .metric {
-    font-size: 6em; }
-  .col-sm-3 .metric-small {
-    font-size: 1.5em; } }
-@media (min-width: 1200px) {
-  .col-sm-3 .metric {
-    font-size: 7em; } }
-@media (min-width: 1400px) {
-  .col-sm-3 .metric {
-    font-size: 8.5em; }
-  .col-sm-3 .metric-small {
-    font-size: 2em; } }
-@media (min-width: 1600px) {
-  .col-sm-3 .metric {
-    font-size: 10em; } }
-@media (min-width: 1800px) {
-  .col-sm-3 .metric {
-    font-size: 11.5em; }
-  .col-sm-3 .metric-small {
-    font-size: 2.5em; } }
-@media (min-width: 2000px) {
-  .col-sm-3 .metric {
-    font-size: 13em; } }
-
 /* Color definitions */
 body.black {
   background-color: #2b2b2b;
@@ -915,9 +799,6 @@ body.white {
 /** MODULE: Single value pie **/
 .cf-svp .chart {
   float: left; }
-.cf-svp .metrics {
-  float: left;
-  padding-left: 5%; }
 
 /* Single value pie media queries */
 @media (min-width: 768px) {
@@ -925,44 +806,10 @@ body.white {
     position: relative; }
     .cf-svp .chart {
       float: none; }
-    .cf-svp .metrics {
-      float: none;
-      padding-left: 0;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 0.8em;
-      letter-spacing: -1px; }
     .cf-svp canvas {
       display: block;
       margin: 0 auto; }
 
-  /*Positioning svp metric for specific layouts*/
-  .col-sm-6 .metrics {
-    margin-bottom: 47%; }
-
-  .col-sm-6 .inner .metrics {
-    margin-bottom: 28%; }
-
-  .col-sm-6 .col-sm-12 .col-sm-6 .metrics {
-    margin-bottom: 47%; }
-
-  .col-sm-6 .col-sm-4 .metrics {
-    margin-bottom: 40%; }
-
-  .col-sm-3 .metrics {
-    margin-bottom: 44%; } }
-@media (min-width: 992px) {
-  /*Positioning svp metric for specific layouts*/
-  .col-sm-6 .metrics {
-    margin-bottom: 50%; }
-
-  .col-sm-6 .inner .metrics {
-    margin-bottom: 28%; }
-
-  .col-sm-6 .col-sm-4 .metrics {
-    margin-bottom: 46%; } }
 /** MODULE: Gauge **/
 .cf-gauge .val-current {
   font-size: 0.4em;
