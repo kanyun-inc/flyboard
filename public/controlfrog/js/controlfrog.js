@@ -523,7 +523,6 @@ function rSVP(element, options){
     var container = $(element);
     var chart = '#'+$(element).attr('id')+' .chart';
 
-
     // Create the chart
     function generateChart(){
         // Resize when width is 768 or greater
@@ -536,6 +535,7 @@ function rSVP(element, options){
         }
 
         function addChart(){
+            var $chart  = $(element).find('.chart');
             //Setup options
             var rsvpOpt = {
                 barColor: pieBar,
@@ -562,6 +562,11 @@ function rSVP(element, options){
             var $metricSmall = $(element).find('.metrics .metric-small');
             $metrics.width(textWidth).css('margin-right', -textWidth / 2).fitText(1.8);
 //            $metricSmall.css('margin-bottom', $metrics.find('.metric').css('width') * (-1)).css('margin-left', '5px');
+
+            //set chart centered horizontally and vertically
+            var marginTop = ($(element).height() - $chart.width())/2;
+            marginTop = marginTop>0? marginTop : 0;
+            $chart.css('margin-top', marginTop);
 
             // Create and store the chart
             cf_rSVPs[$(element).attr('id')].chart = new EasyPieChart(document.querySelector(chart), rsvpOpt);
