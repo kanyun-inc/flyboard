@@ -29,7 +29,7 @@ var staticFiles = {
         'admin.js',
         'highcharts.js',
 
-        'widgets/number.js',
+        'widgets/spline.js',
         'widgets/pie.js',
         'widgets/donut.js'
     ],
