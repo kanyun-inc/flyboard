@@ -127,9 +127,6 @@ a:hover {
 @media (min-width: 768px) {
   .row [class*="col"] .inner {
     height: 70%; }
-
-  .cf-item .content.cf-svp {
-    width: 80%; } }
 /* Metric sizes */
 .metric {
   font-size: 7em;
