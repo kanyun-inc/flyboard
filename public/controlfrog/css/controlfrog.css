@@ -115,13 +115,14 @@ a:hover {
       margin-bottom: 2px;
       margin-right: 5px; }
 .cf-item .content {
-  box-sizing: border-box;
-  width: 100%;
+  width: auto;
   margin: 0 auto;
-  padding: 10px;
+  padding: 0px;
+  left: 10px;
+  right: 10px;
   height: auto;
-  top: 23px;
-  bottom: 0;
+  top: 43px;
+  bottom: 10px;
   position: absolute; }
 
 @media (min-width: 768px) {
