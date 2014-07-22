@@ -6,6 +6,10 @@
   /*background-color: #78FA89;*/
 /*}*/
 
+table th, table td{
+    text-align: center;
+}
+
 .widget[data-type="4"] .content{
     display: -webkit-box;
     display: -webkit-flex;
