@@ -15,10 +15,12 @@
         <% var widget = widgets[layout.id] %>
         <% if (widget.type === 1) { %>
              <% include ../widgets/spline %>
-        <% } else if(widget.type === 2) { %>
+        <% } else if (widget.type === 2) { %>
             <% include ../widgets/pie %>
-        <% } else if(widget.type === 3) {%>
+        <% } else if (widget.type === 3) {%>
             <% include ../widgets/donut %>
+        <% } else if (widget.type === 4) {%>
+            <% include ../widgets/number%>
         <% } %>
     <% } %>
 <% } %>

@@ -281,7 +281,7 @@ body.white {
 *******************/
 /** MODULE: Single value metric with change **/
 .cf-svmc {
-  width: 100%; }
+  }
   .cf-svmc .change {
     line-height: 1; }
     .cf-svmc .change .arrow-up,
