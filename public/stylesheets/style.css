@@ -6,6 +6,36 @@
   /*background-color: #78FA89;*/
 /*}*/
 
+.widget[data-type="4"] .content{
+    display: -webkit-box;
+    display: -webkit-flex;
+
+    display: -moz-box;
+    display: -moz-flex;
+
+    display: -ms-flexbox;
+
+    display: flex;
+
+    /* 水平居中*/
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-pack:center;/* IE 10 */
+
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+    /* 垂直居中 */
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-align:center;/* IE 10 */
+
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+}
+
 #dashboard-form .form-group{
     margin-bottom: 30px;
 }
