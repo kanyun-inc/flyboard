@@ -59,27 +59,10 @@ $(function () {
                     det = Math.abs(det).toFixed(2).toString().split('.');
                     $large.text(det[0]);
                     $small.text('.' + det[1] + '%');
-
-//                    generateSparkline();
                 },
                 'json'
             );
         }
-
-//        function generateSparkline(){
-//            var $container = $widget.find('.content');
-//            var $obj = $widget.find('.cf-svmc');
-//
-//            var cw = $container.width(),
-//                ch = $container.height(),
-//                ow = $obj.width(),
-//                oh = $obj.height();
-//
-//            $obj.css('margin-left', (cw - ow)/2);
-//            $obj.css('margin-top', (ch - oh)/2);
-//        }
-//
-//        $(window).resize(generateSparkline);
 
         setInterval(reload, config.reloadInterval);
         reload();
