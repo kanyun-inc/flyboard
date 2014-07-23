@@ -10,12 +10,15 @@
 $(function () {
     $('.widget[data-type=4]').each(function () {
         var $widget = $(this);
+        var $CFSVMC = $widget.find('.cf-svmc');
         var $metric = $widget.find('.metric');
         var $metricSmall = $widget.find('.metric-small');
         var $arrow = $widget.find('.arrow');
         var $large = $widget.find('.large');
         var $small = $widget.find('.small');
         var config = $(this).data('config');
+
+        var oldContainerWidth = $widget.width();
 
         /*
          // Set custom options and merge with default
