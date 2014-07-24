@@ -141,3 +141,7 @@ button#add-row{
     -moz-align-items: center;
     align-items: center;
 }
+
+.widget .cf-svmc{
+    white-space:nowrap;
+}
