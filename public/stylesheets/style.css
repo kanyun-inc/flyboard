@@ -145,3 +145,11 @@ button#add-row{
 .widget .cf-svmc{
     white-space:nowrap;
 }
+
+.stat {
+    padding-left: 150px;
+    padding-top: 30px;
+    margin: 0px;
+    width: 80%;
+    height: 70%;
+}

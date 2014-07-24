@@ -27,6 +27,7 @@ var staticFiles = {
         'bower_components/FitText.js/jquery.fittext.js',
 
         'admin.js',
+        'stat.js',
         'bower_components/highcharts/highcharts.js',
 
         'widgets/spline.js',
