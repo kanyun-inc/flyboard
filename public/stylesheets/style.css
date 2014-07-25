@@ -10,6 +10,10 @@ table th, table td{
     text-align: center;
 }
 
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #f7f3de;
+}
+
 .widget[data-type="4"] .content{
     display: -webkit-box;
     display: -webkit-flex;
@@ -147,9 +151,24 @@ button#add-row{
 }
 
 .stat {
-    padding-left: 150px;
-    padding-top: 30px;
-    margin: 0px;
-    width: 80%;
-    height: 70%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.stat-chart {
+    padding-right: 5%;
+    margin-top: 30px;
+}
+
+.stat-nav {
+    margin-left: 10%;
+    margin-right: 5%;
+    margin-top: 20px;
+}
+
+.stat .stat-data {
+    margin-top: 50px;
+}
+.stat .stat-data table th.time, table td.time{
+    width: 18%;
 }
