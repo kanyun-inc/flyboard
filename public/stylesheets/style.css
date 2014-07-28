@@ -157,18 +157,23 @@ button#add-row{
 
 .stat-chart {
     padding-right: 5%;
-    margin-top: 30px;
 }
 
 .stat-nav {
     margin-left: 10%;
     margin-right: 5%;
     margin-top: 20px;
+    margin-bottom: 60px;
+    position: relative;
 }
 
 .stat .stat-data {
     margin-top: 50px;
 }
-.stat .stat-data table th.time, table td.time{
-    width: 18%;
+.stat .stat-data table th.space, table td.space{
+    width: 20%;
+}
+
+.stat-nav .new-datasource{
+    position: absolute;
 }

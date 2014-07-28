@@ -2,11 +2,11 @@
 
 var knex = require('../lib/knex');
 
-exports.find = function (query, limit, orderBy) {
-    query = query || {};
-    var ret = knex('records').where(query).select();
+exports.find = function (opts) {
+    opts.query = opts.query || {};
+    var ret = knex('records').where(opts.query).select();
 
-    if (!orderBy) {
+    if (!opts.orderBy) {
         ret = ret.orderBy('year', 'desc')
             .orderBy('month', 'desc')
             .orderBy('day', 'desc')
@@ -14,11 +14,22 @@ exports.find = function (query, limit, orderBy) {
             .orderBy('minute', 'desc')
             .orderBy('second', 'desc');
     } else {
-        ret = ret.orderBy(orderBy, 'desc');
+        ret = ret.orderBy(opts.orderBy, 'desc');
     }
 
-    if (limit) {
-        ret = ret.limit(limit);
+    if (opts.limit) {
+        ret = ret.limit(opts.limit);
+    }
+
+    if(opts.period){
+        var beginTime = opts.period.begin;
+        var endTime = opts.period.end;
+//        ret = ret.whereBetween('year', [beginTime.getFullYear(), endTime.getFullYear()])
+//            .whereBetween('month', [beginTime.getMonth(), endTime.getMonth()])
+//            .whereBetween('day', [beginTime.getDate(), endTime.getDate()])
+//            .whereBetween('hour', [beginTime.getHours(), endTime.getHours()])
+//            .whereBetween('minute', [beginTime.getMinutes(), endTime.getMinutes()])
+//            .whereBetween('second', [beginTime.getSeconds(), endTime.getSeconds()]);
     }
 
     return ret;
