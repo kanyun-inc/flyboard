@@ -7,6 +7,10 @@ var path = require('path');
 
 var readFile = Promise.promisify(fs.readFile);
 exports.url = function (file) {
+    if (process.env !== 'production') {
+        return '/public/' + file;
+    }
+
     return readFile(path.join(__dirname, '../../public', file), 'utf-8').then(function (content) {
         var shasum = crypto.createHash('sha1');
         shasum.update(content);

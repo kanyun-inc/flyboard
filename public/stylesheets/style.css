@@ -155,21 +155,16 @@ button#add-row{
     margin-right: 10%;
 }
 
-.stat-chart {
-    padding-right: 5%;
-}
-
 .stat-nav {
-    margin-left: 10%;
-    margin-right: 5%;
     margin-top: 20px;
-    margin-bottom: 60px;
+    margin-bottom: 65px;
     position: relative;
 }
 
 .stat .stat-data {
-    margin-top: 50px;
+    margin-top: 65px;
 }
+
 .stat .stat-data table th.space, table td.space{
     width: 20%;
 }

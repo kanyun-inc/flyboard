@@ -16,6 +16,11 @@
   "unused": true,
   "strict": true,
   "trailing": true,
-  "maxparams": 3,
-  "node": true
+  "maxparams": false,
+  "node": true,
+  "globals": {
+      "angular": true,
+      "Highcharts": true,
+      "$": true
+  }
 }
