@@ -39,6 +39,7 @@ exports.get = function (id) {
 exports.save = function (obj) {
     obj.created_at = new Date();
     obj.updated_at = obj.created_at;
+    obj.date_time = new Date(obj.year || 0, (obj.month - 1) || 0, obj.day || 0, obj.hour || 0, obj.minute || 0, obj.second || 0);
     return knex('records').insert(obj).returning('id').then(function (ret) {
         return ret[0];
     });
@@ -46,6 +47,7 @@ exports.save = function (obj) {
 
 exports.update = function (id, obj) {
     obj.updated_at = new Date();
+    obj.date_time = new Date(obj.year || 0, (obj.month - 1) || 0, obj.day || 0, obj.hour || 0, obj.minute || 0, obj.second || 0);
     return knex('records').where('id', id).update(obj);
 };
 
