@@ -24,9 +24,7 @@ exports.find = function (opts) {
     if(opts.period){
         var beginTime = opts.period.begin;
         var endTime = opts.period.end;
-        console.log('begin: ', beginTime.getFullYear(), '年', beginTime.getMonth()+1, '月', beginTime.getDate(), '日 ', beginTime.getHours(), ':', beginTime.getMinutes(), ':', beginTime.getSeconds());
-        console.log('end: ', endTime.getFullYear(), '年', endTime.getMonth()+1, '月', endTime.getDate(), '日 ', endTime.getHours(), ':', endTime.getMinutes(), ':', endTime.getSeconds());
-
+        ret = ret.whereBetween('date_time', [beginTime, endTime]);
     }
 
     return ret;
