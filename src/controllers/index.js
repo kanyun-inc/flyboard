@@ -49,34 +49,30 @@ function indexCtrl(req, res, next) {
 }
 
 function statCtrl(req, res, next){
-    var widget = {};
-    widget.config = {
-        name: '',
-        reloadInterval: 600000,
-        period: req.param('period') || '0,7'
-    };
-
-    var dataSourceIds = req.param('dataSourceIds') ?
-        (function(){
-            var ids = req.param('dataSourceIds').split(',');
-            ids.forEach(function(id, idx){
-                ids[idx] = parseInt(id, 10);
-            });
-            return ids || [];
-        }()) : [];
-
-    widget.config.dataInfos = dataSourceIds.map(function(id) {
-        return {
-            id: id
-        };
-    });
+//    var widget = {};
+//    widget.config = {
+//        name: '',
+//        reloadInterval: 600000,
+//        period: req.param('period') || '0,7'
+//    };
+//
+//    var dataSourceIds = req.param('dataSourceIds') ?
+//        (function(){
+//            var ids = req.param('dataSourceIds').split(',');
+//            ids.forEach(function(id, idx){
+//                ids[idx] = parseInt(id, 10);
+//            });
+//            return ids || [];
+//        }()) : [];
+//
+//    widget.config.dataInfos = dataSourceIds.map(function(id) {
+//        return {
+//            id: id
+//        };
+//    });
 
     res.locals.title = 'Status';
-    Promise.props({
-        widget: widget
-    }).then(function (result) {
-        res.render('stat', result);
-    }).catch(next);
+    res.render('stat');
 }
 
 router.get('/', indexCtrl);

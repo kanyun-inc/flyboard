@@ -162,11 +162,11 @@ button#add-row{
 }
 
 .stat .stat-data {
-    margin-top: 65px;
+    margin-top: 50px;
 }
 
-.stat .stat-data table th.space, table td.space{
-    width: 20%;
+.stat .stat-data table th, .stat .stat-data table td{
+    text-align: left;
 }
 
 .stat-nav .new-datasource{

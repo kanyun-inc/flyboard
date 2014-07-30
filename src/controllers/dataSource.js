@@ -35,6 +35,7 @@ router.get(
 router.get(
     '/api/data_sources/:id/records',
     function(req, res, next){
+        console.log('records request');
         var id = parseInt(req.param('id', 10));
         var limit = parseInt(req.param('limit') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
@@ -48,6 +49,8 @@ router.get(
                 end: new Date(now.getTime() - periodValue[0]*1000*60*60*24)
             };
         }
+
+        console.log('period: ', period);
         DataSource.get(id).then(function(dataSource){
             if(!dataSource){
                 return res.send(404);
