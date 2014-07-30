@@ -33,7 +33,8 @@ var staticFiles = {
         'widgets/spline.js',
         'widgets/pie.js',
         'widgets/donut.js',
-        'widgets/number.js'
+        'widgets/number.js',
+        'widgets/column.js'
     ],
 
     css: [
