@@ -6,6 +6,16 @@ exports.find = function (opts) {
     opts.query = opts.query || {};
     var ret = knex('records').where(opts.query).select();
 
+    if(opts.period){
+        var beginTime = opts.period.begin;
+        var endTime = opts.period.end;
+        ret = ret.whereBetween('date_time', [beginTime, endTime]);
+    }
+
+    if (opts.limit) {
+        ret = ret.limit(opts.limit);
+    }
+
     if (!opts.orderBy) {
         ret = ret.orderBy('year', 'desc')
             .orderBy('month', 'desc')
@@ -15,16 +25,6 @@ exports.find = function (opts) {
             .orderBy('second', 'desc');
     } else {
         ret = ret.orderBy(opts.orderBy, 'desc');
-    }
-
-    if (opts.limit) {
-        ret = ret.limit(opts.limit);
-    }
-
-    if(opts.period){
-        var beginTime = opts.period.begin;
-        var endTime = opts.period.end;
-        ret = ret.whereBetween('date_time', [beginTime, endTime]);
     }
 
     return ret;

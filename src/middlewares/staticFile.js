@@ -28,6 +28,8 @@ var staticFiles = {
 
         'admin.js',
         'stat.js',
+
+        'utils.js',
         'bower_components/highcharts/highcharts.js',
 
         'widgets/spline.js',
