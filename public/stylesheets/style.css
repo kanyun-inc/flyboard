@@ -1,13 +1,9 @@
-/*.css-form input.ng-invalid.ng-dirty, .css-form textarea.ng-invalid.ng-dirty, .css-form select.ng-invalid.ng-dirty{*/
-  /*background-color: #FA787E;*/
-/*}*/
-
-/*.css-form input.ng-valid.ng-dirty , .css-form textarea.ng-valid.ng-dirty, .css-form select.ng-valid.ng-dirty{*/
-  /*background-color: #78FA89;*/
-/*}*/
-
 table th, table td{
     text-align: center;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #f7f3de;
 }
 
 .widget[data-type="4"] .content{
@@ -144,4 +140,27 @@ button#add-row{
 
 .widget .cf-svmc{
     white-space:nowrap;
+}
+
+.stat {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.stat-nav {
+    margin-top: 20px;
+    margin-bottom: 65px;
+    position: relative;
+}
+
+.stat .stat-data {
+    margin-top: 50px;
+}
+
+.stat .stat-data table th, .stat .stat-data table td{
+    text-align: left;
+}
+
+.stat-nav .new-datasource{
+    position: absolute;
 }

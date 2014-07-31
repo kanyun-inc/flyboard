@@ -27,12 +27,16 @@ var staticFiles = {
         'bower_components/FitText.js/jquery.fittext.js',
 
         'admin.js',
+        'stat.js',
+
+        'utils.js',
         'bower_components/highcharts/highcharts.js',
 
         'widgets/spline.js',
         'widgets/pie.js',
         'widgets/donut.js',
-        'widgets/number.js'
+        'widgets/number.js',
+        'widgets/column.js'
     ],
 
     css: [

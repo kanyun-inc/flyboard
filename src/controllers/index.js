@@ -7,6 +7,7 @@ var Widget = require('../logicals/widget');
 var Dashboard = require('../logicals/dashboard');
 var Promise = require('bluebird');
 
+
 function indexCtrl(req, res, next) {
     var dashboards = Dashboard.find();
     var dashboard = req.param('id') ?
@@ -45,8 +46,15 @@ function indexCtrl(req, res, next) {
     }).catch(next);
 }
 
+function statCtrl(req, res){
+    res.locals.title = 'Status';
+    res.render('stat');
+}
+
 router.get('/', indexCtrl);
 router.get('/dashboards/:id', indexCtrl);
+
+router.get('/stat', statCtrl);
 
 router.get('/admin', function (req, res) {
     res.render('admin');

@@ -12,3 +12,11 @@ describe('GET /', function () {
             .expect(200, done);
     });
 });
+
+describe('GET /stat', function () {
+    it('respond with 200', function (done) {
+        request(app)
+            .get('/stat')
+            .expect(200, done);
+    });
+});
