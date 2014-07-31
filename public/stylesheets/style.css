@@ -36,6 +36,14 @@ table th, table td{
     align-items: center;
 }
 
+.widget header p a{
+    color: rgb(169, 169, 169);
+}
+.widget header p a:hover{
+    text-decoration: none;
+    cursor: hand;
+}
+
 #dashboard-form .form-group{
     margin-bottom: 30px;
 }
