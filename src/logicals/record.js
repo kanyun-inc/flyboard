@@ -2,7 +2,8 @@
 
 var knex = require('../lib/knex');
 
-exports.find = function (opts) {
+exports.find = function (options) {
+    var opts = options || {};
     opts.query = (opts && opts.query) || {};
     var ret = knex('records').where(opts.query).select();
 
