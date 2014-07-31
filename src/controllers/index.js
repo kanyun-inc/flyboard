@@ -5,8 +5,6 @@ module.exports = router;
 
 var Widget = require('../logicals/widget');
 var Dashboard = require('../logicals/dashboard');
-var DataSource = require('../logicals/dataSource');
-var Record = require('../logicals/record');
 var Promise = require('bluebird');
 
 
