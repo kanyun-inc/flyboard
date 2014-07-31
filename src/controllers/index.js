@@ -48,29 +48,7 @@ function indexCtrl(req, res, next) {
     }).catch(next);
 }
 
-function statCtrl(req, res, next){
-//    var widget = {};
-//    widget.config = {
-//        name: '',
-//        reloadInterval: 600000,
-//        period: req.param('period') || '0,7'
-//    };
-//
-//    var dataSourceIds = req.param('dataSourceIds') ?
-//        (function(){
-//            var ids = req.param('dataSourceIds').split(',');
-//            ids.forEach(function(id, idx){
-//                ids[idx] = parseInt(id, 10);
-//            });
-//            return ids || [];
-//        }()) : [];
-//
-//    widget.config.dataInfos = dataSourceIds.map(function(id) {
-//        return {
-//            id: id
-//        };
-//    });
-
+function statCtrl(res){
     res.locals.title = 'Status';
     res.render('stat');
 }
