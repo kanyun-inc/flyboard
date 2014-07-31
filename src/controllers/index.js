@@ -46,7 +46,7 @@ function indexCtrl(req, res, next) {
     }).catch(next);
 }
 
-function statCtrl(res){
+function statCtrl(req, res){
     res.locals.title = 'Status';
     res.render('stat');
 }
