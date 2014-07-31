@@ -1,11 +1,8 @@
-/**
- * Created by sly on 14-6-27.
- */
 
-// Initialise sparklines
+// Initialise numbers
 /*
- *	Copy the each() function for each sparkline you have
- * 	e.g. $('#spark-1').each(function(){.....}
+ * Widget: Number
+ * 	type: 4
  */
 $(function () {
     $('.widget[data-type=4]').each(function () {
