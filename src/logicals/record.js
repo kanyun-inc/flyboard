@@ -3,7 +3,7 @@
 var knex = require('../lib/knex');
 
 exports.find = function (opts) {
-    opts.query = opts.query || {};
+    opts.query = (opts && opts.query) || {};
     var ret = knex('records').where(opts.query).select();
 
     if(opts.period){
