@@ -8,7 +8,7 @@ var path = require('path');
 var readFile = Promise.promisify(fs.readFile);
 exports.url = function (file) {
     if (process.env !== 'production') {
-        return '/public/' + file;
+        return Promise.resolve('/public/' + file);
     }
 
     return readFile(path.join(__dirname, '../../public', file), 'utf-8').then(function (content) {
