@@ -34,21 +34,6 @@ var cf_rRags = [];
 var cf_rFunnels = [];
 
 $(document).ready(function(){
-    // Navigation
-    $('.cf-nav-toggle').click(function(e){
-
-        if( $('.cf-nav').hasClass('cf-nav-state-min') ){
-            $('.cf-nav').removeClass('cf-nav-state-min').addClass('cf-nav-state-max');
-            $('.cf-container').addClass('cf-nav-state-max');
-        }
-        else{
-            $('.cf-nav').removeClass('cf-nav-state-max').addClass('cf-nav-state-min');
-            $('.cf-container').removeClass('cf-nav-state-max');
-        }
-
-        e.preventDefault();
-    });
-
     // Time and date display
     (function updateTime(){
         var now = moment();
@@ -259,8 +244,6 @@ function createLineChart(obj){
         var $canvas = $('canvas', $container);
         var cWidth = $container.width();
         var cHeight = $container.height();
-
-        console.log(cWidth, cHeight);
 
         // Get canvas context
         var ctx = $canvas.get(0).getContext('2d');
@@ -518,10 +501,17 @@ $(document).ready(function(){
  */
 function rSVP(element, options){
     // Call the chart generation on window resize
-    $(window).resize(generateChart);
+    $(window).on('resize', generateChart);
 
     var container = $(element);
-    var chart = '#'+$(element).attr('id')+' .chart';
+    var chart = '#'+$(element).data('id')+' .chart';
+
+    var ret = {};
+
+    ret.destroy = function destroy(){
+        $(window).off('resize', generateChart);
+        $('canvas', $(container)).remove();
+    };
 
     // Create the chart
     function generateChart(){
@@ -529,13 +519,12 @@ function rSVP(element, options){
         // Remove any existing canvas
         if($('canvas', $(container)).length){
             $.when($('canvas', $(container)).remove()).then(addChart());
-        }
-        else{
+        } else{
             addChart();
         }
 
         function addChart(){
-            var $chart  = $(element).find('.chart');
+            var $chart  = container.find('.chart');
             //Setup options
             var rsvpOpt = {
                 barColor: pieBar,
@@ -546,8 +535,8 @@ function rSVP(element, options){
                 size: 100
             };
 
-            var width = $(element).width();
-            var height = $(element).height();
+            var width = container.width();
+            var height = container.height();
             var size = Math.min(width, height);
 
             rsvpOpt.size = size;
@@ -569,26 +558,28 @@ function rSVP(element, options){
             $chart.css('margin-top', marginTop);
 
             // Create and store the chart
-            cf_rSVPs[$(element).attr('id')].chart = new EasyPieChart(document.querySelector(chart), rsvpOpt);
+            ret.chart = new EasyPieChart($chart.get(0), rsvpOpt);
         }
     }
 
     // Run once on first load
     generateChart();
+
+    return ret;
 }
 
 $(function() {
     if ($(document.body).hasClass('flyboard-app')) {
-        function resizeRow() {
-            $('.row').each(function () {
-                var $row = $(this);
-                var parentHeight = $row.parent().height();
-                var count = $row.siblings('.row').size() + 1;
-                $row.height(parentHeight / count);
-            });
-        }
-        resizeRow();
-        $(window).resize(resizeRow);
+//        function resizeRow() {
+//            $('.row').each(function () {
+//                var $row = $(this);
+//                var parentHeight = $row.parent().height();
+//                var count = $row.siblings('.row').size() + 1;
+//                $row.height(parentHeight / count);
+//            });
+//        }
+//        resizeRow();
+//        $(window).resize(resizeRow);
     }
 });
 
