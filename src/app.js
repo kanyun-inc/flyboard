@@ -28,7 +28,6 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(require('./middlewares/staticFile')());
-app.locals.widgetUrl = require('./lib/widgetUrl');
 app.use(require('./controllers/index'));
 app.use(require('./controllers/project'));
 app.use(require('./controllers/dashboard'));

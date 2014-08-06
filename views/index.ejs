@@ -1,5 +1,5 @@
 <!DOCTYPE html/>
-<html>
+<html ng-app="indexApp">
 <head>
     <title><%= title %></title>
     <% styles.forEach(function (style) { %>
@@ -13,29 +13,26 @@
     <% }) %>
 </head>
 <body class="black flyboard-app">
-<div class="cf-nav cf-nav-state-min">
-    <a href="" class="cf-nav-toggle">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </a>
-
-    <ul>
-        <% dashboards.forEach(function (item, index) { %>
-        <li class="<%= item.id === dashboard.id ? 'current ' : null%>cf-nav-shortcut">
-            <a href="/dashboards/<%=item.id%>" class="<%= item.id === dashboard.id ? 'current active' : null%>">
-                <span class="cf-nav-min"><%= index + 1 %></span>
-                <span class="cf-nav-max"><%= item.name %></span>
+    <div ng-controller="NavCtrl" ng-init="unfold = false">
+        <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
+            <a href="" class="cf-nav-toggle" ng-click="unfold = !unfold">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </a>
-        </li>
-        <% }) %>
-    </ul>
-</div>
 
-<% if (dashboard) { %>
-    <div class="cf-container cf-nav-active">
-        <% include dashboard/layout %>
+            <ul>
+                <li ng-repeat="item in dashboards" class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
+                    <a href="#/dashboards/{{item.id}}" class="{{ item.id === dashboard.id ? 'current active' : null}}" ng-click="unfold = !unfold">
+                        <span class="cf-nav-min">{{$index + 1}}</span>
+                        <span class="cf-nav-max">{{item.name}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-<% } %>
+
+    <div ng-view></div>
+
 </body>
 </html>
