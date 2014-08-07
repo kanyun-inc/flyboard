@@ -2,36 +2,19 @@
 if(themeColour == 'white'){
     var metric = '#a9a9a9';
     var backColor = '#7d7d7d';
-    var pointerColor = '#898989';
-    var pageBackgorund = '#fff';
     var pieTrack = metric;
     var pieBar = backColor;
-    var gaugeTrackColor = metric;
-    var gaugeBarColor = backColor;
-    var gaugePointerColor = '#ccc';
-    var pieSegColors = [metric,'#868686','#636363','#404040','#1d1d1d'];
 }
 else {
     //default to black
     var backColor = '#4f4f4f';
     var metric = '#f2f2f2';
-    var pointerColor = '#898989';
-    var pageBackgorund = '#2b2b2b';
-    var pieSegColors = [metric,'#c0c0c0','#8e8e8e','#5b5b5b','#292929'];
     var pieTrack = backColor;
     var pieBar = metric;
-    var gaugeTrackColor = '#4f4f4f';
-    var gaugeBarColor = '#898989';
-    var gaugePointerColor = metric;
 }
 
 // Stores
-var cf_rSVPs = [];
-var cf_rGs = [];
-var cf_rLs = [];
 var cf_rPs = [];
-var cf_rRags = [];
-var cf_rFunnels = [];
 
 /*
  *	Create single value pie charts
@@ -42,7 +25,6 @@ function rSVP(element, options){
     $(window).on('resize', generateChart);
 
     var container = $(element);
-    var chart = '#'+$(element).data('id')+' .chart';
 
     var ret = {};
 

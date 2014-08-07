@@ -9,7 +9,7 @@ var middleware = require('../../src/middlewares/staticFile');
 describe('staticFile#url', function () {
     it('should return a url with file hash', function (done) {
         staticFile.url('bower_components/angular/angular.min.js').then(function (url) {
-            assert.equal(url, '/public/bower_components/angular/angular.min.js?d0b66b1a56c58842a056237ed4f06d3f32198fc3');
+            assert.equal(url, '/public/bower_components/angular/angular.min.js?7f090affc71727e6fe0cbb210db33f853eef4f6a');
             done();
         });
     });

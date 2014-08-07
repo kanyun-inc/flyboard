@@ -24,6 +24,7 @@
     "jquery": "~2.1.1",
     "underscore": "~1.6.0",
     "angular-bootstrap": "~0.11.0",
-    "FitText.js": "*"
+    "FitText.js": "*",
+    "angular-animate": "~1.2.21"
   }
 }

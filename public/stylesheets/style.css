@@ -117,7 +117,7 @@ button#add-row{
     top: 20px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 15px;
     width: auto;
     height: auto;
 }
@@ -162,6 +162,13 @@ button#add-row{
     white-space:nowrap;
 }
 
+.widget .timestamp{
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    font-size: 10px;
+}
+
 .stat {
     margin-left: 10%;
     margin-right: 10%;
@@ -183,4 +190,37 @@ button#add-row{
 
 .stat-nav .new-datasource{
     position: absolute;
+}
+
+.dashboard {
+    transition-duration: 1.5s;
+    transition-timing-function: cubic-bezier(0.250, 0.460, 0.450, 0.940);
+    transition-delay: 1s;
+}
+
+.dashboard.ng-leave.ng-leave-active {
+  display: none;
+}
+
+.view-animate .dashboard.ng-enter, .view-animate .dashboard.ng-leave {
+  display:block;
+  width:100%;
+  border-left:1px solid black;
+
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+
+.view-animate .dashboard.ng-enter {
+  left:100%;
+}
+.view-animate .dashboard.ng-enter.ng-enter-active {
+  left:0;
+}
+.view-animate .dashboard.ng-leave.ng-leave-active {
+  left:-100%;
+  display: block;
 }
