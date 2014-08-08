@@ -12,7 +12,7 @@
         <script type="text/javascript" src="<%= script %>"></script>
     <% }) %>
 </head>
-<body class="black flyboard-app" ng-controller="SlideCtrl" ng-class="{'view-animate': autoSlide}">
+<body class="black flyboard-app" ng-controller="SlideCtrl" ng-class="{'view-animate': slideMode}">
     <div ng-controller="NavCtrl" ng-init="unfold = false">
         <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
             <a href="" class="cf-nav-toggle" ng-click="unfold = !unfold">
@@ -29,6 +29,7 @@
                     </a>
                 </li>
             </ul>
+            <timer data-phase="{{phase}}" ng-show="slideMode"></timer>
         </div>
     </div>
 
