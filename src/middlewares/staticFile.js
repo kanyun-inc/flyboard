@@ -25,7 +25,6 @@ var staticFiles = {
         'controlfrog/js/controlfrog.js',
         'controlfrog/js/chart.js',
 
-        'bower_components/FitText.js/jquery.fittext.js',
         'bower_components/highcharts/highcharts.js',
 
         'utils.js',

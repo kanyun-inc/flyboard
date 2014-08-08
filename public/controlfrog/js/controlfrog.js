@@ -69,8 +69,8 @@ function rSVP(element, options){
             var textWidth = size - 2 * lineWidth - 20;
             var $metrics = $(element).find('.metrics');
             var $metricSmall = $(element).find('.metrics .metric-small');
-            $metrics.width(textWidth).css('margin-right', -textWidth / 2).fitText(1.8);
-//            $metricSmall.css('margin-bottom', $metrics.find('.metric').css('width') * (-1)).css('margin-left', '5px');
+            $metrics.width(textWidth).css('margin-right', -textWidth / 2);
+//          $metricSmall.css('margin-bottom', $metrics.find('.metric').css('width') * (-1)).css('margin-left', '5px');
 
             //set chart centered horizontally and vertically
             var marginTop = ($(element).height() - $chart.width())/2;

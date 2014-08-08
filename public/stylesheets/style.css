@@ -6,36 +6,6 @@ table th, table td{
     background-color: #f7f3de;
 }
 
-.widget[data-type="4"] .content{
-    display: -webkit-box;
-    display: -webkit-flex;
-
-    display: -moz-box;
-    display: -moz-flex;
-
-    display: -ms-flexbox;
-
-    display: flex;
-
-    /* 水平居中*/
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -ms-flex-pack:center;/* IE 10 */
-
-    -webkit-justify-content: center;
-    -moz-justify-content: center;
-    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
-
-    /* 垂直居中 */
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-align:center;/* IE 10 */
-
-    -webkit-align-items: center;
-    -moz-align-items: center;
-    align-items: center;
-}
-
 .widget header p a{
     color: rgb(169, 169, 169);
 }
@@ -158,8 +128,71 @@ button#add-row{
     align-items: center;
 }
 
+.widget .cf-svp .chart .change{
+    position: absolute;
+    font-size: 1.5em;
+    bottom: 18%;
+    right: 35%;
+}
+
+.widget .cf-svp .chart .metrics .metric {
+    font-size: 7em;
+    line-height: 1;
+    left: 50%;
+}
+
+.widget[data-type="4"] .content{
+    /*display: -webkit-box;*/
+    /*display: -webkit-flex;*/
+
+    /*display: -moz-box;*/
+    /*display: -moz-flex;*/
+
+    /*display: -ms-flexbox;*/
+
+    /*display: flex;*/
+
+     /*水平居中*/
+    /*-webkit-box-align: center;*/
+    /*-moz-box-align: center;*/
+    /*-ms-flex-pack:center; IE 10*/
+
+    /*-webkit-justify-content: center;*/
+    /*-moz-justify-content: center;*/
+    /*justify-content: center; IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+     /*垂直居中*/
+    /*-webkit-box-pack: center;*/
+    /*-moz-box-pack: center;*/
+    /*-ms-flex-align:center; IE 10*/
+
+    /*-webkit-align-items: center;*/
+    /*-moz-align-items: center;*/
+    /*align-items: center;*/
+}
+
 .widget .cf-svmc{
     white-space:nowrap;
+    height: 100%;
+    text-align: center;
+}
+
+.widget .cf-svmc .flexWrapper{
+    display: flex;
+    align-items: flex-end;
+    height: 50%;
+}
+
+.widget .cf-svmc .metric{
+    width: 100%;
+}
+
+.widget .cf-svmc .change {
+    height: 50%;
+}
+
+.widget .cf-svmc .arrow {
+    margin-right: 10px;
 }
 
 .widget .timestamp{
@@ -190,6 +223,11 @@ button#add-row{
 
 .stat-nav .new-datasource{
     position: absolute;
+}
+
+.flyboard-app {
+    height: 100%;
+    overflow: hidden;
 }
 
 .dashboard {
@@ -223,4 +261,76 @@ button#add-row{
 .view-animate .dashboard.ng-leave.ng-leave-active {
   left:-100%;
   display: block;
+}
+
+timer {
+    width: 1.5em;
+    height: 1.5em;
+    display: block;
+    border-radius: 50%;
+    background-color: #333333;
+    position: absolute;
+    left: 1.5px;
+    bottom: 4px;
+}
+
+timer[data-phase='-1'] {
+    display: none;
+}
+
+timer[data-phase='0'] {
+    background-image:
+        linear-gradient(90deg, transparent 50%, rgb(169, 169, 169) 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+
+timer[data-phase='1'] {
+    background-image:
+        linear-gradient(126deg, transparent 50%, rgb(169, 169, 169) 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='2']{
+    background-image:
+        linear-gradient(162deg, transparent 50%, rgb(169, 169, 169) 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='3']{
+    background-image:
+        linear-gradient(198deg, transparent 50%, rgb(169, 169, 169) 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='4']{
+    background-image:
+        linear-gradient(234deg, transparent 50%, rgb(169, 169, 169) 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='5']{
+    background-image:
+        linear-gradient(270deg, transparent 50%, rgb(169, 169, 169) 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='6']{
+    background-image:
+        linear-gradient(126deg, transparent 50%, #333333 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='7']{
+    background-image:
+        linear-gradient(162deg, transparent 50%, #333333 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='8']{
+    background-image:
+        linear-gradient(198deg, transparent 50%, #333333 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='9']{
+    background-image:
+        linear-gradient(234deg, transparent 50%, #333333 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
+}
+timer[data-phase='10']{
+    background-image:
+        linear-gradient(270deg, transparent 50%, #333333 50%),
+        linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
 }
