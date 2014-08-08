@@ -158,6 +158,19 @@ button#add-row{
     align-items: center;
 }
 
+.widget .cf-svp .chart .change{
+    position: absolute;
+    font-size: 1.5em;
+    bottom: 18%;
+    right: 35%;
+}
+
+.widget .cf-svp .chart .metrics .metric {
+    font-size: 7em;
+    line-height: 1;
+    left: 50%;
+}
+
 .widget .cf-svmc{
     white-space:nowrap;
 }
