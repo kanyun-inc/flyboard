@@ -236,10 +236,9 @@ timer {
     display: block;
     border-radius: 50%;
     background-color: #333333;
-    border: 0.5px solid #333333;
     position: absolute;
-    left: 0;
-    bottom: 5px;
+    left: 1.5px;
+    bottom: 4px;
 }
 
 timer[data-phase='-1'] {
