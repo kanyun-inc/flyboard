@@ -162,6 +162,11 @@ button#add-row{
     white-space:nowrap;
 }
 
+.widget .cf-svmc .arrow {
+    float: left;
+    margin-right: 10px;
+}
+
 .widget .timestamp{
     position: absolute;
     bottom: 5px;
