@@ -6,36 +6,6 @@ table th, table td{
     background-color: #f7f3de;
 }
 
-.widget[data-type="4"] .content{
-    display: -webkit-box;
-    display: -webkit-flex;
-
-    display: -moz-box;
-    display: -moz-flex;
-
-    display: -ms-flexbox;
-
-    display: flex;
-
-    /* 水平居中*/
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -ms-flex-pack:center;/* IE 10 */
-
-    -webkit-justify-content: center;
-    -moz-justify-content: center;
-    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
-
-    /* 垂直居中 */
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-align:center;/* IE 10 */
-
-    -webkit-align-items: center;
-    -moz-align-items: center;
-    align-items: center;
-}
-
 .widget header p a{
     color: rgb(169, 169, 169);
 }
@@ -171,12 +141,57 @@ button#add-row{
     left: 50%;
 }
 
+.widget[data-type="4"] .content{
+    /*display: -webkit-box;*/
+    /*display: -webkit-flex;*/
+
+    /*display: -moz-box;*/
+    /*display: -moz-flex;*/
+
+    /*display: -ms-flexbox;*/
+
+    /*display: flex;*/
+
+     /*水平居中*/
+    /*-webkit-box-align: center;*/
+    /*-moz-box-align: center;*/
+    /*-ms-flex-pack:center; IE 10*/
+
+    /*-webkit-justify-content: center;*/
+    /*-moz-justify-content: center;*/
+    /*justify-content: center; IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+     /*垂直居中*/
+    /*-webkit-box-pack: center;*/
+    /*-moz-box-pack: center;*/
+    /*-ms-flex-align:center; IE 10*/
+
+    /*-webkit-align-items: center;*/
+    /*-moz-align-items: center;*/
+    /*align-items: center;*/
+}
+
 .widget .cf-svmc{
     white-space:nowrap;
+    height: 100%;
+    text-align: center;
+}
+
+.widget .cf-svmc .flexWrapper{
+    display: flex;
+    align-items: flex-end;
+    height: 50%;
+}
+
+.widget .cf-svmc .metric{
+    width: 100%;
+}
+
+.widget .cf-svmc .change {
+    height: 50%;
 }
 
 .widget .cf-svmc .arrow {
-    float: left;
     margin-right: 10px;
 }
 
