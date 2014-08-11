@@ -202,29 +202,52 @@ button#add-row{
     font-size: 10px;
 }
 
+nav {
+    margin-bottom: 30px;
+}
+
 .stat {
     margin-left: 10%;
     margin-right: 10%;
 }
 
 .stat-nav {
-    margin-top: 20px;
-    margin-bottom: 65px;
-    position: relative;
+    margin-bottom: 25px;
+    margin-top: 25px;
 }
 
+.stat-nav .selected-datasource-wrapper {
+    margin-right: 10px;
+}
+
+.stat-nav .selected {
+    color: #262626;
+    background-color: #f5f5f5;
+}
+
+.stat-nav div.btn-group {
+    margin-left: 20px;
+}
 .stat .stat-data {
     margin-top: 50px;
+}
+
+.stat .period {
+    float: right;
 }
 
 .stat .stat-data table th, .stat .stat-data table td{
     text-align: left;
 }
 
-.stat-nav .new-datasource{
-    position: absolute;
+.selected-datasource-wrapper div {
+    float: left;
 }
 
+.selected-datasource-wrapper button.close {
+    float: left;
+    margin-top: 4px;
+}
 .flyboard-app {
     height: 100%;
     overflow: hidden;
@@ -334,3 +357,5 @@ timer[data-phase='10']{
         linear-gradient(270deg, transparent 50%, #333333 50%),
         linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
 }
+
+.modal .modal-dialog { width: 700px; }
