@@ -334,3 +334,5 @@ timer[data-phase='10']{
         linear-gradient(270deg, transparent 50%, #333333 50%),
         linear-gradient(90deg, rgb(169, 169, 169) 50%, transparent 50%);
 }
+
+.modal .modal-dialog { width: 700px; }
