@@ -35,10 +35,10 @@ var staticFiles = {
     ],
 
     css: [
+        'stylesheets/style.css',
         'controlfrog/css/controlfrog.css',
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css',
-        'stylesheets/style.css'
+        'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css'
     ]
 };
 

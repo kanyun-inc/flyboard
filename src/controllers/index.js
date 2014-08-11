@@ -9,7 +9,7 @@ function indexCtrl(req, res) {
 }
 
 function statCtrl(req, res){
-    res.locals.title = 'Status';
+    res.locals.title = 'status';
     res.render('stat');
 }
 
