@@ -202,6 +202,10 @@ button#add-row{
     font-size: 10px;
 }
 
+nav {
+    margin-bottom: 30px;
+}
+
 .stat {
     margin-left: 10%;
     margin-right: 10%;
