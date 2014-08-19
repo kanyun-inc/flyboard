@@ -12725,7 +12725,6 @@ function $RootScopeProvider(){
        * @returns {*} The result of evaluating the expression.
        */
       $apply: function(expr) {
-          debugger;
         try {
           beginPhase('$apply');
           return this.$eval(expr);
