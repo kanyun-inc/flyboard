@@ -6,12 +6,14 @@ table th, table td{
     background-color: #f7f3de;
 }
 
+.widget {
+    overflow: hidden;
+}
 .widget header p a{
     color: rgb(169, 169, 169);
 }
 .widget header p a:hover{
     text-decoration: none;
-    cursor: hand;
 }
 
 #dashboard-form .form-group{
@@ -141,36 +143,6 @@ button#add-row{
     left: 50%;
 }
 
-.widget[data-type="4"] .content{
-    /*display: -webkit-box;*/
-    /*display: -webkit-flex;*/
-
-    /*display: -moz-box;*/
-    /*display: -moz-flex;*/
-
-    /*display: -ms-flexbox;*/
-
-    /*display: flex;*/
-
-     /*水平居中*/
-    /*-webkit-box-align: center;*/
-    /*-moz-box-align: center;*/
-    /*-ms-flex-pack:center; IE 10*/
-
-    /*-webkit-justify-content: center;*/
-    /*-moz-justify-content: center;*/
-    /*justify-content: center; IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
-
-     /*垂直居中*/
-    /*-webkit-box-pack: center;*/
-    /*-moz-box-pack: center;*/
-    /*-ms-flex-align:center; IE 10*/
-
-    /*-webkit-align-items: center;*/
-    /*-moz-align-items: center;*/
-    /*align-items: center;*/
-}
-
 .widget .cf-svmc{
     white-space:nowrap;
     height: 100%;
@@ -253,7 +225,7 @@ nav {
     overflow: hidden;
 }
 
-.dashboard {
+.dashboard.slide{
     transition-duration: 1.5s;
     transition-timing-function: cubic-bezier(0.250, 0.460, 0.450, 0.940);
     transition-delay: 1s;
@@ -284,6 +256,16 @@ nav {
 .view-animate .dashboard.ng-leave.ng-leave-active {
   left:-100%;
   display: block;
+}
+
+.cf-nav .edit-layout {
+    position: absolute;
+    bottom: 35px;
+    left: 3px;
+}
+
+.cf-nav .edit-layout span {
+    font-size: 18px;
 }
 
 timer {
@@ -359,3 +341,269 @@ timer[data-phase='10']{
 }
 
 .modal .modal-dialog { width: 700px; }
+
+.dashboard .widget-display {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 25px;
+    right: 0;
+}
+
+.dashboard .layer {
+    background-color: #333333;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 25px;
+    right: 0;
+    opacity: 0.5;
+    height: 100%;
+    z-index: 99;
+}
+
+.dashboard .layer .grid-layer {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.dashboard .layer .controller{
+    position: absolute;
+    border: 1px solid #ffffff;
+    background-color: #000;
+    opacity: 0.5;
+}
+
+.dashboard .layer .controller .delete-widget {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    color: #ffffff;
+}
+
+.dashboard .layer .controller .edit-widget {
+    position: absolute;
+    top: 2px;
+    right: 40px;
+    color: #ffffff;
+}
+
+.dashboard .layer .controller .resizing {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.dashboard .layer .widget-controller .drag-inner-wrapper {
+    height: 100%;
+}
+
+.dashboard .widget-wrapper {
+    position: absolute;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dashboard .layer .added-controller {
+    background-color: darkred;
+    opacity: 0.5;
+}
+
+.dashboard .layer .added-controller span {
+    height: 100%;
+    width: 50%;
+    left: 25%;
+    font-size: 45px;
+    color: lightgreen;
+
+    position: absolute;
+    height: 100%;
+    right: 50%;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+
+    display: -moz-box;
+    display: -moz-flex;
+
+    display: -ms-flexbox;
+
+    display: flex;
+
+    /* 水平居中*/
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-pack:center;/* IE 10 */
+
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+    /* 垂直居中 */
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-align:center;/* IE 10 */
+
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+}
+
+.dashboard .layer .grid-layer .grid-col {
+    height: 100%;
+    border: 1px solid;
+}
+
+/* grid layout */
+/* width */
+.w-1 {
+    width: 8.33333333%;
+}
+.w-2 {
+    width: 16.66666667%;
+}
+.w-3 {
+    width: 25%;
+}
+.w-4 {
+    width: 33.33333333%;
+}
+.w-5 {
+    width: 41.66666667%;
+}
+.w-6 {
+    width: 50%;
+}
+.w-7 {
+    width: 58.33333333%;
+}
+.w-8 {
+    width: 66.66666667%;
+}
+.w-9 {
+    width: 75%;
+}
+.w-10 {
+    width: 83.33333333%;
+}
+.w-11 {
+    width: 91.66666667%
+}
+.w-12 {
+    width: 100%;
+}
+/* height */
+.h-1 {
+    height: 8.33333333%;
+}
+.h-2 {
+    height: 16.66666667%;
+}
+.h-3 {
+    height: 25%;
+}
+.h-4 {
+    height: 33.33333333%;
+}
+.h-5 {
+    height: 41.66666667%;
+}
+.h-6 {
+    height: 50%;
+}
+.h-7 {
+    height: 58.33333333%;
+}
+.h-8 {
+    height: 66.66666667%;
+}
+.h-9 {
+    height: 75%;
+}
+.h-10 {
+    height: 83.33333333%;
+}
+.h-11 {
+    height: 91.66666667%
+}
+.h-12 {
+    height: 100%;
+}
+/* x-Coordinate */
+.x-0 {
+    top: 0;
+}
+.x-1 {
+    top: 8.33333333%;
+}
+.x-2 {
+    top: 16.66666667%;
+}
+.x-3 {
+    top: 25%;
+}
+.x-4 {
+    top: 33.33333333%;
+}
+.x-5 {
+    top: 41.66666667%;
+}
+.x-6 {
+    top: 50%;
+}
+.x-7 {
+    top: 58.33333333%;
+}
+.x-8 {
+    top: 66.66666667%;
+}
+.x-9 {
+    top: 75%;
+}
+.x-10 {
+    top: 83.33333333%;
+}
+.x-11 {
+    top: 91.66666667%
+}
+/* y-Coordinate */
+.y-0 {
+    left: 0;
+}
+.y-1 {
+    left: 8.33333333%;
+}
+.y-2 {
+    left: 16.66666667%;
+}
+.y-3 {
+    left: 25%;
+}
+.y-4 {
+    left: 33.33333333%;
+}
+.y-5 {
+    left: 41.66666667%;
+}
+.y-6 {
+    left: 50%;
+}
+.y-7 {
+    left: 58.33333333%;
+}
+.y-8 {
+    left: 66.66666667%;
+}
+.y-9 {
+    left: 75%;
+}
+.y-10 {
+    left: 83.33333333%;
+}
+.y-11 {
+    left: 91.66666667%
+}

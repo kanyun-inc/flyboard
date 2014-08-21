@@ -1,7 +1,7 @@
 'use strict';
 
 var staticFile = require('../lib/staticFile');
-var Promise = require('bluebird');
+var bluebird = require('bluebird');
 
 var staticFiles = {
     js: [
@@ -35,19 +35,20 @@ var staticFiles = {
     ],
 
     css: [
-        'stylesheets/style.css',
         'controlfrog/css/controlfrog.css',
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css'
+        'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css',
+        'font-awesome-4.1.0/css/font-awesome.min.css',
+        'stylesheets/style.css'
     ]
 };
 
-staticFiles.js = Promise.resolve(staticFiles.js).map(staticFile.url);
-staticFiles.css = Promise.resolve(staticFiles.css).map(staticFile.url);
+staticFiles.js = bluebird.resolve(staticFiles.js).map(staticFile.url);
+staticFiles.css = bluebird.resolve(staticFiles.css).map(staticFile.url);
 
 module.exports = function () {
     return function (req, res, next) {
-        Promise.all([
+        bluebird.all([
             staticFiles.js,
             staticFiles.css
         ]).spread(function (js, css) {

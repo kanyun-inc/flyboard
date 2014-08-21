@@ -28,13 +28,18 @@ function rSVP(element, options){
 
     var ret = {};
 
+    ret.generateChart = generateChart;
+
     ret.destroy = function destroy(){
         $(window).off('resize', generateChart);
         $('canvas', $(container)).remove();
     };
 
     // Create the chart
-    function generateChart(){
+    function generateChart(evt){
+        if (evt && evt.target !== window) {
+            return;
+        }
         // Resize when width is 768 or greater
         // Remove any existing canvas
         if($('canvas', $(container)).length){
