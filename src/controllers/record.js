@@ -12,7 +12,7 @@ router.post(
     bodyParser.json(),
     function(req, res, next){
         var record = req.body;
-        if(!record.value){
+        if(record.value === undefined){
             res.send(400);
         }
 
