@@ -40,7 +40,6 @@ router.post(
     function(req, res, next) {
         var dashboardId = parseInt(req.param('dashboardId'), 10);
         var widget = req.body;
-        console.log('dashboardid', dashboardId, widget);
 
         Dashboard.get(dashboardId).then(function (dashboard) {
             if(!dashboard){
