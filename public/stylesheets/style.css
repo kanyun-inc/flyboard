@@ -258,13 +258,6 @@ nav {
   display: block;
 }
 
-.confirm {
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 100;
-}
-
 .cf-nav .edit-layout {
     position: absolute;
     bottom: 35px;
@@ -353,8 +346,7 @@ timer[data-phase='10']{
     position: absolute;
     top: 0;
     bottom: 0;
-    /*left: 25px;*/
-    left: 0;
+    left: 25px;
     right: 0;
 }
 
@@ -363,8 +355,7 @@ timer[data-phase='10']{
     position: absolute;
     top: 0;
     bottom: 0;
-    /*left: 25px;*/
-    left: 0;
+    left: 25px;
     right: 0;
     opacity: 0.5;
     height: 100%;
@@ -387,13 +378,28 @@ timer[data-phase='10']{
     opacity: 0.5;
 }
 
-.dashboard .layer .widget-controller .drag-inner-wrapper {
-    height: 100%;
+.dashboard .layer .controller .delete-widget {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    color: #ffffff;
 }
 
-.dashboard .layer .widget-controller .conflict {
-    background-color: red;
-    z-index: 100;
+.dashboard .layer .controller .edit-widget {
+    position: absolute;
+    top: 2px;
+    right: 40px;
+    color: #ffffff;
+}
+
+.dashboard .layer .controller .resizing {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.dashboard .layer .widget-controller .drag-inner-wrapper {
+    height: 100%;
 }
 
 .dashboard .widget-wrapper {

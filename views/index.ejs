@@ -14,7 +14,7 @@
 </head>
 <body class="black flyboard-app" ng-controller="SlideCtrl" ng-class="{'view-animate': slideMode}">
     <div ng-controller="NavCtrl" ng-init="unfold = false">
-        <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}" ng-if="!editLayoutMode">
+        <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
             <a href="" class="cf-nav-toggle" ng-click="unfold = !unfold">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -30,7 +30,7 @@
                 </li>
             </ul>
 
-            <div class="edit-layout"><a href=""><span class="glyphicon glyphicon-cog" ng-click="enterEditLayoutMode()"></span></a></div>
+            <div class="edit-layout"><a href=""><span class="glyphicon glyphicon-cog" ng-click="toggleEditLayoutMode()"></span></a></div>
 
             <timer data-phase="{{phase}}" ng-show="slideMode"></timer>
 

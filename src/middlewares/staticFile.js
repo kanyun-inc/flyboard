@@ -38,6 +38,7 @@ var staticFiles = {
         'controlfrog/css/controlfrog.css',
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
         'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css',
+        'font-awesome-4.1.0/css/font-awesome.min.css',
         'stylesheets/style.css'
     ]
 };
