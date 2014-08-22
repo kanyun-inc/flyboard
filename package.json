@@ -30,6 +30,7 @@
     "morgan": "~1.0.0",
     "node-uuid": "^1.4.1",
     "static-favicon": "~1.0.0",
+    "supertest-as-promised": "^1.0.0",
     "underscore": "^1.6.0"
   },
   "devDependencies": {
