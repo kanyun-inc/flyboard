@@ -18,7 +18,7 @@ describe('record model', function () {
             return DataSource.save({
                 name: 'foo',
                 project_id: id,
-                key: "loginTime"
+                key: 'loginTime'
             });
         }).then(function (id) {
             dataSourceId = id;

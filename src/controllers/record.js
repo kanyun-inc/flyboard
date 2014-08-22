@@ -46,6 +46,41 @@ router.get(
     }
 );
 
+router.get(
+    '/api/data_sources/:id/records',
+    function(req, res, next){
+        var id = parseInt(req.param('id', 10));
+        var limit = parseInt(req.param('limit') || 0, 10);
+        var orderBy = req.param('orderBy') || undefined;
+        var periodValue = (req.param('period') || '').split(',');
+        var period = null;
+
+        if(periodValue && periodValue.length === 2){
+            var now = new Date();
+            period = {
+                begin: new Date(now.getTime() - periodValue[1]*1000*60*60*24),
+                end: new Date(now.getTime() - periodValue[0]*1000*60*60*24)
+            };
+        }
+
+        DataSource.get(id).then(function(dataSource){
+            if(!dataSource){
+                return res.send(404);
+            }
+            Record.find({
+            query: {
+                    data_source_id: id
+                    },
+            limit: limit,
+            orderBy: orderBy,
+            period: period
+            }).then(function(records){
+                res.send(records);
+            });
+        }).catch(next);
+    }
+);
+
 router.delete(
     '/api/records/:id',
     function(req, res, next) {
