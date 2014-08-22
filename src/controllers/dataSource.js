@@ -4,6 +4,7 @@ var router = require('express').Router();
 module.exports = router;
 
 var bodyParser = require('body-parser');
+var blueBird = require('bluebird');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
@@ -117,7 +118,7 @@ router.delete(
                     });
                 });
 
-                Promise.all(promises).then(function (){
+                blueBird.all(promises).then(function (){
 
                     DataSource.remove(dataSource.id).then(function (){
                         res.send(200);
