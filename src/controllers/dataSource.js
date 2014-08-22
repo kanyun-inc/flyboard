@@ -4,9 +4,11 @@ var router = require('express').Router();
 module.exports = router;
 
 var bodyParser = require('body-parser');
+var blueBird = require('bluebird');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
+var Folder = require('../logicals/folder');
 
 router.get(
     '/api/data_sources',
@@ -33,37 +35,21 @@ router.get(
 );
 
 router.get(
-    '/api/data_sources/:id/records',
-    function(req, res, next){
+    '/api/folders/:id/data_sources',
+    function (req, res, next) {
         var id = parseInt(req.param('id', 10));
-        var limit = parseInt(req.param('limit') || 0, 10);
-        var orderBy = req.param('orderBy') || undefined;
-        var periodValue = (req.param('period') || '').split(',');
-        var period = null;
 
-        if(periodValue && periodValue.length === 2){
-            var now = new Date();
-            period = {
-                begin: new Date(now.getTime() - periodValue[1]*1000*60*60*24),
-                end: new Date(now.getTime() - periodValue[0]*1000*60*60*24)
-            };
-        }
-
-        DataSource.get(id).then(function(dataSource){
-            if(!dataSource){
+        Folder.get(id).then(function (folder) {
+            if(!folder) {
                 return res.send(404);
             }
-            Record.find({
-            query: {
-                    data_source_id: id
-                    },
-            limit: limit,
-            orderBy: orderBy,
-            period: period
-            }).then(function(records){
-                res.send(records);
-            });
-        }).catch(next);
+
+            DataSource.find({
+                folder_id: id
+            }).then(function (dataSources) {
+                res.send(dataSources);
+            }).catch(next);
+        });
     }
 );
 
@@ -116,8 +102,28 @@ router.delete(
     function(req, res, next){
         var id = parseInt(req.param('id'), 10);
 
-        DataSource.remove(id).then(function (){
-            res.send(200);
-        }).catch(next);
+        DataSource.get(id)
+            .then(function (dataSource) {
+                if(!dataSource) {
+                    return res.send(404);
+                }
+
+                var promises = Record.find({
+                    query: {
+                       data_source_id: dataSource.id
+                    }
+                }).then(function (records) {
+                    return records.map(function (record) {
+                        return Record.remove(record.id);
+                    });
+                });
+
+                blueBird.all(promises).then(function (){
+
+                    DataSource.remove(dataSource.id).then(function (){
+                        res.send(200);
+                    }).catch(next);
+                });
+            });
     }
 );

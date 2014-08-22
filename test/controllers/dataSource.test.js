@@ -2,17 +2,19 @@
 
 var app = require('../../src/app');
 var request = require('supertest');
+var promisedRequest = require('supertest-as-promised');
+var Record = require('../../src/logicals/record');
 var DataSource = require('../../src/logicals/dataSource');
 var Project = require('../../src/logicals/project');
-var Record = require('../../src/logicals/record');
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 
 describe('dataSource controller', function(){
     var projectId = null;
     var dataSourceId = null;
+    var recordId = null;
 
-    before(function (done) {
+    beforeEach(function (done) {
         Project
             .save({name: 'ape'})
             .then(function (id) {
@@ -27,35 +29,21 @@ describe('dataSource controller', function(){
             .then(function (id) {
                 dataSourceId = id;
 
-                return Promise.all([
-                    Record.save({
-                        data_source_id: id,
-                        value: 98,
-                        year: 2014,
-                        month: 6,
-                        day: 28
-                    }),
-                    Record.save({
-                        data_source_id: id,
-                        value: 99,
-                        year: 2014,
-                        month: 6,
-                        day: 29
-                    }),
-                    Record.save({
-                        data_source_id: id,
-                        value: 100,
-                        year: 2014,
-                        month: 6,
-                        day: 30
-                    })
-                ]);
-            }).then(function () {
+                return Record.save({
+                    data_source_id: dataSourceId,
+                    value: 98,
+                    year: 2014,
+                    month: 6,
+                    day: 28
+                });
+            }).then(function (id) {
+                recordId = id;
+
                 done();
             }).catch(done);
     });
 
-    after(function (done) {
+    afterEach(function (done) {
         return Promise.all([
             knex('records').del(),
             knex('data_sources').del(),
@@ -63,15 +51,6 @@ describe('dataSource controller', function(){
         ]).then(function () {
             done();
         }).catch(done);
-    });
-
-    describe.skip('GET /api/data_sources', function(){
-        it('should return dataSource list', function(done){
-            request(app)
-                .get('/api/data_sources')
-                .expect('content-type', /json/)
-                .expect(200, '[]', done);
-        });
     });
 
     describe('POST /api/data_sources', function(){
@@ -120,24 +99,6 @@ describe('dataSource controller', function(){
         });
     });
 
-    describe('GET /api/data_sources/:id/records', function(){
-        it('should return limit numbers of record', function (done){
-            request(app)
-                .get('/api/data_sources/' + dataSourceId + '/records?limit=4')
-                .expect(200)
-                .expect('content-type', /json/)
-                .end(done);
-        });
-
-        it('should return  record list', function (done){
-            request(app)
-                .get('/api/data_sources/' + dataSourceId + '/records')
-                .expect(200)
-                .expect('content-type', /json/)
-                .end(done);
-        });
-    });
-
     describe('DELETE /api/data_sources/:id', function (){
         it('should delete a dataSource', function(done){
             request(app)
@@ -148,23 +109,18 @@ describe('dataSource controller', function(){
                         return done(err);
                     }
 
-                    request(app)
+                    promisedRequest(app)
                         .get('/api/data_sources/' + dataSourceId)
                         .expect('content-type', /json/)
-                        .expect(404);
-                });
-            request(app)
-                .delete('/api/projects/' + projectId)
-                .expect(200)
-                .end(function (err) {
-                    if (err) {
-                        return done(err);
-                    }
-
-                    request(app)
-                        .get('/api/projects/' + projectId)
-                        .expect('content-type', /json/)
-                        .expect(404, done);
+                        .expect(404)
+                        .then(function () {
+                            return promisedRequest(app)
+                                .get('/api/records/' + recordId)
+                                .expect('content-type', /json/)
+                                .expect(404);
+                        }).then(function () {
+                            done();
+                        });
                 });
         });
     });
