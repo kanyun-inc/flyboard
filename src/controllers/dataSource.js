@@ -13,7 +13,14 @@ var Folder = require('../logicals/folder');
 router.get(
     '/api/data_sources',
     function(req, res, next){
-        DataSource.find().then(function(dataSources){
+        var query = {};
+        var folderId = parseInt(req.param('folder_id') || -1, 10);
+
+        if(folderId !== -1){
+            query.folder_id = folderId === 0 ? null : folderId;
+        }
+
+        DataSource.find(query).then(function(dataSources){
             res.send(dataSources);
         }).catch(next);
     }
@@ -31,25 +38,6 @@ router.get(
 
             res.send(dataSource);
         }).catch(next);
-    }
-);
-
-router.get(
-    '/api/folders/:id/data_sources',
-    function (req, res, next) {
-        var id = parseInt(req.param('id', 10));
-
-        Folder.get(id).then(function (folder) {
-            if(!folder) {
-                return res.send(404);
-            }
-
-            DataSource.find({
-                folder_id: id
-            }).then(function (dataSources) {
-                res.send(dataSources);
-            }).catch(next);
-        });
     }
 );
 
