@@ -626,12 +626,53 @@ timer[data-phase='10']{
     margin: 0px;
 }
 
+.tree ul .ul-tabular{
+    display: inline-block;
+    position: absolute;
+    left: -32px;
+    width: 10px;
+    height: 100%;
+    border-left: 2px dashed #addbe6;
+
+}
+
+.tree ul li .li-tabular {
+    display: inline-block;
+    position: absolute;
+    left: -65px;
+    height: 30px;
+    width: 65px;
+}
+
+.tree ul li .li-common-tabular::before, .tree ul li .li-last-tabular::before {
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 50%;
+    height: 50%;
+    content: '';
+    border-bottom: 2px dashed #addbe6;
+    border-left: 2px dashed #addbe6;
+}
+
+.tree ul li .li-common-tabular::after {
+    display: block;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    float: right;
+    width: 50%;
+    height: 50%;
+    content: '';
+    border-left: 2px dashed #addbe6;
+}
+
 .tree ul a:hover{
     text-decoration: none;
 }
 
 .tree ul li.data-source-item {
-    margin-left: 20px;
     cursor: hand;
 }
 
