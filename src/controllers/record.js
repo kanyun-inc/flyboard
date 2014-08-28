@@ -12,13 +12,19 @@ router.post(
     bodyParser.json(),
     function(req, res, next){
         var record = req.body;
+
         if(record.value === undefined){
-            res.send(400);
+            return res.send(400);
         }
 
         DataSource.getByUUIDAndKey(req.param('uuid'), req.param('key')).then(function (dataSource) {
-            if (!dataSource) {
-                return res.send(404);
+            //check if dimensions are the same
+            if(dataSource.config && dataSource.config.dimensions){
+                dataSource.config.dimensions.forEach(function (dim) {
+                   if(!record[dim.key]){
+                       return res.send(400);
+                   }
+                });
             }
 
             record.data_source_id = dataSource.id;
@@ -67,6 +73,7 @@ router.get(
             if(!dataSource){
                 return res.send(404);
             }
+
             Record.find({
             query: {
                     data_source_id: id

@@ -7,6 +7,7 @@ var Project = require('../../src/logicals/project');
 var Record = require('../../src/logicals/record');
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
+var assert = require('chai').assert;
 
 describe('record controller', function(){
     var projectId = null;
@@ -28,7 +29,13 @@ describe('record controller', function(){
                     return DataSource.save({
                         name: 'loginUser',
                         key: 'loginUser',
-                        project_id: projectId
+                        project_id: projectId,
+                        config: {
+                            dimensions: [{
+                                key: 'course',
+                                name: '课程'
+                            }]
+                        }
                     });
                 });
             })
@@ -45,21 +52,24 @@ describe('record controller', function(){
                                 value: 98,
                                 year: 2014,
                                 month: 6,
-                                day: 28
+                                day: 28,
+                                course: 'math'
                             }),
                             Record.save({
                                 data_source_id: dataSourceId,
                                 value: 99,
                                 year: 2014,
                                 month: 6,
-                                day: 29
+                                day: 29,
+                                course: 'languge'
                             }),
                             Record.save({
                                 data_source_id: dataSourceId,
                                 value: 100,
                                 year: 2014,
                                 month: 6,
-                                day: 30
+                                day: 30,
+                                course: 'music'
                             })
                         ]);
                     });
@@ -81,10 +91,12 @@ describe('record controller', function(){
 
     describe('POST /api/projects/:uuid/data_sources/:key', function (){
         it('should create a record', function (done){
+
             request(app)
                 .post('/api/projects/' + projectUuid + '/data_sources/' + key)
                 .send({
-                    value: 100
+                    value: 100,
+                    course: 'english'
                 })
                 .expect(200)
                 .expect('content-type', /json/)
@@ -104,7 +116,11 @@ describe('record controller', function(){
             request(app)
                 .get('/api/records/' + recordId)
                 .expect('content-type', /json/)
-                .expect(200, done);
+                .expect(200)
+                .expect(function (res) {
+                    assert.equal(res.body.course, 'english');
+                })
+                .end(done);
         });
     });
     describe('GET /api/data_sources/:id/records', function(){

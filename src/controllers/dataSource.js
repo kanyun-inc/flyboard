@@ -46,9 +46,16 @@ router.post(
     bodyParser.json(),
     function(req, res, next){
         var dataSource = req.body;
+        var config = dataSource.config;
 
         if(!dataSource.project_id || !dataSource.name || !dataSource.key){
-            res.send(400);
+            return res.send(400);
+        }
+
+        if(config && config.dimensions){
+            if(config.dimensions.length > 2){
+                return res.send(400);
+            }
         }
 
         Project.get(dataSource.project_id).then(function (project){
@@ -70,12 +77,11 @@ router.put(
     bodyParser.json(),
     function(req, res, next){
         var dataSource = req.body;
+        var id = parseInt(req.param('id'), 10);
 
         if(!dataSource.name && !dataSource.key){
-            res.send(400);
+            return res.send(400);
         }
-
-        var id = parseInt(req.param('id'), 10);
 
         DataSource.update(id, dataSource).then(function (){
             return DataSource.get(id);
