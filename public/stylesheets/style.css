@@ -688,3 +688,22 @@ timer[data-phase='10']{
 .tree ul .data-source-item .edit-buttons {
    padding-left: 40px;
 }
+
+#dataSourceTab {
+    margin-bottom: 15px;
+}
+
+#dataSourceTabContent .delete-data-info {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.data-source-tab ul {
+    margin-bottom: 15px;
+}
+
+select.dimension-item {
+    height: 20px;
+    width: 80px;
+    display: inline-block;
+}

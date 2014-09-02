@@ -58,6 +58,7 @@ router.get(
         var id = parseInt(req.param('id', 10));
         var limit = parseInt(req.param('limit') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
+        var distinct = req.param('distinct') || '';
         var periodValue = (req.param('period') || '').split(',');
         var period = null;
 
@@ -78,9 +79,10 @@ router.get(
             query: {
                     data_source_id: id
                     },
-            limit: limit,
-            orderBy: orderBy,
-            period: period
+                limit: limit,
+                orderBy: orderBy,
+                period: period,
+                distinct: distinct
             }).then(function(records){
                 res.send(records);
             });

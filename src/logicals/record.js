@@ -6,6 +6,7 @@ var DataSource = require('../logicals/dataSource');
 
 exports.find = function (options) {
     var opts = options || {};
+
     opts.query = (opts && opts.query) || {};
     var ret = knex('records').where(opts.query).select();
 
@@ -28,6 +29,18 @@ exports.find = function (options) {
             .orderBy('second', 'desc');
     } else {
         ret = ret.orderBy(opts.orderBy, 'desc');
+    }
+
+    if(opts.distinct) {
+        ret = ret.distinct(opts.distinct);
+
+        return ret.then(function (objs) {
+            return objs.map(function (obj) {
+                return obj[opts.distinct];
+            }).filter(function (value) {
+                return value !== null;
+            });
+        });
     }
 
     return ret.then(function (records){

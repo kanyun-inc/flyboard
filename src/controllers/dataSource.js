@@ -14,7 +14,7 @@ router.get(
     '/api/data_sources',
     function(req, res, next){
         var query = {};
-        var folderId = parseInt(req.param('folder_id') || -1, 10);
+        var folderId = parseInt(req.param('folder_id'), 10) || -1;
 
         if(folderId !== -1){
             query.folder_id = folderId === 0 ? null : folderId;
