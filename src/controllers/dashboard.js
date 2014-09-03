@@ -30,7 +30,7 @@ router.post(
     function(req, res, next){
         var dashboard = req.body;
         if(!dashboard.name) {
-            res.send(404);
+            return res.send(404);
         }
 
         Dashboard.save(dashboard).then(function(id){

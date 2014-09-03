@@ -66,6 +66,30 @@ describe('dataSource controller', function(){
                 .expect('content-type', /json/)
                 .end(done);
         });
+        it('should reject to create a dataSource', function (done){
+            request(app)
+                .post('/api/data_sources')
+                .send({
+                    project_id: projectId,
+                    name: '登出时间',
+                    key: 'logoutTime',
+                    config: {
+                        dimensions: [{
+                            key: 'school',
+                            name: '学校'
+                        },{
+                            key: 'class',
+                            name: '班级'
+                        },{
+                            key: 'course',
+                            name: '课程'
+                        }]
+                    }
+                })
+                .expect(400)
+                .expect('content-type', /json/)
+                .end(done);
+        });
     });
 
     describe('GET /api/data_sources', function (){

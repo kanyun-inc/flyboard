@@ -68,11 +68,18 @@ describe('data_sources model', function () {
             DataSource.save({
                 name: 'baz',
                 project_id: projectId,
-                key: 'logoutTime'
+                key: 'logoutTime',
+                config: {
+                    dimensions: [{
+                        key: 'class_time',
+                        name: '课时'
+                    }]
+                }
             }).then(function (id) {
                 return DataSource.get(id);
             }).then(function (ret) {
                 assert.equal(ret.name, 'baz');
+                assert.equal(ret.config.dimensions[0].key, 'class_time');
                 done();
             }).catch(done);
         });
@@ -94,17 +101,29 @@ describe('data_sources model', function () {
             DataSource.save({
                 name: 'baz',
                 project_id: projectId,
-                key: 'logoutTime'
+                key: 'logoutTime',
+                config: {
+                    'dimensions': []
+                }
             }).then(function (id) {
-                return DataSource.update(id, {
-                    name: 'xxx'
+                return DataSource.get(id);
+            }).then(function (dataSource){
+                return DataSource.update(dataSource.id, {
+                    name: 'xxx',
+                    config: {
+                        'dimensions': [{
+                            key: 'course',
+                            name: '课程'
+                        }]
+                    }
                 }).then(function () {
-                    return id;
+                    return dataSource.id;
                 });
             }).then(function (ret) {
                 return DataSource.get(ret);
             }).then(function (ret) {
                 assert.equal(ret.name, 'xxx');
+                assert.equal(ret.config.dimensions.length, 0);
                 done();
             }).catch(done);
         });

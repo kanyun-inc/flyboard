@@ -8,12 +8,12 @@ function objToDb(dashboard) {
         return dashboard;
     }
 
-    var newWidget = {};
+    var newDashboard = {};
     if (dashboard.config) {
-        newWidget.config = JSON.stringify(dashboard.config || {});
+        newDashboard.config = JSON.stringify(dashboard.config || {});
     }
 
-    return _.defaults(newWidget, dashboard);
+    return _.defaults(newDashboard, dashboard);
 }
 
 function dbToObj(dashboard) {

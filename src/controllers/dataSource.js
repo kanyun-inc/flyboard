@@ -8,12 +8,18 @@ var blueBird = require('bluebird');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
-var Folder = require('../logicals/folder');
 
 router.get(
     '/api/data_sources',
     function(req, res, next){
-        DataSource.find().then(function(dataSources){
+        var query = {};
+        var folderId = parseInt(req.param('folder_id'), 10) || -1;
+
+        if(folderId !== -1){
+            query.folder_id = folderId === 0 ? null : folderId;
+        }
+
+        DataSource.find(query).then(function(dataSources){
             res.send(dataSources);
         }).catch(next);
     }
@@ -34,33 +40,21 @@ router.get(
     }
 );
 
-router.get(
-    '/api/folders/:id/data_sources',
-    function (req, res, next) {
-        var id = parseInt(req.param('id', 10));
-
-        Folder.get(id).then(function (folder) {
-            if(!folder) {
-                return res.send(404);
-            }
-
-            DataSource.find({
-                folder_id: id
-            }).then(function (dataSources) {
-                res.send(dataSources);
-            }).catch(next);
-        });
-    }
-);
-
 router.post(
     '/api/data_sources',
     bodyParser.json(),
     function(req, res, next){
         var dataSource = req.body;
+        var config = dataSource.config;
 
         if(!dataSource.project_id || !dataSource.name || !dataSource.key){
-            res.send(400);
+            return res.send(400);
+        }
+
+        if(config && config.dimensions){
+            if(config.dimensions.length > 2){
+                return res.send(400);
+            }
         }
 
         Project.get(dataSource.project_id).then(function (project){
@@ -82,12 +76,11 @@ router.put(
     bodyParser.json(),
     function(req, res, next){
         var dataSource = req.body;
+        var id = parseInt(req.param('id'), 10);
 
         if(!dataSource.name && !dataSource.key){
-            res.send(400);
+            return res.send(400);
         }
-
-        var id = parseInt(req.param('id'), 10);
 
         DataSource.update(id, dataSource).then(function (){
             return DataSource.get(id);

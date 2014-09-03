@@ -12,13 +12,19 @@ router.post(
     bodyParser.json(),
     function(req, res, next){
         var record = req.body;
+
         if(record.value === undefined){
-            res.send(400);
+            return res.send(400);
         }
 
         DataSource.getByUUIDAndKey(req.param('uuid'), req.param('key')).then(function (dataSource) {
-            if (!dataSource) {
-                return res.send(404);
+            //check if dimensions are the same
+            if(dataSource.config && dataSource.config.dimensions){
+                dataSource.config.dimensions.forEach(function (dim) {
+                   if(!record[dim.key]){
+                       return res.send(400);
+                   }
+                });
             }
 
             record.data_source_id = dataSource.id;
@@ -52,8 +58,10 @@ router.get(
         var id = parseInt(req.param('id', 10));
         var limit = parseInt(req.param('limit') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
+        var distinct = req.param('distinct') || null;
         var periodValue = (req.param('period') || '').split(',');
         var period = null;
+        var dimensions = JSON.parse(req.param('dimensions') || '[]');
 
         if(periodValue && periodValue.length === 2){
             var now = new Date();
@@ -67,13 +75,30 @@ router.get(
             if(!dataSource){
                 return res.send(404);
             }
+
+            var query = {
+                data_source_id: id
+            };
+
+            dimensions.forEach(function (dim) {
+                if(!dim.value){
+                    return ;
+                }
+
+                dataSource.config.dimensions.some(function (dimension, idx) {
+                    if(dimension.key === dim.key){
+                        query['dim' + (idx + 1)] = dim.value;
+                        return true;
+                    }
+                });
+            });
+
             Record.find({
-            query: {
-                    data_source_id: id
-                    },
-            limit: limit,
-            orderBy: orderBy,
-            period: period
+                query: query,
+                limit: limit,
+                orderBy: orderBy,
+                period: period,
+                distinct: distinct
             }).then(function(records){
                 res.send(records);
             });

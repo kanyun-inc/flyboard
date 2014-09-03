@@ -607,3 +607,117 @@ timer[data-phase='10']{
 .y-11 {
     left: 91.66666667%
 }
+
+.tree {
+    width: 45%;
+    margin-left: 50px;
+}
+
+.tree ul li{
+    list-style: none;
+    border-radius:4px;
+    margin-bottom: 5px;
+    padding: 2px;
+    position: relative;
+}
+
+.tree ul li.folder-item a {
+    padding: 0px;
+    margin: 0px;
+}
+
+.tree ul .ul-tabular{
+    display: inline-block;
+    position: absolute;
+    left: -32px;
+    width: 10px;
+    height: 100%;
+    border-left: 2px dashed #addbe6;
+
+}
+
+.tree ul li .li-tabular {
+    display: inline-block;
+    position: absolute;
+    left: -65px;
+    height: 30px;
+    width: 65px;
+}
+
+.tree ul li .li-common-tabular::before, .tree ul li .li-last-tabular::before {
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 50%;
+    height: 50%;
+    content: '';
+    border-bottom: 2px dashed #addbe6;
+    border-left: 2px dashed #addbe6;
+}
+
+.tree ul li .li-common-tabular::after {
+    display: block;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    float: right;
+    width: 50%;
+    height: 50%;
+    content: '';
+    border-left: 2px dashed #addbe6;
+}
+
+.tree ul a:hover{
+    text-decoration: none;
+}
+
+.tree ul li.data-source-item {
+    cursor: hand;
+}
+
+.tree ul li.data-source-item:hover, .tree ul li.data-source-item.selected {
+    background-color: #eeeeee;
+}
+
+.tree ul .data-source-item div{
+    display: inline;
+    margin-right: 30px;
+}
+
+.tree ul .data-source-item .edit-buttons {
+   padding-left: 40px;
+}
+
+#dataSourceTab {
+    margin-bottom: 15px;
+}
+
+#dataSourceTabContent .delete-data-info {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.data-source-tab ul {
+    margin-bottom: 15px;
+}
+
+.data-source-tab .data-source-info-item .delete-data-info{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.data-source-tab .operation-type {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+select.dimension-item {
+    height: 20px;
+    width: 80px;
+    display: inline-block;
+}
+
+.data-source-form .aggregation-item {
+    margin-top: 10px;
+}
