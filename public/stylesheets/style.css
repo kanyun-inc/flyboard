@@ -702,8 +702,22 @@ timer[data-phase='10']{
     margin-bottom: 15px;
 }
 
+.data-source-tab .data-source-info-item .delete-data-info{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.data-source-tab .operation-type {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 select.dimension-item {
     height: 20px;
     width: 80px;
     display: inline-block;
+}
+
+.data-source-form .aggregation-item {
+    margin-top: 10px;
 }
