@@ -10,14 +10,10 @@ exports.find = function (options) {
     opts.query = (opts && opts.query) || {};
     var ret = knex('records').where(opts.query).select();
 
-    if(opts.period){
+    if (opts.period) {
         var beginTime = opts.period.begin;
         var endTime = opts.period.end;
         ret = ret.whereBetween('date_time', [beginTime, endTime]);
-    }
-
-    if (opts.limit) {
-        ret = ret.limit(opts.limit);
     }
 
     if (!opts.orderBy) {
@@ -31,7 +27,7 @@ exports.find = function (options) {
         ret = ret.orderBy(opts.orderBy, 'desc');
     }
 
-    if(opts.distinct) {
+    if (opts.distinct) {
         ret = ret.distinct(opts.distinct);
 
         return ret.then(function (objs) {
@@ -43,47 +39,63 @@ exports.find = function (options) {
         });
     }
 
-    return ret.then(function (records){
-        var dataSourceIds = [];
-
-        records.forEach(function (record) {
-            var ret = dataSourceIds.some(function (id) {
-                if(id === record.data_source_id){
-                    return true;
-                }
-            });
-
-            if(!ret){
-                dataSourceIds.push(record.data_source_id);
-            }
-        });
-
-         var dataSources = dataSourceIds.map(function (id) {
-            return DataSource.get(id).then(function (dataSource) {
-                return dataSource;
+    var dateTimes = [];
+    if (opts.limit) {
+        var limitFilter = knex('records').where(opts.query).select().distinct('date_time').orderBy('date_time', 'desc').limit(opts.limit);
+        dateTimes = limitFilter.then(function (results) {
+            return results.map(function (obj) {
+                return obj.date_time;
             });
         });
+    }
 
-        return blueBird.all(dataSources).then(function (results) {
-            var dataSources = results.reduce(function (memo, curr) {
-                memo[curr.id] = curr;
-                return memo;
-            }, {});
+    return blueBird.resolve(dateTimes).then(function (dateTimes) {
+        if (opts.limit && dateTimes && dateTimes.length) {
+            ret = ret.whereIn('date_time', dateTimes);
+        }
+
+        return ret.then(function (records) {
+            var dataSourceIds = [];
 
             records.forEach(function (record) {
-                var dataSource = dataSources[record.data_source_id];
+                var ret = dataSourceIds.some(function (id) {
+                    if (id === record.data_source_id) {
+                        return true;
+                    }
+                });
 
-                if(record.dim1) {
-                    record[dataSource.config.dimensions[0].key] = record.dim1;
-                    delete record.dim1;
-                }
-                if(record.dim2) {
-                    record[dataSource.config.dimensions[1].key] = record.dim2;
-                    delete record.dim2;
+                if (!ret) {
+                    dataSourceIds.push(record.data_source_id);
                 }
             });
 
-            return records;
+            var dataSources = dataSourceIds.map(function (id) {
+                return DataSource.get(id).then(function (dataSource) {
+                    return dataSource;
+                });
+            });
+
+            return blueBird.all(dataSources).then(function (results) {
+                var dataSources = results.reduce(function (memo, curr) {
+                    memo[curr.id] = curr;
+                    return memo;
+                }, {});
+
+                records.forEach(function (record) {
+                    var dataSource = dataSources[record.data_source_id];
+
+                    if (record.dim1) {
+                        record[dataSource.config.dimensions[0].key] = record.dim1;
+                        delete record.dim1;
+                    }
+                    if (record.dim2) {
+                        record[dataSource.config.dimensions[1].key] = record.dim2;
+                        delete record.dim2;
+                    }
+                });
+
+                return records;
+            });
         });
     });
 };
@@ -96,11 +108,11 @@ exports.get = function (id) {
 
         return DataSource.get(obj.data_source_id)
             .then(function (dataSource) {
-                if(obj.dim1) {
+                if (obj.dim1) {
                     obj[dataSource.config.dimensions[0].key] = obj.dim1;
                     delete obj.dim1;
                 }
-                if(obj.dim2) {
+                if (obj.dim2) {
                     obj[dataSource.config.dimensions[1].key] = obj.dim2;
                     delete obj.dim2;
                 }
@@ -117,7 +129,7 @@ exports.save = function (obj) {
 
     var dimensions = [];
     return DataSource.get(obj.data_source_id).then(function (dataSource) {
-        if(dataSource.config && dataSource.config.dimensions) {
+        if (dataSource.config && dataSource.config.dimensions) {
             dataSource.config.dimensions.forEach(function (dim) {
                 dimensions.push(obj[dim.key]);
                 delete obj[dim.key];

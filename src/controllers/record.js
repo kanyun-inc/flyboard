@@ -58,9 +58,10 @@ router.get(
         var id = parseInt(req.param('id', 10));
         var limit = parseInt(req.param('limit') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
-        var distinct = req.param('distinct') || '';
+        var distinct = req.param('distinct') || null;
         var periodValue = (req.param('period') || '').split(',');
         var period = null;
+        var dimensions = JSON.parse(req.param('dimensions') || '[]');
 
         if(periodValue && periodValue.length === 2){
             var now = new Date();
@@ -75,10 +76,25 @@ router.get(
                 return res.send(404);
             }
 
+            var query = {
+                data_source_id: id
+            };
+
+            dimensions.forEach(function (dim, idx) {
+                if(!dim.value){
+                    return ;
+                }
+
+                dataSource.config.dimensions.some(function (dimension, idx) {
+                    if(dimension.key === dim.key){
+                        query['dim' + (idx + 1)] = dim.value;
+                        return true;
+                    }
+                });
+            });
+
             Record.find({
-            query: {
-                    data_source_id: id
-                    },
+                query: query,
                 limit: limit,
                 orderBy: orderBy,
                 period: period,
