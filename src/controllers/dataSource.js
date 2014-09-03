@@ -8,7 +8,6 @@ var blueBird = require('bluebird');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
-var Folder = require('../logicals/folder');
 
 router.get(
     '/api/data_sources',

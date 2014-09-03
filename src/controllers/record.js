@@ -80,7 +80,7 @@ router.get(
                 data_source_id: id
             };
 
-            dimensions.forEach(function (dim, idx) {
+            dimensions.forEach(function (dim) {
                 if(!dim.value){
                     return ;
                 }
