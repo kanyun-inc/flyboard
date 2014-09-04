@@ -93,6 +93,12 @@ button#add-row{
     width: auto;
     height: auto;
 }
+
+.widget .cf-svp {
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
 .widget .cf-svp .chart{
     position: relative;
 }
