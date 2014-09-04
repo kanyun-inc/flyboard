@@ -71,7 +71,6 @@ exports.find = function (options) {
                 }
 
                 records.forEach(function (record) {
-                    console.log('data', dataSource);
                     dataSource.config.dimensions.forEach(function (dimension, idx) {
                         record[dimension.key] = record['dim' + (idx + 1)];
                         delete record['dim' + (idx + 1)];

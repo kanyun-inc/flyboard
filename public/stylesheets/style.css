@@ -6,9 +6,6 @@ table th, table td{
     background-color: #f7f3de;
 }
 
-.widget {
-    overflow: hidden;
-}
 .widget header p a{
     color: rgb(169, 169, 169);
 }
@@ -83,20 +80,39 @@ button#add-row{
 .widget {
     height: 100%;
     position: relative;
+    overflow: hidden;
+    background-color: #2b2b2b;
+    opacity: 0.75;
+    padding: 5px;
 }
+
+.widget:after {
+    background-color: #3b3b3b;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 10px;
+    right: 10px;
+    z-index: -100;
+}
+
 .widget .content {
     position: absolute;
-    top: 20px;
+    top: 25px;
     left: 0;
-    right: 0;
-    bottom: 15px;
+    right: 10px;
+    bottom: 20px;
     width: auto;
     height: auto;
 }
 
 .widget .cf-svp {
     padding-top: 15px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 25px;
 }
 
 .widget .cf-svp .chart{
@@ -175,8 +191,8 @@ button#add-row{
 
 .widget .timestamp{
     position: absolute;
-    bottom: 5px;
-    right: 0;
+    bottom: 15px;
+    right: 15px;
     font-size: 10px;
 }
 
@@ -349,6 +365,8 @@ timer[data-phase='10']{
 .modal .modal-dialog { width: 700px; }
 
 .dashboard .widget-display {
+    padding-left: 10px;
+    padding-top: 10px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -410,8 +428,6 @@ timer[data-phase='10']{
 
 .dashboard .widget-wrapper {
     position: absolute;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 .dashboard .layer .added-controller {
