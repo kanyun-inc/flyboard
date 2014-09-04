@@ -39,59 +39,42 @@ exports.find = function (options) {
         });
     }
 
-    var dateTimes = [];
+    var limitDateTimes = [];
     if (opts.limit) {
-        var limitFilter = knex('records').where(opts.query).select().distinct('date_time').orderBy('date_time', 'desc').limit(opts.limit);
-        dateTimes = limitFilter.then(function (results) {
-            return results.map(function (obj) {
+        limitDateTimes =  knex('records')
+            .where({
+                data_source_id: opts.query.data_source_id
+            })
+            .distinct('date_time').orderBy('date_time', 'desc').limit(opts.limit)
+            .then(function (objs) {
+            return objs.map(function (obj) {
                 return obj.date_time;
             });
         });
     }
 
-    return blueBird.resolve(dateTimes).then(function (dateTimes) {
-        if (opts.limit && dateTimes && dateTimes.length) {
-            ret = ret.whereIn('date_time', dateTimes);
+    return blueBird.resolve(limitDateTimes).then(function (limitDateTimes) {
+        if (opts.limit && limitDateTimes && limitDateTimes.length) {
+            ret = ret.whereIn('date_time', limitDateTimes);
         }
 
         return ret.then(function (records) {
-            var dataSourceIds = [];
+            if(!records || records.length === 0){
+                return records;
+            }
 
-            records.forEach(function (record) {
-                var ret = dataSourceIds.some(function (id) {
-                    if (id === record.data_source_id) {
-                        return true;
-                    }
-                });
+            var dataSource = DataSource.get(records[0].data_source_id);
 
-                if (!ret) {
-                    dataSourceIds.push(record.data_source_id);
+            return dataSource.then(function (dataSource) {
+                if(!dataSource.config.dimensions || dataSource.config.dimensions.length === 0) {
+                    return records;
                 }
-            });
-
-            var dataSources = dataSourceIds.map(function (id) {
-                return DataSource.get(id).then(function (dataSource) {
-                    return dataSource;
-                });
-            });
-
-            return blueBird.all(dataSources).then(function (results) {
-                var dataSources = results.reduce(function (memo, curr) {
-                    memo[curr.id] = curr;
-                    return memo;
-                }, {});
 
                 records.forEach(function (record) {
-                    var dataSource = dataSources[record.data_source_id];
-
-                    if (record.dim1) {
-                        record[dataSource.config.dimensions[0].key] = record.dim1;
-                        delete record.dim1;
-                    }
-                    if (record.dim2) {
-                        record[dataSource.config.dimensions[1].key] = record.dim2;
-                        delete record.dim2;
-                    }
+                    dataSource.config.dimensions.forEach(function (dimension, idx) {
+                        record[dimension.key] = record['dim' + (idx + 1)];
+                        delete record['dim' + (idx + 1)];
+                    });
                 });
 
                 return records;
