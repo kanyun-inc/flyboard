@@ -43,7 +43,7 @@ a:hover {
     padding: 0;
     margin: 0; }
   .cf-nav a {
-    display: block;
+    display: inline-block;
     position: relative; }
     .cf-nav a:hover {
       text-decoration: none; }
@@ -55,10 +55,10 @@ a:hover {
     .cf-nav .cf-nav-min:hover {
       text-decoration: none; }
   .cf-nav .cf-nav-max {
-    position: absolute;
+    position: relative;
     top: 0;
-    left: 25px;
-    width: 225px;
+    left: 0;
+    width: 200px;
     padding: 8px 10px 8px 0; }
   .cf-nav .icon-bar {
     display: block;
@@ -88,9 +88,9 @@ a:hover {
   .cf-nav-state-max li .cf-nav-max {
     display: inline-block; }
   .cf-nav-state-max li .cf-nav-max {
-    width: 200px; }
+    width: 190px; }
 .cf-nav-state-max.cf-nav {
-  width: 250px;
+  width: 270px;
   -webkit-transition: width 0.3s ease;
   -moz-transition: width 0.3s ease;
   -o-transition: width 0.3s ease;

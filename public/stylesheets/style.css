@@ -293,6 +293,21 @@ nav {
     font-size: 18px;
 }
 
+.cf-nav .cf-nav-shortcut {
+    position: relative;
+}
+.cf-nav .cf-nav-shortcut .edit-dashboard{
+    position: absolute;
+    left: 225px;
+    top: 10px;
+}
+
+.cf-nav .cf-nav-shortcut .delete-dashboard {
+    position: absolute;
+    left: 250px;
+    top : 10px;
+}
+
 timer {
     width: 1.5em;
     height: 1.5em;
