@@ -25,6 +25,7 @@
     "underscore": "~1.6.0",
     "angular-bootstrap": "~0.11.0",
     "angular-animate": "~1.2.21",
-    "angular-dragdrop": "~1.0.7"
+    "angular-dragdrop": "~1.0.7",
+    "font-awesome": "~4.2.0"
   }
 }

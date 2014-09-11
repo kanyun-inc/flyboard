@@ -15,6 +15,7 @@ var staticFiles = {
         'bower_components/angular-animate/angular-animate.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
         'bower_components/angular-dragdrop/src/angular-dragdrop.min.js',
+        'bower_components/underscore/underscore.js',
 
         'controlfrog/js/easypiechart.js',
         'controlfrog/js/excanvas.min.js',
@@ -39,7 +40,7 @@ var staticFiles = {
         'controlfrog/css/controlfrog.css',
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
         'bower_components/jquery-ui/themes/ui-lightness/jquery-ui.css',
-        'font-awesome-4.1.0/css/font-awesome.min.css',
+        'bower_components/font-awesome/css/font-awesome.min.css',
         'stylesheets/style.css'
     ]
 };
