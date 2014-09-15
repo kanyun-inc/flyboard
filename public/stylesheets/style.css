@@ -2,7 +2,8 @@ table th, table td{
     text-align: center;
 }
 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
     background-color: #f7f3de;
 }
 
@@ -156,7 +157,8 @@ button#add-row{
     position: absolute;
     font-size: 1.5em;
     bottom: 18%;
-    right: 35%;
+    left: 0;
+    right: 0;
 }
 
 .widget .cf-svp .chart .metrics .metric {
@@ -174,7 +176,7 @@ button#add-row{
 .widget .cf-svmc .flexWrapper{
     display: flex;
     align-items: flex-end;
-    height: 50%;
+    height: 60%;
 }
 
 .widget .cf-svmc .metric{
@@ -182,7 +184,7 @@ button#add-row{
 }
 
 .widget .cf-svmc .change {
-    height: 50%;
+    height: 40%;
 }
 
 .widget .cf-svmc .arrow {
@@ -230,7 +232,8 @@ nav {
     float: right;
 }
 
-.stat .stat-data table th, .stat .stat-data table td{
+.stat .stat-data table th,
+.stat .stat-data table td{
     text-align: left;
 }
 
@@ -262,7 +265,8 @@ nav {
     display: none;
 }
 
-.view-animate .dashboard.ng-enter, .view-animate .dashboard.ng-leave {
+.view-animate .dashboard.ng-enter,
+.view-animate .dashboard.ng-leave {
   position:absolute;
   top:0;
   left:0;
@@ -411,6 +415,16 @@ timer[data-phase='10']{
     right: 0;
     bottom: 0;
     top: 0;
+}
+
+.dashboard .link-stat-layer {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
 }
 
 .dashboard .layer .controller{
@@ -648,9 +662,20 @@ timer[data-phase='10']{
     left: 91.66666667%
 }
 
+.data-source-tree {
+    border-right: 2px solid #ccc;
+    padding-left: 30px;
+}
+
+.data-source-tree .new-data-source,
+.data-source-tree .new-folder {
+    display: inline-block;
+    margin-right: 45px;
+    margin-bottom: 30px;
+}
+
 .tree {
-    width: 45%;
-    margin-left: 50px;
+    border-right: 2px solid #ccc;
 }
 
 .tree ul li{
@@ -662,8 +687,36 @@ timer[data-phase='10']{
 }
 
 .tree ul li.folder-item a {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+.tree ul li.folder-item .folder-item-info:hover {
+    background-color: #eeeeee;
+}
+
+.tree ul li.folder-item .folder-item-edit input{
+    width: 45%;
+}
+
+.tree ul li.folder-item a.radio {
+    display: inline-block;
+}
+
+.tree .folder-item .edit-buttons,
+.tree .folder-item .edit-buttons div,
+.tree .folder-item .folder-item-edit input {
+    display: inline-block;
+}
+
+.tree .folder-item .edit-buttons {
+    margin-left: 10px;
+}
+
+.tree .folder-item .edit-buttons a,
+.tree .folder-item .folder-item-edit a {
+    margin-left: 20px;
+    color: lightseagreen;
 }
 
 .tree ul .ul-tabular{
@@ -684,7 +737,8 @@ timer[data-phase='10']{
     width: 65px;
 }
 
-.tree ul li .li-common-tabular::before, .tree ul li .li-last-tabular::before {
+.tree ul li .li-common-tabular::before,
+.tree ul li .li-last-tabular::before {
     display: block;
     position: absolute;
     right: 0px;
@@ -716,8 +770,17 @@ timer[data-phase='10']{
     cursor: hand;
 }
 
-.tree ul li.data-source-item:hover, .tree ul li.data-source-item.selected {
-    background-color: #eeeeee;
+.tree ul li.data-source-item:hover {
+    background-color: #dddddd;
+    @border-radius-small: 5px;
+}
+
+.tree ul li.data-source-item .selected {
+    background-color: #dddddd;
+    padding: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .tree ul .data-source-item div{
@@ -761,3 +824,52 @@ select.dimension-item {
 .data-source-form .aggregation-item {
     margin-top: 10px;
 }
+
+/** splited screen scroll **/
+div[sticky] {
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: auto;
+    margin-right: 15px;
+    box-sizing: border-box;
+}
+
+div[sticky].fixed {
+    position: fixed;
+    overflow-y: scroll;
+    top: 0;
+    height: 100%;
+}
+
+@media (max-width: 960px) {
+    div[sticky] {
+        position: static;
+        overflow: inherit;
+    }
+
+    div[sticky].fixed {
+        position: static;
+        overflow: inherit;
+        top: auto;
+        height: auto;
+    }
+}
+
+.data-source a {
+    text-decoration: none;
+}
+
+.data-source .delete-data-source {
+    position: fixed;
+    bottom: 20px;
+}
+
+.data-source-content #data-source-info,
+.data-source-content #data-source-method,
+.data-source-content #data-source-test,
+.data-source-content #data-source-records
+{
+    margin-top: 30px;
+}
+
