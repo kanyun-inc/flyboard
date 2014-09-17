@@ -873,3 +873,6 @@ div[sticky].fixed {
     margin-top: 30px;
 }
 
+.error-message {
+    color: darkred;
+}
