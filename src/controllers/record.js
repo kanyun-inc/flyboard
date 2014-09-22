@@ -81,7 +81,7 @@ router.get(
             };
 
             dimensions.forEach(function (dim) {
-                if(!dim.value){
+                if(!dim.value || dim.value === 'sum' || dim.value === 'ignore'){
                     return ;
                 }
 
