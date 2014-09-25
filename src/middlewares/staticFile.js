@@ -30,6 +30,8 @@ var staticFiles = {
         'bower_components/highcharts/highcharts.js',
 
         'utils.js',
+        'services.js',
+        'directives.js',
 
         'index.js',
         'admin.js',
