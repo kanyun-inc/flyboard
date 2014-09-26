@@ -295,7 +295,7 @@ nav {
 }
 
 .cf-nav .edit-layout {
-    position: absolute;
+    position: fixed;
     bottom: 35px;
     left: 3px;
 }
@@ -317,6 +317,10 @@ nav {
     position: absolute;
     left: 250px;
     top : 10px;
+}
+
+.cf-nav .cf-nav-min-overflow-hidden {
+    overflow: hidden;
 }
 
 timer {

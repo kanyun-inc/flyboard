@@ -84,13 +84,15 @@ a:hover {
 .cf-nav-state-max li {
   display: list-item;
   width: 100%; }
+  .cf-nav-state-max li a {
+  width: 280px; }
   .cf-nav-state-max li .cf-nav-min,
   .cf-nav-state-max li .cf-nav-max {
     display: inline-block; }
   .cf-nav-state-max li .cf-nav-max {
     width: 190px; }
 .cf-nav-state-max.cf-nav {
-  width: 270px;
+  width: 290px;
   -webkit-transition: width 0.3s ease;
   -moz-transition: width 0.3s ease;
   -o-transition: width 0.3s ease;

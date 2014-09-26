@@ -21,26 +21,30 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <ul>
-                <li ng-repeat="item in dashboards" class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
-                    <a href="#/dashboards/{{item.id}}" class="{{ item.id === dashboard.id ? 'current active' : null}}" ng-click="setUnfold(false)">
-                        <span class="cf-nav-min">{{$index + 1}}</span>
-                        <span class="cf-nav-max">{{item.name}}
-                        </span>
-                    </a>
-                    <span ng-controller="EditDashboardModalCtrl">
-                        <a href="" class="edit-dashboard" ng-click="open(item)" ng-if="unfold"><i class="fa fa-pencil-square-o"></i></a>
-                    </span>
-                    <span ng-controller="confirmDeleteDashboardCtrl">
-                        <a href="" class="delete-dashboard" ng-click="open(item)" ng-if="unfold"><i class="fa fa-minus-circle"></i></a>
-                    </span>
-                </li>
-                <li class="cf-nav-shortcut" ng-controller="EditDashboardModalCtrl">
-                    <a href="" ng-click="open()" class="new-dashboard">
-                        <i class="fa fa-plus-circle cf-nav-min"></i>
-                    </a>
-                </li>
-            </ul>
+            <div sticky ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
+                <ul>
+                    <li ng-repeat="item in dashboards" class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
+                        <a href="#/dashboards/{{item.id}}" class="{{ item.id === dashboard.id ? 'current active' : null}}" ng-click="setUnfold(false)">
+                            <span class="cf-nav-min">{{$index + 1}}</span>
+                            <span class="cf-nav-max">{{item.name}}</span>
+
+                            <span ng-controller="EditDashboardModalCtrl">
+                                <a href="" class="edit-dashboard" ng-click="open(item)" ng-if="unfold"><i class="fa fa-pencil-square-o"></i></a>
+                            </span>
+
+                            <span ng-controller="confirmDeleteDashboardCtrl">
+                                <a href="" class="delete-dashboard" ng-click="open(item)" ng-if="unfold"><i class="fa fa-minus-circle"></i></a>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="cf-nav-shortcut" ng-controller="EditDashboardModalCtrl">
+                        <a href="" ng-click="open()" class="new-dashboard">
+                            <i class="fa fa-plus-circle cf-nav-min"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
 
             <div class="edit-layout"><a href=""><span class="glyphicon glyphicon-cog" ng-click="toggleEditLayoutMode()"></span></a></div>
 
