@@ -83,6 +83,9 @@ describe('dataSource controller', function(){
                         },{
                             key: 'course',
                             name: '课程'
+                        },{
+                            key: 'country',
+                            name: '国家'
                         }]
                     }
                 })
