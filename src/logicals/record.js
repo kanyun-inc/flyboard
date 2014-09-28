@@ -91,13 +91,11 @@ exports.get = function (id) {
 
         return DataSource.get(obj.data_source_id)
             .then(function (dataSource) {
-                if (obj.dim1) {
-                    obj[dataSource.config.dimensions[0].key] = obj.dim1;
-                    delete obj.dim1;
-                }
-                if (obj.dim2) {
-                    obj[dataSource.config.dimensions[1].key] = obj.dim2;
-                    delete obj.dim2;
+                if(dataSource.config.dimensions && dataSource.config.dimensions.length){
+                    dataSource.config.dimensions.forEach(function (dimension, idx) {
+                        obj[dimension.key] = obj['dim' + (idx + 1)];
+                        delete obj['dim' + (idx + 1)];
+                    });
                 }
 
                 return obj;
@@ -110,16 +108,12 @@ exports.save = function (obj) {
     obj.updated_at = obj.created_at;
     obj.date_time = new Date(obj.year || 0, (obj.month - 1) || 0, obj.day || 0, obj.hour || 0, obj.minute || 0, obj.second || 0);
 
-    var dimensions = [];
     return DataSource.get(obj.data_source_id).then(function (dataSource) {
         if (dataSource.config && dataSource.config.dimensions) {
-            dataSource.config.dimensions.forEach(function (dim) {
-                dimensions.push(obj[dim.key]);
+            dataSource.config.dimensions.forEach(function (dim, idx) {
+                obj['dim' + (idx + 1)] = obj[dim.key] || null;
                 delete obj[dim.key];
             });
-
-            obj.dim1 = dimensions[0] || null;
-            obj.dim2 = dimensions[1] || null;
         }
 
         return knex('records').insert(obj).returning('id').then(function (ret) {
