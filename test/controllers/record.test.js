@@ -34,6 +34,12 @@ describe('record controller', function(){
                             dimensions: [{
                                 key: 'course',
                                 name: '课程'
+                            },{
+                                key: 'client',
+                                name: '客户端'
+                            },{
+                                key: 'versions',
+                                name: '版本号'
                             }]
                         }
                     });
@@ -53,7 +59,9 @@ describe('record controller', function(){
                                 year: 2014,
                                 month: 6,
                                 day: 28,
-                                course: 'math'
+                                course: 'math',
+                                client: 'ANDROID',
+                                versions: '3.0.1'
                             }),
                             Record.save({
                                 data_source_id: dataSourceId,
@@ -61,7 +69,9 @@ describe('record controller', function(){
                                 year: 2014,
                                 month: 6,
                                 day: 29,
-                                course: 'languge'
+                                course: 'languge',
+                                client: 'IPHONE',
+                                versions: '2.0.3'
                             }),
                             Record.save({
                                 data_source_id: dataSourceId,
@@ -69,7 +79,9 @@ describe('record controller', function(){
                                 year: 2014,
                                 month: 6,
                                 day: 30,
-                                course: 'music'
+                                course: 'music',
+                                client: 'ANDROID',
+                                versions: '3.0.1'
                             })
                         ]);
                     });
@@ -96,7 +108,9 @@ describe('record controller', function(){
                 .post('/api/projects/' + projectUuid + '/data_sources/' + key)
                 .send({
                     value: 100,
-                    course: 'english'
+                    course: 'english',
+                    client: 'ANDROID',
+                    versions: '3.0.1'
                 })
                 .expect(200)
                 .expect('content-type', /json/)
@@ -119,10 +133,13 @@ describe('record controller', function(){
                 .expect(200)
                 .expect(function (res) {
                     assert.equal(res.body.course, 'english');
+                    assert.equal(res.body.client, 'ANDROID');
+                    assert.equal(res.body.versions, '3.0.1');
                 })
                 .end(done);
         });
     });
+
     describe('GET /api/data_sources/:id/records', function(){
         it('should return limit numbers of record', function (done){
             request(app)
