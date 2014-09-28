@@ -53,7 +53,7 @@ router.post(
         }
 
         if(config && config.dimensions){
-            if(config.dimensions.length > 2){
+            if(config.dimensions.length > 3){
                 return res.send(400);
             }
         }
