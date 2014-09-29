@@ -294,14 +294,74 @@ nav {
   display: block;
 }
 
-.cf-nav .edit-layout {
+.opt-nav {
+    position: absolute;
+    height: 55px;
+    width: 100%;
+    top: 0;
+    background-color: #222222;
+    opacity: .8;
+    z-index: 109;
     position: fixed;
-    bottom: 35px;
-    left: 3px;
+
+    transition: 500ms linear all;
 }
 
-.cf-nav .edit-layout span {
-    font-size: 18px;
+.opt-nav-fold {
+    top: -42px;
+}
+
+.opt-nav-unfold {
+    top: 0;
+}
+
+.opt-nav .content {
+    padding: 15px 20px 15px 20px;
+
+    height: 85%;
+}
+
+.opt-nav .content a {
+    color: darkgrey;
+}
+
+.opt-nav .content .select-project-btn {
+    position: absolute;
+    right: 80px;
+    bottom: 15px;
+}
+
+.opt-nav .unfold-icon {
+    /* 水平居中*/
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-pack:center;/* IE 10 */
+
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+    /* 垂直居中 */
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-align:center;/* IE 10 */
+
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+
+    display: flex;
+    align-items: flex-end;
+    height: 12%;
+}
+
+.cf-nav {
+    margin-top: 10px;
+}
+
+.opt-nav .edit-layout-btn {
+    position: absolute;
+    right: 30px;
 }
 
 .cf-nav .cf-nav-shortcut {

@@ -175,4 +175,26 @@ describe('record controller', function(){
                 });
         });
     });
+
+    describe('DELETE /api/data_sources/:id/records', function(){
+        it('should remove all records', function(done){
+            request(app)
+                .delete('/api/data_sources/' + dataSourceId + '/records')
+                .expect(200)
+                .end(function(err){
+                    if(err){
+                        return done(err);
+                    }
+
+                    request(app)
+                        .get('/api/data_sources/' + dataSourceId + '/records')
+                        .expect('content-type', /json/)
+                        .expect(200)
+                        .expect(function (res){
+                            assert.equal(res.body.length, 0);
+                        })
+                        .end(done);
+                });
+        });
+    });
 });
