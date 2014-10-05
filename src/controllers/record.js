@@ -4,6 +4,7 @@ var router = require('express').Router();
 module.exports = router;
 
 var bodyParser = require('body-parser');
+var blueBird = require('bluebird');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
 
@@ -113,5 +114,35 @@ router.delete(
         Record.remove(id).then(function () {
             res.send(200);
         }).catch(next);
+    }
+);
+
+router.delete('/api/data_sources/:id/records',
+    function(req, res, next) {
+        var id = req.param('id') ? parseInt(req.param('id'), 10) : null;
+
+        if(!id) {
+            return res.send(400);
+        }
+
+        DataSource.get(id).then(function (dataSource) {
+            if(!dataSource) {
+                return res.send(404);
+            }
+
+            Record.find({
+                query: {
+                    data_source_id: dataSource.id
+                }
+            }).then(function(records){
+                var promises = records.map(function (record) {
+                    return Record.remove(record.id);
+                });
+
+                blueBird.all(promises).then(function (){
+                    res.send(200);
+                });
+            }).catch(next);
+        });
     }
 );

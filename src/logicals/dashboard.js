@@ -26,8 +26,9 @@ function dbToObj(dashboard) {
     });
 }
 
-exports.find = function () {
-    return knex('dashboards').select().map(dbToObj);
+exports.find = function (query) {
+    query = query || {};
+    return knex('dashboards').where(query).select().map(dbToObj);
 };
 
 exports.get = function (id) {

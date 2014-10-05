@@ -294,14 +294,84 @@ nav {
   display: block;
 }
 
-.cf-nav .edit-layout {
+.opt-nav {
+    position: absolute;
+    height: 55px;
+    width: 100%;
+    top: 0;
+    background-color: #222222;
+    opacity: .8;
+    z-index: 109;
     position: fixed;
-    bottom: 35px;
-    left: 3px;
+
+    transition: 500ms linear all;
 }
 
-.cf-nav .edit-layout span {
-    font-size: 18px;
+.opt-nav-fold {
+    top: -45px;
+}
+
+.opt-nav-unfold {
+    top: 0;
+}
+
+.opt-nav .content {
+    padding: 15px 20px 15px 20px;
+
+    height: 85%;
+}
+
+.opt-nav .content a {
+    color: darkgrey;
+}
+
+.opt-nav .content .select-project-btn {
+    position: absolute;
+    right: 100px;
+    bottom: 15px;
+}
+
+.opt-nav .content .select-project-btn li {
+    position: relative;
+}
+
+.opt-nav .content .select-project-btn li .edit-project {
+    position: absolute;
+    right: 0;
+    top: 4px;
+}
+
+.opt-nav .unfold-icon {
+    /* 水平居中*/
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-pack:center;/* IE 10 */
+
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
+
+    /* 垂直居中 */
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-align:center;/* IE 10 */
+
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+
+    display: flex;
+    align-items: flex-end;
+    height: 12%;
+}
+
+.cf-nav {
+    margin-top: 10px;
+}
+
+.opt-nav .edit-layout-btn {
+    position: absolute;
+    right: 50px;
 }
 
 .cf-nav .cf-nav-shortcut {
@@ -398,6 +468,7 @@ timer[data-phase='10']{
 .modal .modal-dialog { width: 700px; }
 
 .dashboard .widget-display {
+    margin-top: 10px;
     padding-left: 10px;
     padding-top: 10px;
     position: absolute;
@@ -676,7 +747,7 @@ timer[data-phase='10']{
 }
 
 .tree {
-    border-right: 2px solid #ccc;
+    width: 100%;
 }
 
 .tree ul li{
@@ -727,7 +798,6 @@ timer[data-phase='10']{
     width: 10px;
     height: 100%;
     border-left: 2px dashed #addbe6;
-
 }
 
 .tree ul li .li-tabular {
@@ -889,3 +959,13 @@ div[sticky].fixed {
 .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+div.select-project {
+    float: right;
+}
+
+div.select-project button{
+    background-color: #000000;
+    color: #fff;
+    margin-top: 8px;
+}

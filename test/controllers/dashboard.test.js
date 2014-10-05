@@ -4,6 +4,7 @@ var app = require('../../src/app');
 var request = require('supertest');
 
 describe('dashboard controller', function(){
+    var projectId = null;
     var dashboardId = null;
 
     describe('GET /api/dashboards', function(){
@@ -18,19 +19,34 @@ describe('dashboard controller', function(){
     describe('POST /api/dashboards', function(){
         it('should create a dashboard', function(done){
             request(app)
-                .post('/api/dashboards')
+                .post('/api/projects')
                 .send({
-                    name: 'users'
+                    name: 'ape'
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res){
-                    if(err){
+                .end(function (err, res) {
+                    if (err) {
                         return done(err);
                     }
-                    dashboardId = res.body.id;
-                    done();
-                })
+                    projectId = res.body.id;
+
+                    request(app)
+                        .post('/api/dashboards')
+                        .send({
+                            name: 'users',
+                            project_id: projectId
+                        })
+                        .expect(200)
+                        .expect('content-type', /json/)
+                        .end(function(err, res){
+                            if(err){
+                                return done(err);
+                            }
+                            dashboardId = res.body.id;
+                            done();
+                        });
+                });
         });
     });
 
@@ -79,7 +95,7 @@ describe('dashboard controller', function(){
             request(app)
                 .put('/api/dashboards/' + dashboardId)
                 .send({
-                    name: ''
+                    name: null
                 })
                 .expect(400)
                 .end(done);

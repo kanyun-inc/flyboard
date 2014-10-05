@@ -4,28 +4,44 @@ var app = require('../../src/app');
 var request = require('supertest');
 
 describe('widget controller', function(){
+    var projectId = null;
     var dashboardId = null;
     var widgetId = null;
 
     describe('GET /api/dashboards/:dashboardId/widgets', function(){
         it('should return widget list', function(done){
             request(app)
-                .post('/api/dashboards')
+                .post('/api/projects')
                 .send({
-                    name: 'users'
+                    name: 'ape'
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function(err, res){
-                    if(err){
+                .end(function (err, res) {
+                    if (err) {
                         return done(err);
                     }
-                    dashboardId = res.body.id;
+                    projectId = res.body.id;
 
                     request(app)
-                        .get('/api/dashboards/' + dashboardId + '/widgets')
+                        .post('/api/dashboards')
+                        .send({
+                            name: 'users',
+                            project_id: projectId
+                        })
+                        .expect(200)
                         .expect('content-type', /json/)
-                        .expect(200, '[]', done);
+                        .end(function(err, res){
+                            if(err){
+                                return done(err);
+                            }
+                            dashboardId = res.body.id;
+
+                            request(app)
+                                .get('/api/dashboards/' + dashboardId + '/widgets')
+                                .expect('content-type', /json/)
+                                .expect(200, '[]', done);
+                        });
                 });
         });
     });

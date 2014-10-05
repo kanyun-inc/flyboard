@@ -48,7 +48,7 @@ router.post(
         });
 
         if (!widget.dashboard_id || !widget.type || !widget.config) {
-            res.send(400);
+            return res.send(400);
         }
 
         Widget.save(widget).then(function(id){
@@ -65,7 +65,7 @@ router.put(
     function(req, res, next) {
         var widget = req.body;
         if(!widget.type && !widget.config){
-            res.send(400);
+            return res.send(400);
         }
 
         var id = parseInt(req.param('id'), 10);

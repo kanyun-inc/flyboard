@@ -30,7 +30,7 @@ router.post(
     function (req, res, next) {
         var project = req.body;
         if (!project.name) {
-            res.send(400);
+            return res.send(400);
         }
 
         Project.save(project).then(function (id) {
@@ -47,7 +47,7 @@ router.put(
     function (req, res, next) {
         var project = req.body;
         if (!project.name) {
-            res.send(400);
+            return res.send(400);
         }
 
         var id = parseInt(req.param('id'), 10);
