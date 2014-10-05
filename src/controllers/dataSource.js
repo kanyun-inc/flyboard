@@ -13,11 +13,17 @@ router.get(
     '/api/data_sources',
     function(req, res, next){
         var query = {};
-        var folderId = parseInt(req.param('folder_id'), 10);
-        folderId = (!folderId && folderId !== 0) ? -1 : folderId;
 
+        var folderId = parseInt(req.param('folder_id'), 10);
+        var projectId = parseInt(req.param('project_id'), 10);
+
+        folderId = (!folderId && folderId !== 0) ? -1 : folderId;
         if(folderId !== -1){
             query.folder_id = folderId === 0 ? null : folderId;
+        }
+
+        if(projectId){
+            query.project_id = projectId;
         }
 
         DataSource.find(query).then(function(dataSources){

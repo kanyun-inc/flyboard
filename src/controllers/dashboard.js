@@ -5,11 +5,11 @@ module.exports = router;
 
 var bodyParser = require('body-parser');
 var Dashboard = require('../logicals/dashboard');
+var Project = require('../logicals/project');
 
 router.get('/api/dashboards', function(req, res, next){
     var projectId = req.param('project_id') ? parseInt(req.param('project_id', 10)) : null;
     var query = {};
-    console.log('ss',projectId);
 
     if(projectId) {
         query.project_id = projectId;
@@ -41,6 +41,12 @@ router.post(
             return res.send(400);
         }
 
+        Project.get(dashboard.project_id).then(function(project) {
+            if(!project){
+                return res.send(404);
+            }
+        });
+
         Dashboard.save(dashboard).then(function(id){
             return Dashboard.get(id);
         }).then(function(dashboard){
@@ -56,6 +62,14 @@ router.put(
         var dashboard = req.body;
         if (dashboard.name !== undefined && !dashboard.name) {
             return res.send(400);
+        }
+
+        if(dashboard.project_id){
+            Project.get(dashboard.project_id).then(function(project) {
+                if(!project){
+                    return res.send(404);
+                }
+            });
         }
 
         var id = parseInt(req.param('id'), 10);

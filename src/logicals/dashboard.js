@@ -28,7 +28,6 @@ function dbToObj(dashboard) {
 
 exports.find = function (query) {
     query = query || {};
-    console.log('qq', query);
     return knex('dashboards').where(query).select().map(dbToObj);
 };
 
