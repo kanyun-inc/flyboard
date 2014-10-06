@@ -22,7 +22,7 @@
                 <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
                     {{project.name}} <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" role="menu" ng-controller="EditProjectModalCtrl">
+                <ul class="dropdown-menu pull-right" role="menu" ng-controller="EditProjectModalCtrl">
                     <li ng-repeat="project in projects">
                         <a href="" ng-click="selectProject(project)">{{project.name}}</a>
                         <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
