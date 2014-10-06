@@ -8,7 +8,7 @@ exports.find = function (options) {
     var opts = options || {};
 
     opts.query = (opts && opts.query) || {};
-    var ret = knex('records').where(opts.query).select();
+    var ret = knex('records').where(opts.query).limit(opts.count).select();
 
     if (opts.period) {
         var beginTime = opts.period.begin;

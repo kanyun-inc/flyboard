@@ -58,6 +58,7 @@ router.get(
     function(req, res, next){
         var id = parseInt(req.param('id', 10));
         var limit = parseInt(req.param('limit') || 0, 10);
+        var count = parseInt(req.param('count') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
         var distinct = req.param('distinct') || null;
         var periodValue = (req.param('period') || '').split(',');
@@ -96,6 +97,7 @@ router.get(
 
             Record.find({
                 query: query,
+                count: count,
                 limit: limit,
                 orderBy: orderBy,
                 period: period,
