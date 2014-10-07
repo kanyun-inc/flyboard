@@ -132,18 +132,8 @@ router.delete('/api/data_sources/:id/records',
                 return res.send(404);
             }
 
-            Record.find({
-                query: {
-                    data_source_id: dataSource.id
-                }
-            }).then(function(records){
-                var promises = records.map(function (record) {
-                    return Record.remove(record.id);
-                });
-
-                blueBird.all(promises).then(function (){
-                    res.send(200);
-                });
+            Record.removeList(dataSource.id).then(function (){
+                res.send(200);
             }).catch(next);
         });
     }

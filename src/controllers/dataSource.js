@@ -108,22 +108,11 @@ router.delete(
                     return res.send(404);
                 }
 
-                var promises = Record.find({
-                    query: {
-                       data_source_id: dataSource.id
-                    }
-                }).then(function (records) {
-                    return records.map(function (record) {
-                        return Record.remove(record.id);
+                Record.removeList(dataSource.id).then(function () {
+                    DataSource.remove(dataSource.id).then(function () {
+                        res.send(200);
                     });
                 });
-
-                blueBird.all(promises).then(function (){
-
-                    DataSource.remove(dataSource.id).then(function (){
-                        res.send(200);
-                    }).catch(next);
-                });
-            });
+        }).catch(next);
     }
 );
