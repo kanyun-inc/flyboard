@@ -4,7 +4,6 @@ var router = require('express').Router();
 module.exports = router;
 
 var bodyParser = require('body-parser');
-var blueBird = require('bluebird');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
