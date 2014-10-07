@@ -135,3 +135,7 @@ exports.update = function (id, obj) {
 exports.remove = function (id) {
     return knex('records').where('id', id).del();
 };
+
+exports.removeList = function (dataSourceId) {
+    return knex('records').where('data_source_id', dataSourceId).del();
+};
