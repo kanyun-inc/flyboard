@@ -59,6 +59,7 @@ router.put(
     '/api/dashboards/:id',
     bodyParser.json(),
     function(req, res, next){
+        console.log('@@@EDIT_DASHBOARD@@@ ' + JSON.stringify(req.body));
         var dashboard = req.body;
         if (dashboard.name !== undefined && !dashboard.name) {
             return res.send(400);
