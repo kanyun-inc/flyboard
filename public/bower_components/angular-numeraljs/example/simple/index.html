@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Angular-numeraljs Example</title>
+    <meta name="description" content="Simple example for the Angular-numeraljs module">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="../../test/lib/numeral.js"></script>
+    <script src="../../test/lib/angular/angular.js"></script>
+    <script src="../../src/angular-numeraljs.js"></script>
+
+    <script src="js/app.js"></script>
+</head>
+<body ng-controller="numeralExample">
+    <style>
+        table {
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        th {
+            text-align: left;
+            border-bottom: 1px solid #888;
+        }
+
+        input {
+            margin-left: 1rem;
+        }
+    </style>
+    <h1>Angular-numeraljs Example</h1>
+    <div>
+        <label>Test Number: 
+            <input type="text" ng-model="number" placeholder="Enter test number here" />
+        </label>
+    </div>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Format</th>
+            <th>Value</th>
+        </tr>
+        <tr ng-repeat='format in formats'>
+            <td>{{ format.name }}</td>
+            <td>{{ format.format }}</td>
+            <td>{{ number | numeraljs:format.format }}</td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -16,6 +16,8 @@ var staticFiles = {
         'bower_components/bootstrap/dist/js/bootstrap.js',
         'bower_components/angular-dragdrop/src/angular-dragdrop.min.js',
         'bower_components/underscore/underscore.js',
+        'bower_components/numeral/numeral.js',
+        'bower_components/angular-numeraljs/dist/angular-numeraljs.min.js',
 
         'controlfrog/js/easypiechart.js',
         'controlfrog/js/excanvas.min.js',

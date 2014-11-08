@@ -1,0 +1,38 @@
+{
+  "name": "angular-numeraljs-browserify-sample",
+  "description": "Browserify sample for Angular-numeraljs",
+  "version": "1.1.4",
+  "homepage": "https://github.com/baumandm/angular-numeraljs",
+  "author": "Dave Bauman <baumandm@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:baumandm/angular-numeraljs.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mit-license.org"
+    }
+  ],
+  "dependencies": {
+    "napa": "~0.4.1",
+    "angular-numeraljs": "^1.0"
+  },
+  "devDependencies": {
+    "grunt": ">= 0.4.0",
+    "grunt-browserify": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*"
+  },
+  "scripts": {
+    "install": "napa",
+    "test": "grunt karma:unit"
+  },
+  "napa": {
+    "angular": "angular/bower-angular"
+  }
+}
