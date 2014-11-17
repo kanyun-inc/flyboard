@@ -38,6 +38,7 @@ router.post(
     '/api/dashboards/:dashboardId/widgets',
     bodyParser.json(),
     function(req, res, next) {
+        console.log('@@@CREATE_WIDGET@@@ ' + JSON.stringify(req.body));
         var dashboardId = parseInt(req.param('dashboardId'), 10);
         var widget = req.body;
 
@@ -63,6 +64,7 @@ router.put(
     '/api/dashboards/:dashboardId/widgets/:id',
     bodyParser.json(),
     function(req, res, next) {
+        console.log('@@@UPDATE_WIDGET@@@ ' + JSON.stringify(req.body));
         var widget = req.body;
         if(!widget.type && !widget.config){
             return res.send(400);
@@ -82,6 +84,7 @@ router.delete(
     '/api/dashboards/:dashboardId/widgets/:id',
     function(req, res, next) {
         var id = parseInt(req.param('id'), 10);
+        console.log('@@@DELETE_WIDGET@@@ id=' + id);
 
         Widget.remove(id).then(function(){
             res.send(200);

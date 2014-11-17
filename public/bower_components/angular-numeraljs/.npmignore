@@ -1,0 +1,8 @@
+.git*
+*.DS_Store
+*.sublime-project
+*.sublime-workspace
+bower_components
+test/
+example/
+src/

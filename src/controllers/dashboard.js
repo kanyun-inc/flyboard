@@ -59,9 +59,12 @@ router.put(
     '/api/dashboards/:id',
     bodyParser.json(),
     function(req, res, next){
+        console.log('@@@EDIT_DASHBOARD@@@ ' + JSON.stringify(req.body));
         var dashboard = req.body;
         if (dashboard.name !== undefined && !dashboard.name) {
-            return res.send(400);
+            return res.status(400).send('dashboard.name 不能为空');
+        } else if (!dashboard.config || !dashboard.config.layout || !dashboard.config.layout.length) {
+            return res.status(400).send('dashboard.config.layout 不能为空');
         }
 
         if(dashboard.project_id){
