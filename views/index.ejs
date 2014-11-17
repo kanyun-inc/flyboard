@@ -53,7 +53,7 @@
         </a>
 
         <div sticky ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
-            <ul ng-if="dashboards.length">
+            <ul>
                 <li ng-repeat="item in dashboards"
                     class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
                     <a href="#/projects/{{project.id}}/dashboards/{{item.id}}"
