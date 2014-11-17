@@ -258,7 +258,11 @@ nav {
 }
 
 .dashboard {
-    height: 100%;
+    margin-top: 50px;
+    position: absolute;
+    height: auto;
+    top: 0;
+    bottom: 0;
     width: 100%;
     display: block;
     border-left: 1px solid black;
@@ -294,84 +298,38 @@ nav {
   display: block;
 }
 
-.opt-nav {
+.flyboard-app nav .select-project,
+.flyboard-app nav .edit-layout {
+    margin-right: 20px;
+}
+
+.flyboard-app nav .select-project .dropdown-menu li {
+    position: relative;
+    min-height: 26px;
+    margin-right: 40px;
+}
+
+.flyboard-app nav .select-project li .edit-project {
     position: absolute;
-    height: 55px;
-    width: 100%;
-    top: 0;
-    background-color: #222222;
-    opacity: .8;
-    z-index: 109;
-    position: fixed;
-
-    transition: 500ms linear all;
+    right: -25px;
+    top: 4px;
+    padding: 0 0 0 0;
 }
 
-.opt-nav-fold {
-    top: -45px;
+.flyboard-app nav .edit-layout {
+    float: right;
+    padding-top: 16px;
 }
 
-.opt-nav-unfold {
-    top: 0;
-}
-
-.opt-nav .content {
-    padding: 15px 20px 15px 20px;
-
-    height: 85%;
-}
-
-.opt-nav .content a {
+.flyboard-app nav .edit-layout .edit-off{
     color: darkgrey;
 }
-
-.opt-nav .content .select-project-btn {
-    position: absolute;
-    right: 100px;
-    bottom: 15px;
-}
-
-.opt-nav .content .select-project-btn li {
-    position: relative;
-}
-
-.opt-nav .content .select-project-btn li .edit-project {
-    position: absolute;
-    right: 0;
-    top: 4px;
-}
-
-.opt-nav .unfold-icon {
-    /* 水平居中*/
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -ms-flex-pack:center;/* IE 10 */
-
-    -webkit-justify-content: center;
-    -moz-justify-content: center;
-    justify-content: center;/* IE 11+,Firefox 22+,Chrome 29+,Opera 12.1*/
-
-    /* 垂直居中 */
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -ms-flex-align:center;/* IE 10 */
-
-    -webkit-align-items: center;
-    -moz-align-items: center;
-    align-items: center;
-
-    display: flex;
-    align-items: flex-end;
-    height: 12%;
+.flyboard-app nav .edit-layout .edit-on{
+    color: mediumspringgreen;
 }
 
 .cf-nav {
-    margin-top: 10px;
-}
-
-.opt-nav .edit-layout-btn {
-    position: absolute;
-    right: 50px;
+    margin-top: 50px;
 }
 
 .cf-nav .cf-nav-shortcut {
@@ -468,7 +426,6 @@ timer[data-phase='10']{
 .modal .modal-dialog { width: 700px; }
 
 .dashboard .widget-display {
-    margin-top: 10px;
     padding-left: 10px;
     padding-top: 10px;
     position: absolute;
@@ -476,6 +433,15 @@ timer[data-phase='10']{
     bottom: 0;
     left: 25px;
     right: 0;
+}
+
+.dashboard .layer,
+.dashboard .layer .grid-layer {
+    /*padding-top: 50px;*/
+}
+
+.dashboard .layer .controller {
+    /*margin-top: 50px;*/
 }
 
 .dashboard .layer {
@@ -1003,4 +969,27 @@ div.select-project button{
     background-color: #000000;
     color: #fff;
     margin-top: 8px;
+}
+
+nav .select-project .dropdown-toggle {
+    border: none;
+    color: #999;
+    background-color: #222;
+}
+nav .select-project .dropdown-menu li a.edit-project:hover,
+nav .select-project .dropdown-toggle:hover,
+nav .select-project.open .dropdown-toggle {
+    color: #fff;
+    background-color: #222;
+}
+nav .dropdown-menu li a {
+    color: #a9a9a9;
+}
+nav .open .dropedown-toggle,
+nav .select-project .dropdown-menu li a:hover{
+    background-color: #4f4f4f;
+    color: #a9a9a9;
+}
+nav .select-project .dropdown-menu{
+    background-color: #2b2b2b;
 }
