@@ -14,30 +14,36 @@
 </head>
 <body class="black flyboard-app" ng-controller="SlideCtrl" ng-class="{'view-animate': slideMode}">
 <div ng-controller="NavCtrl">
-    <div class="opt-nav" ng-class="{'opt-nav-unfold': unfoldOptNav, 'opt-nav-fold': !unfoldOptNav}"
-         ng-mouseenter="unfoldOptNav = true" ng-mouseleave="unfoldOptNav = false">
-
-        <div class="content">
-            <div class="btn-group select-project-btn">
-                <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-                    {{project.name}} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right" role="menu" ng-controller="EditProjectModalCtrl">
-                    <li ng-repeat="project in projects">
-                        <a href="" ng-click="selectProject(project)">{{project.name}}</a>
-                        <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
-                    </li>
-                    <li><a href="" class="new-project" ng-click="open(projects)">------新建------</a></li>
-                </ul>
+    <nav class="navbar-default navbar-inverse" role="navigation" ng-controller="EditProjectModalCtrl">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">FlyBoard</a>
             </div>
 
-            <div class="edit-layout-btn"><a href=""><span class="glyphicon glyphicon-cog fa-lg" ng-click="toggleEditLayoutMode()"></span></a></div>
-        </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/stat">数据</a></li>
+                    <li><a href="/admin#dataSource">数据源管理</a></li>
+                </ul>
 
-        <div class="unfold-icon">
-            <i class="fa" ng-class="{'fa-chevron-down': !unfoldOptNav, 'fa-chevron-up': unfoldOptNav}"></i>
+                <div class="edit-layout"><a href="" title="编辑布局"><span ng-class="{'edit-on': editLayoutMode, 'edit-off': !editLayoutMode}" class="glyphicon glyphicon-cog fa-lg" ng-click="toggleEditLayoutMode()"></span></a></div>
+
+                <div class="btn-group select-project" ng-if="project">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                      {{project.name}}
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li ng-repeat="project in projects" class="project-item">
+                            <a href="" class="project-name" ng-click="selectProject(project)">{{project.name}}</a>
+                            <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
+                        </li>
+                    </ul>
+                 </div>
+
+            </div>
         </div>
-    </div>
+    </nav>
 
     <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
         <a href="" class="cf-nav-toggle" ng-click="unfold = !unfold">

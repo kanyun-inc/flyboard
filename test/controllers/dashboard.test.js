@@ -73,7 +73,12 @@ describe('dashboard controller', function(){
             request(app)
                 .put('/api/dashboards/' + dashboardId)
                 .send({
-                    name: 'apt'
+                    name: 'apt',
+                    config: {
+                        layout:[
+                            {'id':3,'first_grid':[0,0],'last_grid':[1,1]}
+                        ]
+                    }
                 })
                 .expect(200)
                 .expect('content-type', /json/)
@@ -84,7 +89,13 @@ describe('dashboard controller', function(){
             request(app)
                 .put('/api/dashboards/' + dashboardId)
                 .send({
-                    config: 'hello'
+                    name: 'apt',
+                    config: {
+                        layout:[
+                            {'id':3,'first_grid':[0,0],'last_grid':[1,1]},
+                            {'id':465,'first_grid':[4,0],'last_grid':[8,5]}
+                        ]
+                    }
                 })
                 .expect(200)
                 .expect('content-type', /json/)
