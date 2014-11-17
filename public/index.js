@@ -503,7 +503,6 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
 indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$location', '$window', 'Dashboard', 'Project',
     function ($scope, $route, $routeParams, $q, $location, $window, Dashboard, Project) {
         $scope.unfold = false;
-        $scope.unfoldOptNav = false;
         $scope.editLayoutMode = false;
         var lastProjectId = null;
 
@@ -584,7 +583,6 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
         };
 
         $scope.selectProject = function (project) {
-            $scope.unfoldOptNav = false;
             $scope.project = project;
 
             Dashboard.query({
