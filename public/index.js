@@ -273,6 +273,10 @@ indexApp.config(['$routeProvider',
                 template: 'Loading...',
                 controller: 'UrlCtrl'
             }).
+            when('/projects/:project_id', {
+                template: '',
+                controller: 'UrlCtrl'
+            }).
             when('/projects/:project_id/dashboards/:id?', {
                 templateUrl: '/public/src/index.html',
                 controller: 'IndexCtrl'
@@ -287,27 +291,44 @@ indexApp.config(['$routeProvider',
     }
 ]);
 
-indexApp.controller('UrlCtrl', ['$scope', '$location', '$q', 'Project', 'Dashboard',
-    function ($scope, $location, $q, Project, Dashboard){
+indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Project', 'Dashboard',
+    function ($scope, $routeParams, $location, $q, Project, Dashboard){
         $scope.dashboard = null;
+        var projectPromise = null;
 
-        Project.query().$promise.then(function (projects) {
-            if(!projects || !projects.length){
-                return ;
-            }
+        if($routeParams.project_id){
+            projectPromise = Project.get({
+                id: $routeParams.project_id
+            }).$promise.then(function (project){
+                return project;
+            });
+        }
+        else{
+            projectPromise = Project.query().$promise.then(function (projects) {
+                if (!projects || !projects.length) {
+                    return null;
+                }
 
+                return projects[0];
+            });
+        }
+
+        if(!projectPromise){
+            return ;
+        }
+
+        projectPromise.then(function(project){
             Dashboard.query({
-                project_id: projects[0].id
+                project_id: project.id
             }).$promise.then(function (dashboards) {
                 if(!dashboards || !dashboards.length) {
                     return ;
                 }
 
-                var url = '/projects/' + projects[0].id + '/dashboards/' + dashboards[0].id;
+                var url = '/projects/' + project.id + '/dashboards/' + dashboards[0].id;
                 $location.path(url);
             });
         });
-
     }
 ]);
 
@@ -466,10 +487,11 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
     }
 ]);
 
-indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$location', '$window', 'Dashboard', 'Project',
-    function ($scope, $route, $routeParams, $q, $location, $window, Dashboard, Project) {
+indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$location', '$window', 'Dashboard', 'Project', 'NavUrl',
+    function ($scope, $route, $routeParams, $q, $location, $window, Dashboard, Project, NavUrl) {
         $scope.unfold = false;
         $scope.editLayoutMode = false;
+        $scope.NavUrl = NavUrl;
         var lastProjectId = null;
 
         function init(evt) {
