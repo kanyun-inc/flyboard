@@ -17,13 +17,13 @@
         <nav class="navbar-default navbar-inverse" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">FlyBoard</a>
+                    <a class="navbar-brand" ng-href="{{NavUrl('index')}}">FlyBoard</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="/stat">数据</a></li>
-                        <li class="active"><a href="/admin#dataSource">数据源管理</a></li>
+                        <li><a ng-href="{{NavUrl('stat')}}">数据</a></li>
+                        <li class="active"><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
                     </ul>
 
                     <div class="btn-group select-project" ng-if="project">
