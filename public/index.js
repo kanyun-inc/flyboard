@@ -321,12 +321,6 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
                 return ;
             }
 
-            //if editLayoutCtrl, no slide
-            if ($route.current.$$route && $route.current.$$route.controller === 'editLayoutCtrl') {
-                $($window).off('mousemove', resetCheck);
-                stopCheck();
-            }
-
             var projectsPromise = Project.query().$promise;
 
             var projectPromise = projectsPromise.then(function (projects) {
@@ -461,39 +455,11 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
             $scope.slideMode = false;
         }
 
-        // check away from keyboard
-        var checkTimer = null;
-
-        function startCheck() {
-            stopCheck();
-
-            checkTimer = $timeout(startSlide, SLIDE_INTERVAL_TIME);
-        }
-
-        function stopCheck() {
-            if (checkTimer) {
-                $timeout.cancel(checkTimer);
-                checkTimer = null;
-            }
-        }
-
-        function resetCheck() {
-            stopSlide();
-            stopCheck();
-            stopPhaseTimer();
-            stopPhaseDelayTimer();
-
-            startCheck();
-        }
-
-        startCheck();
-        $($window).on('mousemove', resetCheck);
+        $scope.startSlide = startSlide;
+        $scope.stopSlide = stopSlide;
 
         $scope.$on('$destroy', function () {
-            $($window).off('mousemove', resetCheck);
-
             stopSlide();
-            stopCheck();
             stopPhaseTimer();
             stopPhaseDelayTimer();
         });
@@ -566,6 +532,15 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
 
         angular.element($window).bind('resize', init);
         $scope.$on('$routeChangeSuccess', init);
+
+        $scope.toggleSlideMode = function () {
+            if($scope.slideMode){
+                $scope.stopSlide();
+            }
+            else{
+                $scope.startSlide();
+            }
+        };
 
         $scope.toggleEditLayoutMode = function () {
             if(!$scope.project || !$scope.dashboard){
@@ -1673,6 +1648,12 @@ indexApp.directive('widgetSpline', [
                         return;
                     }
 
+                    //timestamp
+                    if(dataSeries && dataSeries.length){
+                        var timeStamp = new Date(dataSeries[0].data[dataSeries[0].data.length - 1].x);
+                        $scope.updatedTime = formatDate(timeStamp);
+                    }
+
                     //redraw the chart
                     function redraw() {
                         var chart = this;
@@ -1680,6 +1661,12 @@ indexApp.directive('widgetSpline', [
                         var promises = requestData();
 
                         $q.all(promises).then(function (dataSeries) {
+                            //timestamp
+                            if(dataSeries && dataSeries.length){
+                                var timeStamp = new Date(dataSeries[0].data[dataSeries[0].data.length - 1].x);
+                                $scope.updatedTime = formatDate(timeStamp);
+                            }
+
                             for (var idx = chart.series.length - 1; idx >= 0; idx--) {
                                 chart.series[idx].remove(true);
                             }
@@ -1758,8 +1745,6 @@ indexApp.directive('widgetSpline', [
                         }
                     });
 
-                    $scope.updatedTime = formatDate(new Date());
-
                     function resizeWidget(evt, data) {
                         if (data && data.id === $scope.widget.id) {
                             chart.reflow();
@@ -1831,38 +1816,38 @@ indexApp.directive('widgetPie', [
                         return DataSource.get({
                             id: config.dataInfos[0].id
                         }).$promise.then(function (dataSource) {
-                                return Record.query({
-                                    id: dataSource.id,
-                                    limit: 1
-                                }).$promise.then(function (response) {
-                                        var respList = aggregationAndFilter(response, config.dataInfos[0], 'filter');
+                            return Record.query({
+                                id: dataSource.id,
+                                limit: 1
+                            }).$promise.then(function (response) {
+                                var respList = aggregationAndFilter(response, config.dataInfos[0], 'filter');
 
-                                        return respList.map(function (resp) {
-                                            if ((resp ? resp.length : 0) === 0) {
-                                                return [dataSource.name, 0];
-                                            }
-                                            return [dataSource.name + additionalLabel(config.dataInfos[0], resp), resp[0].value];
-                                        });
-                                    });
+                                return respList.map(function (resp) {
+                                    if ((resp ? resp.length : 0) === 0) {
+                                        return [dataSource.name, 0, null];
+                                    }
+                                    return [dataSource.name + additionalLabel(config.dataInfos[0], resp), resp[0].value, resp[0].date_time];
+                                });
                             });
+                        });
                     }
                     else {
                         return config.dataInfos.map(function (dataInfo) {
                             return DataSource.get({
                                 id: dataInfo.id
                             }).$promise.then(function (dataSource) {
-                                    return Record.query({
-                                        id: dataSource.id,
-                                        limit: 1
-                                    }).$promise.then(function (response) {
-                                            var resp = aggregationAndFilter(response, dataInfo, 'aggregation');
+                                return Record.query({
+                                    id: dataSource.id,
+                                    limit: 1
+                                }).$promise.then(function (response) {
+                                    var resp = aggregationAndFilter(response, dataInfo, 'aggregation');
 
-                                            if ((resp ? resp.length : 0) === 0) {
-                                                return [dataSource.name, 0];
-                                            }
-                                            return [dataSource.name + additionalLabel(dataInfo, resp), resp[0].value];
-                                        });
+                                    if ((resp ? resp.length : 0) === 0) {
+                                        return [dataSource.name, 0, null];
+                                    }
+                                    return [dataSource.name + additionalLabel(dataInfo, resp), resp[0].value, resp[0].date_time];
                                 });
+                            });
                         });
                     }
                 }
@@ -1876,13 +1861,21 @@ indexApp.directive('widgetPie', [
                         return;
                     }
 
+                    //timestamp
+                    if(data && data.length && data[0][2]){
+                        $scope.updatedTime = formatDate(new Date(data[0][2]));
+                    }
+
                     function reload() {
                         var promises = requestData();
 
-                        $q.all(promises).then(function (result) {
-                            chart.series[0].setData(result);
-                            $scope.updatedTime = formatDate(new Date());
+                        $q.all(promises).then(function (data) {
+                            //timestamp
+                            if(data && data.length && data[0][2]){
+                                $scope.updatedTime = formatDate(new Date(data[0][2]));
+                            }
 
+                            chart.series[0].setData(data);
                         }).catch(function (errorType) {
                             if (errorType.status === 404) {
                                 Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
@@ -1947,8 +1940,6 @@ indexApp.directive('widgetPie', [
                             }
                         ]
                     });
-
-                    $scope.updatedTime = formatDate(new Date());
 
                     function resizeWidget(evt, data) {
                         if (data && data.id === $scope.widget.id) {
@@ -2031,64 +2022,67 @@ indexApp.directive('widgetDonut', [
                         dimensions: JSON.stringify(config.dataInfos[0].dimensions)
                     }).$promise.then(function (response) {
 
-                            //aggregation
-                            var resp = aggregationAndFilter(response, config.dataInfos[0], 'aggregation');
+                        //aggregation
+                        var resp = aggregationAndFilter(response, config.dataInfos[0], 'aggregation');
 
-                            //update change percentage
-                            resp = (!resp || resp.length === 0) ? [
-                                {value: null}
-                            ] : resp;
+                        //update change percentage
+                        resp = (!resp || resp.length === 0) ? [
+                            {value: null}
+                        ] : resp;
 
-                            var det;
-                            if (!resp || resp.length !== 2 || ( resp.length === 2 && resp[1].value === 0 )) {
-                                det = 0;
-                            }
-                            else {
-                                det = ((resp[0].value - resp[1].value) / Math.abs(resp[1].value)) * 100;
-                            }
+                        var det;
+                        if (!resp || resp.length !== 2 || ( resp.length === 2 && resp[1].value === 0 )) {
+                            det = 0;
+                        }
+                        else {
+                            det = ((resp[0].value - resp[1].value) / Math.abs(resp[1].value)) * 100;
+                        }
 
-                            if (det > 0) {
-                                $arrow.removeClass('glyphicon-arrow-down');
-                                $arrow.addClass('glyphicon-arrow-up');
-                                $changeMetric.removeClass('m-green');
-                                $changeMetric.addClass('m-red');
-                            }
-                            else {
-                                $arrow.removeClass('glyphicon-arrow-up');
-                                $arrow.addClass('glyphicon-arrow-down');
-                                $changeMetric.removeClass('m-red');
-                                $changeMetric.addClass('m-green');
-                            }
+                        if (det > 0) {
+                            $arrow.removeClass('glyphicon-arrow-down');
+                            $arrow.addClass('glyphicon-arrow-up');
+                            $changeMetric.removeClass('m-green');
+                            $changeMetric.addClass('m-red');
+                        }
+                        else {
+                            $arrow.removeClass('glyphicon-arrow-up');
+                            $arrow.addClass('glyphicon-arrow-down');
+                            $changeMetric.removeClass('m-red');
+                            $changeMetric.addClass('m-green');
+                        }
 
-                            //update change metric value
-                            det = Math.abs(det).toFixed(2).toString().split('.');
-                            $large.text(det[0]);
-                            $small.text('.' + det[1] + '%');
-                            $changeMetricContent.css('margin-left', ($changeMetric.width() - $changeMetricContent.width()) / 2);
+                        //update change metric value
+                        det = Math.abs(det).toFixed(2).toString().split('.');
+                        $large.text(det[0]);
+                        $small.text('.' + det[1] + '%');
+                        $changeMetricContent.css('margin-left', ($changeMetric.width() - $changeMetricContent.width()) / 2);
 
-                            //update current value
-                            var chart = chartWrapper.chart;
-                            if (resp[0].value === null) {
-                                $metrics.css('display', 'none');
-                            }
-                            else {
-                                config.value = resp[0].value + '';
-                                $metrics.css('display', '');
-                            }
+                        //update current value
+                        var chart = chartWrapper.chart;
+                        if (resp[0].value === null) {
+                            $metrics.css('display', 'none');
+                        }
+                        else {
+                            config.value = resp[0].value + '';
+                            $metrics.css('display', '');
+                        }
 
-                            // Call EasyPieChart update function
-                            chart.update(config.value);
-                            // Update the data-percent so it redraws on resize properly
-                            $container.find('.chart').data('percent', config.value);
-                            // Update the UI metric
-                            $elem.find('.metric').html(numeral(config.value).format('0,0.[00]'));
+                        // Call EasyPieChart update function
+                        chart.update(config.value);
+                        // Update the data-percent so it redraws on resize properly
+                        $container.find('.chart').data('percent', config.value);
+                        // Update the UI metric
+                        $elem.find('.metric').html(numeral(config.value).format('0,0.[00]'));
 
-                            $scope.updatedTime = formatDate(new Date());
-                        }).catch(function (errorType) {
-                            if (errorType.status === 404) {
-                                Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
-                            }
-                        });
+                        //timestamp
+                        if(resp && resp.length){
+                            $scope.updatedTime = formatDate(new Date(resp[0].date_time));
+                        }
+                    }).catch(function (errorType) {
+                        if (errorType.status === 404) {
+                            Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
+                        }
+                    });
                 }
 
                 reload.apply($this);
@@ -2200,7 +2194,10 @@ indexApp.directive('widgetNumber', [
                             $large.text(det[0]);
                             $small.text('.' + det[1] + '%');
 
-                            $scope.updatedTime = formatDate(new Date());
+                            //timestamp
+                            if(resp && resp.length){
+                                $scope.updatedTime = formatDate(new Date(resp[0].date_time));
+                            }
                         }, 'json').catch(function (errorType) {
                             if (errorType.status === 404) {
                                 Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
@@ -2359,7 +2356,10 @@ indexApp.directive('widgetColumn', [
                             });
                         }
 
-                        $scope.updatedTime = formatDate(new Date());
+                        //timestamp
+                        if(timeLine && timeLine.length){
+                            $scope.updatedTime = formatDate(new Date(timeLine[timeLine.length - 1]));
+                        }
                     }).catch(function (errorType) {
                         if (errorType.status === 404) {
                             Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');

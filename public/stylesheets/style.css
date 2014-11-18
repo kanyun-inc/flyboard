@@ -7,6 +7,10 @@ table th, table td{
     background-color: #f7f3de;
 }
 
+a{
+    text-decoration: none;
+}
+
 .widget header p a{
     color: rgb(169, 169, 169);
 }
@@ -298,9 +302,36 @@ nav {
   display: block;
 }
 
-.flyboard-app nav .select-project,
-.flyboard-app nav .edit-layout {
+nav .select-project,
+nav .edit-layout,
+nav .switch-slide{
+    float: right;
     margin-right: 20px;
+}
+
+.flyboard-app nav .edit-layout{
+    padding-top: 16px;
+}
+
+.flyboard-app nav .switch-slide{
+    padding-top: 18px;
+}
+
+.flyboard-app nav .edit-layout .edit-off,
+.flyboard-app nav .switch-slide a{
+    text-decoration: none;
+    color: #a9a9a9;
+}
+.flyboard-app nav .edit-layout .edit-on{
+    text-decoration: none;
+    color: mediumspringgreen;
+}
+.flyboard-app nav .edit-layout .edit-disabled,
+.flyboard-app nav .switch-slide .fa-toggle-disabled {
+    color: #a9a9a9;
+    opacity: 0.2;
+    pointer-events: none;
+    cursor: default;
 }
 
 .flyboard-app nav .select-project .dropdown-menu li {
@@ -316,16 +347,33 @@ nav {
     padding: 0 0 0 0;
 }
 
-.flyboard-app nav .edit-layout {
-    float: right;
-    padding-top: 16px;
+nav .select-project .dropdown-toggle {
+    border: none;
+    color: #999;
+    background-color: #222;
+}
+nav .select-project .dropdown-menu li a.edit-project:hover,
+nav .select-project .dropdown-toggle:hover,
+nav .select-project.open .dropdown-toggle {
+    color: #fff;
+    background-color: #222;
+}
+nav .dropdown-menu li a {
+    color: #a9a9a9;
+}
+nav .open .dropedown-toggle,
+nav .select-project .dropdown-menu li a:hover{
+    background-color: #4f4f4f;
+    color: #a9a9a9;
+}
+nav .select-project .dropdown-menu{
+    background-color: #2b2b2b;
 }
 
-.flyboard-app nav .edit-layout .edit-off{
-    color: darkgrey;
-}
-.flyboard-app nav .edit-layout .edit-on{
-    color: mediumspringgreen;
+div.select-project button{
+    background-color: #000000;
+    color: #fff;
+    margin-top: 8px;
 }
 
 .cf-nav {
@@ -359,7 +407,7 @@ timer {
     background-color: #333333;
     position: absolute;
     left: 1.5px;
-    bottom: 4px;
+    bottom: 56px;
 }
 
 timer[data-phase='-1'] {
@@ -894,10 +942,6 @@ div[sticky].fixed {
     }
 }
 
-.data-source a {
-    text-decoration: none;
-}
-
 .data-source .delete-data-source {
     position: fixed;
     bottom: 20px;
@@ -959,37 +1003,4 @@ div[sticky].fixed {
     -webkit-border-radius:6px 0 6px 6px;
     -moz-border-radius:6px 0 6px 6px;
     border-radius:6px 0 6px 6px;
-}
-
-div.select-project {
-    float: right;
-}
-
-div.select-project button{
-    background-color: #000000;
-    color: #fff;
-    margin-top: 8px;
-}
-
-nav .select-project .dropdown-toggle {
-    border: none;
-    color: #999;
-    background-color: #222;
-}
-nav .select-project .dropdown-menu li a.edit-project:hover,
-nav .select-project .dropdown-toggle:hover,
-nav .select-project.open .dropdown-toggle {
-    color: #fff;
-    background-color: #222;
-}
-nav .dropdown-menu li a {
-    color: #a9a9a9;
-}
-nav .open .dropedown-toggle,
-nav .select-project .dropdown-menu li a:hover{
-    background-color: #4f4f4f;
-    color: #a9a9a9;
-}
-nav .select-project .dropdown-menu{
-    background-color: #2b2b2b;
 }
