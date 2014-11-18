@@ -321,12 +321,6 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
                 return ;
             }
 
-            //if editLayoutCtrl, no slide
-            if ($route.current.$$route && $route.current.$$route.controller === 'editLayoutCtrl') {
-                $($window).off('mousemove', resetCheck);
-                stopCheck();
-            }
-
             var projectsPromise = Project.query().$promise;
 
             var projectPromise = projectsPromise.then(function (projects) {
@@ -461,39 +455,11 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
             $scope.slideMode = false;
         }
 
-        // check away from keyboard
-        var checkTimer = null;
-
-        function startCheck() {
-            stopCheck();
-
-            checkTimer = $timeout(startSlide, SLIDE_INTERVAL_TIME);
-        }
-
-        function stopCheck() {
-            if (checkTimer) {
-                $timeout.cancel(checkTimer);
-                checkTimer = null;
-            }
-        }
-
-        function resetCheck() {
-            stopSlide();
-            stopCheck();
-            stopPhaseTimer();
-            stopPhaseDelayTimer();
-
-            startCheck();
-        }
-
-        startCheck();
-        $($window).on('mousemove', resetCheck);
+        $scope.startSlide = startSlide;
+        $scope.stopSlide = stopSlide;
 
         $scope.$on('$destroy', function () {
-            $($window).off('mousemove', resetCheck);
-
             stopSlide();
-            stopCheck();
             stopPhaseTimer();
             stopPhaseDelayTimer();
         });
@@ -566,6 +532,15 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
 
         angular.element($window).bind('resize', init);
         $scope.$on('$routeChangeSuccess', init);
+
+        $scope.toggleSlideMode = function () {
+            if($scope.slideMode){
+                $scope.stopSlide();
+            }
+            else{
+                $scope.startSlide();
+            }
+        };
 
         $scope.toggleEditLayoutMode = function () {
             if(!$scope.project || !$scope.dashboard){

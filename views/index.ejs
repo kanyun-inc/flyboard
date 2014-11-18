@@ -25,8 +25,11 @@
                     <li><a href="/stat">数据</a></li>
                     <li><a href="/admin#dataSource">数据源管理</a></li>
                 </ul>
+                <div></div>
 
-                <div class="edit-layout"><a href="" title="编辑布局"><span ng-class="{'edit-on': editLayoutMode, 'edit-off': !editLayoutMode}" class="glyphicon glyphicon-cog fa-lg" ng-click="toggleEditLayoutMode()"></span></a></div>
+                <div class="switch-slide"><a href="" title="轮播开关" ng-class="{'fa-toggle-on': slideMode, 'fa-toggle-off': !slideMode, 'fa-toggle-disabled': editLayoutMode}" class="fa fa-lg" ng-click="toggleSlideMode()"></a></div>
+
+                <div class="edit-layout"><a href="" title="编辑布局" ng-class="{'edit-on': !slideMode && editLayoutMode, 'edit-off': !slideMode && !editLayoutMode, 'edit-disabled': slideMode}" class="glyphicon glyphicon-cog fa-lg" ng-click="toggleEditLayoutMode()"></a></div>
 
                 <div class="btn-group select-project" ng-if="project">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -53,7 +56,7 @@
             <span class="icon-bar"></span>
         </a>
 
-        <div sticky ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
+        <div sticky class="dashboard-list" ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
             <ul>
                 <li ng-repeat="item in dashboards"
                     class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
