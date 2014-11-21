@@ -27,7 +27,9 @@ app.use(function (req, res, next) {
 
     next();
 });
+
 app.use(require('./middlewares/staticFile')());
+app.use(require('./controllers/auth'));
 app.use(require('./controllers/index'));
 app.use(require('./controllers/project'));
 app.use(require('./controllers/dashboard'));

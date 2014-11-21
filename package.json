@@ -29,6 +29,8 @@
     "knex": "^0.6.17",
     "morgan": "~1.0.0",
     "node-uuid": "^1.4.1",
+    "passport": "^0.2.1",
+    "passport-google": "^0.3.0",
     "static-favicon": "~1.0.0",
     "supertest-as-promised": "^1.0.0",
     "underscore": "^1.6.0"

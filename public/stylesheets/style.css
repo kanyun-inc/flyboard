@@ -1004,3 +1004,9 @@ div[sticky].fixed {
     -moz-border-radius:6px 0 6px 6px;
     border-radius:6px 0 6px 6px;
 }
+
+/* login */
+.login-intro {
+    width: 30%;
+    margin: auto;
+}
