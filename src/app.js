@@ -9,7 +9,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var passport = require('../configs/app').passport;
 
-var databaseConnection = require('../configs/database').development.connection;
+var dbConnection = require('../configs/database').development.connection;
 
 var app = express();
 
@@ -29,11 +29,11 @@ app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 
 var sessionOptions = {
-    host: databaseConnection.host,
+    host: dbConnection.host,
     port: 3306,
-    user: databaseConnection.user,
-    password: databaseConnection.password,
-    database: databaseConnection.database
+    user: dbConnection.user,
+    password: dbConnection.password,
+    database: dbConnection.database
 };
 app.use(session({
     key: 'session_cookie_name',

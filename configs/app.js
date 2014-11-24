@@ -38,7 +38,9 @@ passport.deserializeUser(function(email, done) {
         email: email
     })).then( function (user) {
         if(!user){
-            done(new Error('invalid session'), user);
+            var err = new Error('invalid session');
+            err.status = 403;
+            done(err, user);
             return ;
         }
 
