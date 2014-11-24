@@ -9,6 +9,8 @@ var passport = require('../../configs/app').passport;
 router.get('/auth/google', passport.authenticate('google'));
 
 router.get('/auth/google/return',
-  passport.authenticate('google', { successRedirect: '/',
-                                    failureRedirect: '/login' })
+    passport.authenticate('google', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    })
 );

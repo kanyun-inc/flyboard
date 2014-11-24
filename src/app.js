@@ -1,9 +1,12 @@
 'use strict';
 
 var express = require('express');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
+var passport = require('../configs/app').passport;
 
 var app = express();
 
@@ -20,6 +23,14 @@ if (!process.env.UNIT_TEST) {
 }
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
+app.use(cookieParser());
+app.use(session({
+    secret: 'fdsajlzcxv.,amsdfjiljkldafdsa',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(function (req, res, next) {
     if (req.url.indexOf('/api') === 0) {
         res.type('json');
