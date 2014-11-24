@@ -3,10 +3,13 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var sessionStore = require('express-mysql-session');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var passport = require('../configs/app').passport;
+
+var databaseConnection = require('../configs/database').development.connection;
 
 var app = express();
 
@@ -24,11 +27,22 @@ if (!process.env.UNIT_TEST) {
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
 app.use(cookieParser());
+
+var sessionOptions = {
+    host: databaseConnection.host,
+    port: 3306,
+    user: databaseConnection.user,
+    password: databaseConnection.password,
+    database: databaseConnection.database
+};
 app.use(session({
+    key: 'session_cookie_name',
     secret: 'fdsajlzcxv.,amsdfjiljkldafdsa',
+    store: new sessionStore(sessionOptions),
     resave: true,
     saveUninitialized: true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (req, res, next) {

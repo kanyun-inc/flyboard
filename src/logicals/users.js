@@ -32,7 +32,7 @@ exports.findOrCreate = function (query) {
 
     var ret = exports.find({
         email: query.email
-    }).debug();
+    });
 
     return blueBird.resolve(ret).then(function (users) {
         if(users && users.length){
