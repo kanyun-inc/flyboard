@@ -14,7 +14,7 @@ exports.findOne = function(query) {
 };
 
 exports.get = function (id) {
-    return knex('projects').first().where('id', id);
+    return knex('users').first().where('id', id);
 };
 
 exports.save = function (obj) {
@@ -24,7 +24,7 @@ exports.save = function (obj) {
 };
 
 exports.remove = function (id) {
-    return knex('projects').where('id', id).del();
+    return knex('users').where('id', id).del();
 };
 
 exports.findOrCreate = function (query) {
