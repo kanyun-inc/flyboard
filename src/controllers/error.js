@@ -16,7 +16,7 @@ exports.errorHandler = function (err, req, res, next) {
     }
 
     if (req.url.indexOf('/api') === 0) {
-        console.error(err.stack);
+        console.error(err.sack);
         res.send({
             message: err.message,
             error: err

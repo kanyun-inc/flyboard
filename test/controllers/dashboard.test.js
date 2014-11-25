@@ -2,15 +2,50 @@
 
 var app = require('../../src/app');
 var request = require('supertest');
+var User = require('../../src/logicals/user');
+var Project = require('../../src/logicals/project');
+var Promise = require('bluebird');
+var knex = require('../../src/lib/knex');
+var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('dashboard controller', function(){
+    var userId = null;
     var projectId = null;
     var dashboardId = null;
+    var token = null;
+
+    before(function (done) {
+        User.save({
+            email: 'abc@abc.com',
+            salt: 'sfsafiwer'
+        }).then(function (id) {
+            userId = id;
+            return User.get(id);
+        }).then(function (user) {
+            token = tokenGenerator.generate(user);
+            return Project.save({
+                name: 'ape'
+            });
+        }).then(function (id) {
+            projectId = id;
+            done();
+        }).catch(done);
+    });
+
+    after(function (done) {
+        return Promise.all([
+            knex('users').del(),
+            knex('dashboards').del(),
+            knex('projects').del()
+        ]).then(function () {
+            done();
+        }).catch(done);
+    });
 
     describe('GET /api/dashboards', function(){
         it('should return dashboard list', function(done){
             request(app)
-                .get('/api/dashboards')
+                .get('/api/dashboards' + '?token=' + token)
                 .expect('content-type', /json/)
                 .expect(200, '[]', done);
         });
@@ -19,33 +54,19 @@ describe('dashboard controller', function(){
     describe('POST /api/dashboards', function(){
         it('should create a dashboard', function(done){
             request(app)
-                .post('/api/projects')
+                .post('/api/dashboards' + '?token=' + token)
                 .send({
-                    name: 'ape'
+                    name: 'users',
+                    project_id: projectId
                 })
                 .expect(200)
                 .expect('content-type', /json/)
-                .end(function (err, res) {
-                    if (err) {
+                .end(function(err, res){
+                    if(err){
                         return done(err);
                     }
-                    projectId = res.body.id;
-
-                    request(app)
-                        .post('/api/dashboards')
-                        .send({
-                            name: 'users',
-                            project_id: projectId
-                        })
-                        .expect(200)
-                        .expect('content-type', /json/)
-                        .end(function(err, res){
-                            if(err){
-                                return done(err);
-                            }
-                            dashboardId = res.body.id;
-                            done();
-                        });
+                    dashboardId = res.body.id;
+                    done();
                 });
         });
     });
@@ -53,7 +74,7 @@ describe('dashboard controller', function(){
     describe('GET /api/dashboards', function(){
        it('should return dashboard list', function(done){
            request(app)
-               .get('/api/dashboards')
+               .get('/api/dashboards' + '?token=' + token)
                .expect('content-type', /json/)
                .expect(200, done);
        });
@@ -62,7 +83,7 @@ describe('dashboard controller', function(){
     describe('GET /api/dashboards/:id', function(){
         it('should return a dashboard object', function(done){
             request(app)
-                .get('/api/dashboards/' + dashboardId)
+                .get('/api/dashboards/' + dashboardId + '?token=' + token)
                 .expect('content-type', /json/)
                 .expect(200, done);
         });
@@ -71,7 +92,7 @@ describe('dashboard controller', function(){
     describe('PUT /api/dashboards/:id', function (){
         it('should update a dashboard', function (done){
             request(app)
-                .put('/api/dashboards/' + dashboardId)
+                .put('/api/dashboards/' + dashboardId + '?token=' + token)
                 .send({
                     name: 'apt',
                     config: {
@@ -87,7 +108,7 @@ describe('dashboard controller', function(){
 
         it('should update config of dashboard', function (done) {
             request(app)
-                .put('/api/dashboards/' + dashboardId)
+                .put('/api/dashboards/' + dashboardId + '?token=' + token)
                 .send({
                     name: 'apt',
                     config: {
@@ -104,7 +125,7 @@ describe('dashboard controller', function(){
 
         it('should return 400 if data is invalid', function (done) {
             request(app)
-                .put('/api/dashboards/' + dashboardId)
+                .put('/api/dashboards/' + dashboardId + '?token=' + token)
                 .send({
                     name: null
                 })
@@ -116,7 +137,7 @@ describe('dashboard controller', function(){
     describe('DELETE /api/dashboards/:id', function(){
         it('should delete a dashboard', function(done){
             request(app)
-                .delete('/api/dashboards/' + dashboardId)
+                .delete('/api/dashboards/' + dashboardId + '?token=' + token)
                 .expect(200)
                 .end(function(err){
                     if(err){
@@ -124,7 +145,7 @@ describe('dashboard controller', function(){
                     }
 
                     request(app)
-                        .get('/api/dashboards/' + dashboardId)
+                        .get('/api/dashboards/' + dashboardId + '?token=' + token)
                         .expect('content-type', /json/)
                         .expect(404, done);
                 });

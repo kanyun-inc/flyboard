@@ -2,7 +2,7 @@
 
 var passport = require('passport');
 var GoogleStrategy = require('passport-google').Strategy;
-var User = require('../src/logicals/users');
+var User = require('../src/logicals/user');
 var blueBird = require('bluebird');
 
 passport.use(new GoogleStrategy({

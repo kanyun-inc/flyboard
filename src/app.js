@@ -55,6 +55,7 @@ app.use(function (req, res, next) {
 
 app.use(require('./middlewares/staticFile')());
 app.use(require('./controllers/auth'));
+app.use(require('./controllers/notFound'));
 app.use(require('./controllers/authFilter'));
 app.use(require('./controllers/index'));
 app.use(require('./controllers/project'));

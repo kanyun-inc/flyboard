@@ -1,7 +1,7 @@
 'use strict';
 
 var blueBird = require('bluebird');
-var User = require('../logicals/users');
+var User = require('../logicals/user');
 var tokenGenerator = require('./tokenGenerator');
 
 module.exports = function (req, res, next) {
