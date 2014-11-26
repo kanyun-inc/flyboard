@@ -52,7 +52,7 @@ exports.passport = passport;
 exports.authItems = [
     {
         key: 'google',
-        authUrl: '',
-        returnUrl: ''
+        authUrl: '/auth/google',
+        returnUrl: '/auth/google/return'
     }
 ];

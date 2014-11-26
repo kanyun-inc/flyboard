@@ -1,20 +1,21 @@
 'use strict';
 
 var router = require('express').Router();
+var passport = require('../../configs/app').passport;
 var authItems = require('../../configs/app').authItems;
 
 module.exports = router;
 
-var passport = require('../../configs/app').passport;
+authItems.forEach(function (item) {
+    //auth
+    router.get(item.authUrl, passport.authenticate(item.key));
 
-//auth
-router.get('/auth/google', passport.authenticate('google'));
-
-router.get('/auth/google/return',
-    passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    }));
+    router.get(item.returnUrl,
+        passport.authenticate(item.key, {
+            successRedirect: '/',
+            failureRedirect: '/login'
+        }));
+});
 
 function loginCtrl(req, res) {
     res.locals.authItems = authItems;
