@@ -82,20 +82,23 @@ router.post(
             if(!project) {
                 return res.send(404);
             }
-        });
-
-        if(folder.parent_id){
-            Folder.get(folder.parent_id).then(function (folder) {
-                if(!folder) {
-                    return res.send(404);
-                }
+        }).then(function (){
+            if(folder.parent_id){
+                return Folder.get(folder.parent_id).then(function (folder) {
+                    if(!folder) {
+                        return res.send(404);
+                    }
+                });
+            }
+            else{
+                return blueBird.resolve(null);
+            }
+        }).then(function () {
+            return Folder.save(folder).then(function (id) {
+                return Folder.get(id);
+            }).then(function (folder) {
+                res.send(folder);
             });
-        }
-
-        Folder.save(folder).then(function (id) {
-            return Folder.get(id);
-        }).then(function (folder) {
-            res.send(folder);
         }).catch(next);
     }
 );
@@ -104,22 +107,33 @@ router.put(
     '/api/folders/:id',
     bodyParser.json(),
     function (req, res, next) {
+        var id = parseInt(req.param('id', 10));
         var folder = req.body;
-
-        if(folder.project_id){
-            Project.get(folder.project_id).then(function (project) {
-                if(!project) {
-                    return res.send(404);
-                }
-            });
+        if(!folder.name || !folder.project_id){
+            return res.send(400);
         }
 
-        var id = parseInt(req.param('id', 10));
-
-        Folder.update(id, folder).then(function() {
-            return Folder.get(id);
-        }).then(function (folder) {
-            res.send(folder);
+        Project.get(folder.project_id).then(function (project) {
+            if(!project) {
+                return res.send(404);
+            }
+        }).then(function () {
+            if(folder.parent_id){
+                return Folder.get(folder.parent_id).then(function (folder) {
+                    if(!folder) {
+                        return res.send(404);
+                    }
+                });
+            }
+            else{
+                return blueBird.resolve(null);
+            }
+        }).then(function (){
+            return Folder.update(id, folder).then(function() {
+                return Folder.get(id);
+            }).then(function (folder) {
+                res.send(folder);
+            });
         }).catch(next);
     }
 );

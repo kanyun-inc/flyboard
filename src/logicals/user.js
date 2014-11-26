@@ -2,6 +2,7 @@
 
 var knex = require('../lib/knex');
 var blueBird = require('bluebird');
+var randomString = require('randomstring');
 
 exports.find = function (query){
     query = query || {};
@@ -18,9 +19,15 @@ exports.get = function (id) {
 };
 
 exports.save = function (obj) {
+    obj.salt = randomString.generate();
     return knex('users').insert(obj).returning('id').then(function (ret) {
         return ret[0];
     });
+};
+
+exports.update = function (id, obj) {
+    obj.salt = randomString.generate();
+    return knex('users').where('id', id).update(obj);
 };
 
 exports.remove = function (id) {

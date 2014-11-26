@@ -16,8 +16,7 @@ describe('dashboard controller', function(){
 
     before(function (done) {
         User.save({
-            email: 'abc@abc.com',
-            salt: 'sfsafiwer'
+            email: 'abc@abc.com'
         }).then(function (id) {
             userId = id;
             return User.get(id);
@@ -95,6 +94,7 @@ describe('dashboard controller', function(){
                 .put('/api/dashboards/' + dashboardId + '?token=' + token)
                 .send({
                     name: 'apt',
+                    project_id: projectId,
                     config: {
                         layout:[
                             {'id':3,'first_grid':[0,0],'last_grid':[1,1]}
@@ -111,6 +111,7 @@ describe('dashboard controller', function(){
                 .put('/api/dashboards/' + dashboardId + '?token=' + token)
                 .send({
                     name: 'apt',
+                    project_id: projectId,
                     config: {
                         layout:[
                             {'id':3,'first_grid':[0,0],'last_grid':[1,1]},

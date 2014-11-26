@@ -5,7 +5,7 @@ var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 
-describe('Dashboard logical', function () {
+describe('dashboard logical', function () {
     var ids = [];
 
     beforeEach(function (done) {
@@ -87,7 +87,7 @@ describe('Dashboard logical', function () {
     });
 
     describe('#update', function () {
-        it('should save new object', function (done) {
+        it('should update a object', function (done) {
             Promise.all([
                 Dashboard.save({
                     name: 'baz'

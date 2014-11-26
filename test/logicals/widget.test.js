@@ -6,7 +6,7 @@ var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 
-describe('widget model', function () {
+describe('widget logical', function () {
     var ids = [];
     var dashboardId = null;
 

@@ -64,6 +64,10 @@ app.use(require('./controllers/widget'));
 app.use(require('./controllers/dataSource'));
 app.use(require('./controllers/record'));
 app.use(require('./controllers/folder'));
+app.use(require('./controllers/user'));
+app.use(require('./controllers/role'));
+app.use(require('./controllers/userRole'));
+app.use(require('./controllers/rolePrivilege'));
 app.use(require('./controllers/error').notFound);
 app.use(require('./controllers/error').errorHandler);
 

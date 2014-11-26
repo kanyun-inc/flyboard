@@ -20,7 +20,7 @@ module.exports = function (req, res, next) {
         var decodeUser = tokenGenerator.resolve(token);
 
         blueBird.resolve(User.get(decodeUser.id)).then(function (user) {
-            if (decodeUser.id === user.id && decodeUser.id && decodeUser.salt === user.salt) {
+            if (decodeUser && decodeUser.id === user.id && decodeUser.id && decodeUser.salt === user.salt) {
                 return next();
             }
 

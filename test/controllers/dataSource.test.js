@@ -20,8 +20,7 @@ describe('dataSource controller', function(){
 
     before(function (done) {
         User.save({
-            email: 'abc@abc.com',
-            salt: 'sfsafiwer'
+            email: 'abc@abc.com'
         }).then(function (id) {
             userId = id;
             return User.get(id);
@@ -129,7 +128,8 @@ describe('dataSource controller', function(){
             request(app)
                 .put('/api/data_sources/' + dataSourceId + '?token=' + token)
                 .send({
-                    name: 'loginDate'
+                    name: 'loginDate',
+                    project_id: projectId
                 })
                 .expect(200)
                 .expect('content-type', /json/)

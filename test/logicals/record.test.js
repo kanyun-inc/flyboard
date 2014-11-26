@@ -7,7 +7,7 @@ var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 
-describe('record model', function () {
+describe('record logical', function () {
     var ids = [];
     var dataSourceId = null;
 
@@ -85,7 +85,7 @@ describe('record model', function () {
     });
 
     describe('#update', function () {
-        it('should save new object', function (done) {
+        it('should update a object', function (done) {
             Record.save({
                 data_source_id: dataSourceId,
                 value: 100

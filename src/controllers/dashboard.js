@@ -41,16 +41,17 @@ router.post(
             return res.send(400);
         }
 
-        Project.get(dashboard.project_id).then(function(project) {
-            if(!project){
-                return res.send(404);
-            }
-        });
-
-        Dashboard.save(dashboard).then(function(id){
-            return Dashboard.get(id);
-        }).then(function(dashboard){
-            res.send(dashboard);
+        Project.get(dashboard.project_id)
+            .then(function(project) {
+                if(!project){
+                    return res.send(404);
+                }
+        }).then(function (){
+            return Dashboard.save(dashboard).then(function(id){
+                return Dashboard.get(id);
+            }).then(function(dashboard) {
+                res.send(dashboard);
+            });
         }).catch(next);
     }
 );
@@ -59,28 +60,29 @@ router.put(
     '/api/dashboards/:id',
     bodyParser.json(),
     function(req, res, next){
+        var id = parseInt(req.param('id'), 10);
+
         console.log('@@@EDIT_DASHBOARD@@@ ' + JSON.stringify(req.body));
         var dashboard = req.body;
         if (dashboard.name !== undefined && !dashboard.name) {
             return res.status(400).send('dashboard.name 不能为空');
+        }else if(!dashboard.project_id){
+            return res.status(400).send('dashboard.project_id 不能为空');
         } else if (!dashboard.config || !dashboard.config.layout || !dashboard.config.layout.length) {
             return res.status(400).send('dashboard.config.layout 不能为空');
         }
 
-        if(dashboard.project_id){
-            Project.get(dashboard.project_id).then(function(project) {
+        Project.get(dashboard.project_id)
+            .then(function(project) {
                 if(!project){
                     return res.send(404);
                 }
+        }).then(function (){
+            return Dashboard.update(id, dashboard).then(function () {
+                return Dashboard.get(id);
+            }).then(function (dashboard) {
+                res.send(dashboard);
             });
-        }
-
-        var id = parseInt(req.param('id'), 10);
-
-        Dashboard.update(id, dashboard).then(function () {
-            return Dashboard.get(id);
-        }).then(function (dashboard) {
-            res.send(dashboard);
         }).catch(next);
     }
 );

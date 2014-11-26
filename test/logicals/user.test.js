@@ -1,38 +1,40 @@
 'use strict';
 
-var Project = require('../../src/logicals/project');
+var User = require('../../src/logicals/user');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 
-describe('project logical', function () {
-    var ids = [];
+describe('user logical', function () {
+    var userIds = null;
 
     beforeEach(function (done) {
         Promise.all([
-            Project.save({
-                name: 'foo'
+            User.save({
+                email: 'abc@abc.com'
             }),
-            Project.save({
-                name: 'bar'
+            User.save({
+                email: 'ab@ab.com'
             })
-        ]).then(function (ret) {
-            ids = ret;
-            done();
-        });
-    });
-
-    afterEach(function (done) {
-        knex('projects').del().then(function () {
+        ]).then(function (ids) {
+            userIds = ids;
             done();
         }).catch(done);
     });
 
+    afterEach(function (done) {
+        knex('users')
+            .del()
+            .then(function () {
+                done();
+            }).catch(done);
+    });
+
     describe('#get', function () {
         it('should return an object', function (done) {
-            Project.get(ids[0]).then(function (ret) {
+            User.get(userIds[0]).then(function (ret) {
                 assert.isObject(ret);
-                assert.equal(ret.name, 'foo');
+                assert.equal(ret.email, 'abc@abc.com');
                 done();
             }).catch(done);
         });
@@ -40,7 +42,7 @@ describe('project logical', function () {
 
     describe('#find', function () {
         it('should return a list', function (done) {
-            Project.find().then(function (ret) {
+            User.find().then(function (ret) {
                 assert.isArray(ret);
                 assert.equal(ret.length, 2);
                 done();
@@ -50,12 +52,12 @@ describe('project logical', function () {
 
     describe('#save', function () {
         it('should save new object', function (done) {
-            Project.save({
-                name: 'baz'
+            User.save({
+                email: 'baz@baz.com'
             }).then(function (id) {
-                return Project.get(id);
+                return User.get(id);
             }).then(function (ret) {
-                assert.equal(ret.name, 'baz');
+                assert.equal(ret.email, 'baz@baz.com');
                 done();
             }).catch(done);
         });
@@ -63,18 +65,19 @@ describe('project logical', function () {
 
     describe('#update', function () {
         it('should update a object', function (done) {
-            Project.save({
-                name: 'baz'
+            User.save({
+                email: 'baz@baz.com'
             }).then(function (id) {
-                return Project.update(id, {
-                    name: 'xxx'
+                return User.update(id, {
+                    email: 'xxx@xxx.com'
                 }).then(function () {
                     return id;
                 });
             }).then(function (ret) {
-                return Project.get(ret);
+                return User.get(ret);
             }).then(function (ret) {
-                assert.equal(ret.name, 'xxx');
+                assert.equal(ret.email, 'xxx@xxx.com');
+            }).then(function () {
                 done();
             }).catch(done);
         });
@@ -82,8 +85,8 @@ describe('project logical', function () {
 
     describe('#remove', function () {
         it('should delete object', function (done) {
-            Project.remove(ids[0]).then(function () {
-                return Project.get(ids[0]);
+            User.remove(userIds[0]).then(function () {
+                return User.get(userIds[0]);
             }).then(function (ret) {
                 assert.isUndefined(ret);
                 done();

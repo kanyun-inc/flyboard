@@ -14,8 +14,7 @@ describe('project controller', function () {
 
     before(function (done) {
         User.save({
-            email: 'abc@abc.com',
-            salt: 'sfsafiwer'
+            email: 'abc@abc.com'
         }).then(function (id) {
             userId = id;
             return User.get(id);
