@@ -13,10 +13,18 @@ var blueBird = require('bluebird');
 //get  user_roles for all users or one user according to user_id
 router.get('/api/user_roles', function (req, res, next) {
     var userId = req.param('user_id') ? parseInt(req.param('user_id', 10)) : null;
+    var roleId = req.param('role_id') ? parseInt(req.param('user_id', 10)) : null;
+    var projectId = req.param('project_id') ? parseInt(req.param('user_id', 10)) : null;
     var query = {};
 
     if(userId){
         query.user_id = userId;
+    }
+    if(roleId){
+        query.role_id = roleId;
+    }
+    if(projectId){
+        query.project_id = projectId;
     }
 
     UserRole.find(query).then(function (userRoles) {
