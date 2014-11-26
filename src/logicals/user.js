@@ -26,7 +26,6 @@ exports.save = function (obj) {
 };
 
 exports.update = function (id, obj) {
-    obj.salt = randomString.generate();
     return knex('users').where('id', id).update(obj);
 };
 
