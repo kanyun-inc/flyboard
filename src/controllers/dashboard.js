@@ -9,10 +9,14 @@ var Project = require('../logicals/project');
 
 router.get('/api/dashboards', function(req, res, next){
     var projectId = req.param('project_id') ? parseInt(req.param('project_id', 10)) : null;
+    var userId = req.param('user_id');
     var query = {};
 
     if(projectId) {
         query.project_id = projectId;
+    }
+    if(userId){
+        query.user_id = userId;
     }
 
     Dashboard.find(query).then(function (dashboards){
@@ -37,6 +41,7 @@ router.post(
     bodyParser.json(),
     function(req, res, next){
         var dashboard = req.body;
+
         if(!dashboard.name || !dashboard.project_id) {
             return res.send(400);
         }
