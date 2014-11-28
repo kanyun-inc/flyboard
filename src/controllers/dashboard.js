@@ -9,7 +9,7 @@ var Project = require('../logicals/project');
 
 router.get('/api/dashboards', function(req, res, next){
     var projectId = req.param('project_id') ? parseInt(req.param('project_id', 10)) : null;
-    var userId = req.param('user_id');
+    var userId = req.user ? req.user.id : null;
     var query = {};
 
     if(projectId) {
@@ -41,9 +41,14 @@ router.post(
     bodyParser.json(),
     function(req, res, next){
         var dashboard = req.body;
+        var userId = req.user ? req.user.id : null;
 
         if(!dashboard.name || !dashboard.project_id) {
             return res.send(400);
+        }
+
+        if(userId){
+            dashboard.user_id = userId;
         }
 
         Project.get(dashboard.project_id)
@@ -66,6 +71,7 @@ router.put(
     bodyParser.json(),
     function(req, res, next){
         var id = parseInt(req.param('id'), 10);
+        var userId = req.user ? req.user.id : null;
 
         console.log('@@@EDIT_DASHBOARD@@@ ' + JSON.stringify(req.body));
         var dashboard = req.body;
@@ -75,6 +81,10 @@ router.put(
             return res.status(400).send('dashboard.project_id 不能为空');
         } else if (!dashboard.config || !dashboard.config.layout || !dashboard.config.layout.length) {
             return res.status(400).send('dashboard.config.layout 不能为空');
+        }
+
+        if(userId){
+            dashboard.user_id = userId;
         }
 
         Project.get(dashboard.project_id)

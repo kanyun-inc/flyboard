@@ -79,7 +79,16 @@ exports.get = function (id) {
 exports.save = function (obj) {
     obj.created_at = new Date();
     obj.updated_at = obj.created_at;
-    obj.private = obj.private === true;
+    obj.private = obj.private ? true: false;
+
+    if(!obj.user_id){
+        obj.private = false;
+        obj.owner_id = null;
+    }
+    else if(obj.user_id && obj.private) {
+          obj.owner_id = obj.user_id;
+    }
+    delete obj.user_id;
 
     return knex('dashboards').insert(objToDb(obj)).returning('id').then(function (ret) {
         return ret[0];
@@ -87,11 +96,19 @@ exports.save = function (obj) {
 };
 
 exports.update = function (id, obj) {
-    var data = objToDb(obj);
-    data.updated_at = new Date();
     obj.private = obj.private === true;
+    obj.updated_at = new Date();
 
-    return knex('dashboards').where('id', id).update(data);
+    if(!obj.user_id){
+        obj.private = false;
+        obj.owner_id = null;
+    }
+    else if(obj.user_id && obj.private) {
+        obj.owner_id = obj.user_id;
+    }
+    delete obj.user_id;
+
+    return knex('dashboards').where('id', id).update(objToDb(obj));
 };
 
 exports.remove = function (id) {
