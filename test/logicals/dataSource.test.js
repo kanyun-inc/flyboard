@@ -6,7 +6,7 @@ var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 var Project = require('../../src/logicals/project');
 
-describe('data_sources model', function () {
+describe('data_source logical', function () {
     var ids = [];
     var projectId = null;
 
@@ -97,7 +97,7 @@ describe('data_sources model', function () {
     });
 
     describe('#update', function () {
-        it('should save new object', function (done) {
+        it('should update a object', function (done) {
             DataSource.save({
                 name: 'baz',
                 project_id: projectId,

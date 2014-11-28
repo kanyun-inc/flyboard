@@ -16,10 +16,14 @@ exports.errorHandler = function (err, req, res, next) {
     }
 
     if (req.url.indexOf('/api') === 0) {
+        console.error(err.sack);
         res.send({
             message: err.message,
             error: err
         });
+    } else if (err.status === 403) {
+        req.session.destroy();
+        res.redirect('/login?redirect=' + encodeURIComponent(req.url));
     } else {
         res.render('error', {
             message: err.message,

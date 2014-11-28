@@ -1,38 +1,36 @@
 'use strict';
 
-var Project = require('../../src/logicals/project');
+var Role = require('../../src/logicals/role');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
 
-describe('project logical', function () {
-    var ids = [];
+describe('role logical', function () {
+    var roleId = null;
 
     beforeEach(function (done) {
-        Promise.all([
-            Project.save({
-                name: 'foo'
-            }),
-            Project.save({
-                name: 'bar'
-            })
-        ]).then(function (ret) {
-            ids = ret;
-            done();
-        });
-    });
-
-    afterEach(function (done) {
-        knex('projects').del().then(function () {
+        Role.save({
+            name: 'admin',
+            scope: 2
+        }).then(function (ret) {
+            roleId = ret;
             done();
         }).catch(done);
     });
 
+    afterEach(function (done) {
+        knex('roles')
+            .del()
+            .then(function () {
+                done();
+            }).catch(done);
+    });
+
     describe('#get', function () {
         it('should return an object', function (done) {
-            Project.get(ids[0]).then(function (ret) {
+            Role.get(roleId).then(function (ret) {
                 assert.isObject(ret);
-                assert.equal(ret.name, 'foo');
+                assert.equal(ret.name, 'admin');
                 done();
             }).catch(done);
         });
@@ -40,9 +38,9 @@ describe('project logical', function () {
 
     describe('#find', function () {
         it('should return a list', function (done) {
-            Project.find().then(function (ret) {
+            Role.find().then(function (ret) {
                 assert.isArray(ret);
-                assert.equal(ret.length, 2);
+                assert.equal(ret.length, 1);
                 done();
             }).catch(done);
         });
@@ -50,12 +48,14 @@ describe('project logical', function () {
 
     describe('#save', function () {
         it('should save new object', function (done) {
-            Project.save({
-                name: 'baz'
+            Role.save({
+                name: 'member',
+                scope: 1
             }).then(function (id) {
-                return Project.get(id);
+                return Role.get(id);
             }).then(function (ret) {
-                assert.equal(ret.name, 'baz');
+                assert.equal(ret.name, 'member');
+                assert.equal(ret.scope, 1);
                 done();
             }).catch(done);
         });
@@ -63,18 +63,19 @@ describe('project logical', function () {
 
     describe('#update', function () {
         it('should update a object', function (done) {
-            Project.save({
-                name: 'baz'
+            Role.save({
+                name: 'member',
+                scope: 1
             }).then(function (id) {
-                return Project.update(id, {
-                    name: 'xxx'
+                return Role.update(id, {
+                    name: 'team member'
                 }).then(function () {
                     return id;
                 });
+            }).then(function (id) {
+                return Role.get(id);
             }).then(function (ret) {
-                return Project.get(ret);
-            }).then(function (ret) {
-                assert.equal(ret.name, 'xxx');
+                assert.equal(ret.name, 'team member');
                 done();
             }).catch(done);
         });
@@ -82,8 +83,8 @@ describe('project logical', function () {
 
     describe('#remove', function () {
         it('should delete object', function (done) {
-            Project.remove(ids[0]).then(function () {
-                return Project.get(ids[0]);
+            Role.remove(roleId).then(function () {
+                return Role.get(roleId);
             }).then(function (ret) {
                 assert.isUndefined(ret);
                 done();

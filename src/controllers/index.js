@@ -1,6 +1,7 @@
 'use strict';
 
 var router = require('express').Router();
+
 module.exports = router;
 
 function indexCtrl(req, res) {
@@ -13,11 +14,14 @@ function statCtrl(req, res){
     res.render('stat');
 }
 
+function adminCtrl(req, res) {
+    res.render('admin');
+}
+
 router.get('/', indexCtrl);
+
 router.get('/dashboards/:id', indexCtrl);
 
 router.get('/stat', statCtrl);
 
-router.get('/admin', function (req, res) {
-    res.render('admin');
-});
+router.get('/admin', adminCtrl);

@@ -2,54 +2,67 @@
 
 var app = require('../../src/app');
 var request = require('supertest');
+var User = require('../../src/logicals/user');
+var Project = require('../../src/logicals/project');
+var Dashboard = require('../../src/logicals/dashboard');
+var Promise = require('bluebird');
+var knex = require('../../src/lib/knex');
+var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('widget controller', function(){
+    var userId = null;
     var projectId = null;
     var dashboardId = null;
     var widgetId = null;
+    var token = null;
+
+    before(function (done) {
+        User.save({
+            email: 'abc@abc.com'
+        }).then(function (id) {
+            userId = id;
+            return User.get(id);
+        }).then(function (user) {
+            token = tokenGenerator.generate(user);
+            return Project.save({
+                name: 'ape'
+            });
+        }).then(function (id) {
+            projectId = id;
+            return Dashboard.save({
+                name: 'users',
+                project_id: projectId
+            });
+        }).then(function (id){
+            dashboardId = id;
+            done();
+        }).catch(done);
+    });
+
+    after(function (done) {
+        return Promise.all([
+            knex('users').del(),
+            knex('projects').del(),
+            knex('dashboards').del(),
+            knex('widgets').del()
+        ]).then(function () {
+            done();
+        }).catch(done);
+    });
 
     describe('GET /api/dashboards/:dashboardId/widgets', function(){
         it('should return widget list', function(done){
             request(app)
-                .post('/api/projects')
-                .send({
-                    name: 'ape'
-                })
-                .expect(200)
+                .get('/api/dashboards/' + dashboardId + '/widgets' + '?token=' + token)
                 .expect('content-type', /json/)
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    projectId = res.body.id;
-
-                    request(app)
-                        .post('/api/dashboards')
-                        .send({
-                            name: 'users',
-                            project_id: projectId
-                        })
-                        .expect(200)
-                        .expect('content-type', /json/)
-                        .end(function(err, res){
-                            if(err){
-                                return done(err);
-                            }
-                            dashboardId = res.body.id;
-
-                            request(app)
-                                .get('/api/dashboards/' + dashboardId + '/widgets')
-                                .expect('content-type', /json/)
-                                .expect(200, '[]', done);
-                        });
-                });
+                .expect(200, '[]', done);
         });
     });
 
     describe('POST /api/dashboards/:dashboardId/widgets', function(){
         it('should create a widget', function(done){
             request(app)
-                .post('/api/dashboards/' + dashboardId + '/widgets')
+                .post('/api/dashboards/' + dashboardId + '/widgets' + '?token=' + token)
                 .send({
                     type: 1,
                     config: {size: 10},
@@ -70,7 +83,7 @@ describe('widget controller', function(){
     describe('GET /api/dashboards/:dashboardId/widgets', function(){
         it('should return widget list', function(done){
             request(app)
-                .get('/api/dashboards/' + dashboardId + '/widgets')
+                .get('/api/dashboards/' + dashboardId + '/widgets' + '?token=' + token)
                 .expect('content-type', /json/)
                 .expect(200, done);
         });
@@ -79,7 +92,7 @@ describe('widget controller', function(){
     describe('GET /api/dashboards/:dashboardId/widgets/:id', function(){
         it('should return a widget', function(done){
             request(app)
-                .get('/api/dashboards/' + dashboardId + '/widgets/' + widgetId)
+                .get('/api/dashboards/' + dashboardId + '/widgets/' + widgetId + '?token=' + token)
                 .expect('content-type', /json/)
                 .expect(200, done);
         });
@@ -88,7 +101,7 @@ describe('widget controller', function(){
     describe('PUT /api/dashboards/:dashboardId/widgets/:id', function(){
         it('should update a widget', function(done){
             request(app)
-                .put('/api/dashboards/' + dashboardId + '/widgets/' + widgetId)
+                .put('/api/dashboards/' + dashboardId + '/widgets/' + widgetId + '?token=' + token)
                 .send({
                     type: 2
                 })
@@ -99,14 +112,14 @@ describe('widget controller', function(){
                         return done(err);
                     }
                     done();
-                })
+                });
         });
-    })
+    });
 
     describe('DELETE /api/dashboards/:dashboardId/widgets/:id', function(){
         it('should delete a widget', function(done){
             request(app)
-                .delete('/api/dashboards/' + dashboardId + '/widgets/' + widgetId)
+                .delete('/api/dashboards/' + dashboardId + '/widgets/' + widgetId + '?token=' + token)
                 .expect(200)
                 .end(function (err) {
                     if(err){
@@ -114,24 +127,10 @@ describe('widget controller', function(){
                     }
 
                     request(app)
-                        .get('/api/dashboards/' + dashboardId + '/widgets/' + widgetId)
-                        .expect('content-type', /json/)
-                        .expect(404);
-                });
-
-            request(app)
-                .delete('/api/dashboards/' + dashboardId)
-                .expect(200)
-                .end(function(err){
-                    if(err){
-                        return done(err);
-                    }
-
-                    request(app)
-                        .get('/api/dashboards/' + dashboardId)
+                        .get('/api/dashboards/' + dashboardId + '/widgets/' + widgetId + '?token=' + token)
                         .expect('content-type', /json/)
                         .expect(404, done);
                 });
         });
-    })
+    });
 });

@@ -67,12 +67,12 @@ router.post(
             if(!project){
                 return res.send(400);
             }
-        });
-
-        DataSource.save(dataSource).then(function (id){
-            return DataSource.get(id);
-        }).then(function (dataSource){
-            res.send(dataSource);
+        }).then(function (){
+            return DataSource.save(dataSource).then(function (id){
+                return DataSource.get(id);
+            }).then(function (dataSource) {
+                res.send(dataSource);
+            });
         }).catch(next);
     }
 );
@@ -88,10 +88,16 @@ router.put(
             return res.send(400);
         }
 
-        DataSource.update(id, dataSource).then(function (){
-            return DataSource.get(id);
-        }).then(function (dataSource){
-            res.send(dataSource);
+        Project.get(dataSource.project_id).then(function (project){
+            if(!project){
+                return res.send(400);
+            }
+        }).then(function (){
+            return DataSource.update(id, dataSource).then(function (){
+                return DataSource.get(id);
+            }).then(function (dataSource) {
+                res.send(dataSource);
+            });
         }).catch(next);
     }
 );
@@ -103,12 +109,13 @@ router.delete(
 
         DataSource.get(id)
             .then(function (dataSource) {
-                if(!dataSource) {
+                if (!dataSource) {
                     return res.send(404);
                 }
-
-                Record.removeList(dataSource.id).then(function () {
-                    DataSource.remove(dataSource.id).then(function () {
+                return dataSource;
+            }).then(function (dataSource){
+                return Record.removeList(dataSource.id).then(function () {
+                    return DataSource.remove(dataSource.id).then(function () {
                         res.send(200);
                     });
                 });

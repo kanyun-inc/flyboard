@@ -1293,6 +1293,7 @@ indexApp.controller('EditDashboardModalCtrl', ['$scope', '$modal',
                     }
                 };
 
+                $scope.dashboard.private = $scope.dashboard.private ? $scope.dashboard.private : false;
                 var backupDashboardName = dashboard ? dashboard.name : null;
 
                 $scope.ok = function () {

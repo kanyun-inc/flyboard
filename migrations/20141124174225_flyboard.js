@@ -2,12 +2,12 @@
 
 exports.up = function(knex, Promise) {
     return Promise.all([
-        knex.schema.table('dashboards', function (table) {
-            table.integer('project_id');
+        knex.schema.table('users', function (table) {
+            table.string('salt');
         })
     ]);
 };
 
 exports.down = function(knex, Promise) {
-  
+
 };
