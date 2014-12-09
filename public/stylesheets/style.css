@@ -302,7 +302,9 @@ nav {
   display: block;
 }
 
-nav .select-project,
+nav .select-project{
+    float: left;
+}
 nav .edit-layout,
 nav .switch-slide{
     float: right;
@@ -1003,6 +1005,17 @@ div[sticky].fixed {
     -webkit-border-radius:6px 0 6px 6px;
     -moz-border-radius:6px 0 6px 6px;
     border-radius:6px 0 6px 6px;
+}
+
+.navbar-inverse .right-divider-vertical {
+height: 50px;
+margin: 0 9px;
+border-right: 2px solid #5b5b5b;
+}
+
+.navbar-inverse .divider-vertical {
+border-right-color: #222222;
+border-left-color: #111111;
 }
 
 /* login */
