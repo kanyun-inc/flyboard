@@ -4,5 +4,6 @@ node_js:
 before_script:
   - npm run test-jshint
   - cp configs/database.example.js configs/database.js
+  - cp configs/app.example.js configs/app.js
 after_script:
   - npm run test-coverage
