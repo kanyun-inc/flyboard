@@ -33,6 +33,7 @@
     "morgan": "~1.0.0",
     "node-uuid": "^1.4.1",
     "passport": "^0.2.1",
+    "passport-github": "^0.1.5",
     "passport-google": "^0.3.0",
     "randomstring": "^1.0.3",
     "static-favicon": "~1.0.0",
