@@ -5,3 +5,4 @@ node_modules
 configs/database.js
 *.sqlite
 .idea/
+configs/app.js
