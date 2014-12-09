@@ -41,10 +41,28 @@
     </div>
 
     <div class="login-intro">
+        <% var msg = flash('error') %>
+        <% if (msg && msg.length) { %>
+            <div class="alert alert-danger"><%=msg%></div>
+        <% } %>
         <% authItems.forEach(function (authItem) { %>
-        <ol class="breadcrumb text-center">
-            <li><a href="/auth/<%= authItem.key %>">Sign In with <%= authItem.key %></a></li>
-        </ol>
+            <% if (authItem.key === 'ldapauth') { %>
+                <form action="<%=authItem.authUrl%>" role="form" method="POST">
+                    <div class="form-group">
+                        <label for="username">LDAP 用户名</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入 LDAP 用户名" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">LDAP 用户名</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="请输入 LDAP 密码" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit">登录</button>
+                </form>
+            <% } else { %>
+                <ol class="breadcrumb text-center">
+                    <li><a href="/auth/<%= authItem.key %>"><i class="fa fa-<%=authItem.key%>"></i> 使用 <%= authItem.keyName %> 账号登陆</a></li>
+                </ol>
+            <% } %>
         <% }) %>
     </div>
 </body>

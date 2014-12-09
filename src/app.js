@@ -8,6 +8,7 @@ var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var passport = require('../configs/app').passport;
+var flash = require('connect-flash');
 
 var dbConnection = require('../configs/database')[process.env.NODE_ENV || 'development'].connection;
 
@@ -42,10 +43,13 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (req, res, next) {
+    res.locals.flash = req.flash.bind(req);
+
     if (req.url.indexOf('/api') === 0) {
         res.type('json');
     }

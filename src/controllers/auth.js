@@ -3,18 +3,28 @@
 var router = require('express').Router();
 var passport = require('../../configs/app').passport;
 var authItems = require('../../configs/app').authItems;
+var _ = require('underscore');
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded();
 
 module.exports = router;
 
 authItems.forEach(function (item) {
     //auth
-    router.get(item.authUrl, passport.authenticate(item.key));
+    router.all(item.authUrl, urlencodedParser, passport.authenticate(item.key, _.defaults({
+        failureFlash: true,
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }, item.authenticate)));
 
-    router.get(item.returnUrl,
-        passport.authenticate(item.key, {
-            successRedirect: '/',
-            failureRedirect: '/login'
-        }));
+    if (item.returnUrl) {
+        router.all(item.returnUrl,
+            passport.authenticate(item.key, _.defaults({
+                failureFlash: true,
+                successRedirect: '/',
+                failureRedirect: '/login'
+            }, item.authenticate)));
+    }
 });
 
 function loginCtrl(req, res) {
@@ -23,3 +33,9 @@ function loginCtrl(req, res) {
 }
 
 router.get('/login', loginCtrl);
+router.get('/logout', function (req, res) {
+    req.session.destroy();
+
+    var redirect = req.param('redirect', '/');
+    res.redirect(redirect);
+});
