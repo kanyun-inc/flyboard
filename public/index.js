@@ -2521,7 +2521,11 @@ indexApp.directive('fitText', [
                 var $this = $elem;
 
                 var resizer = function () {
-                    $this.css('font-size', compressor * Math.sqrt($this.width()));
+                    var minSize = Math.min($this.width(), $this.height());
+                    var size = compressor * Math.sqrt(minSize);
+                    size = size > minSize ? minSize: size;
+
+                    $this.css('font-size', size);
                     $this.css('line-height', $this.css('font-size'));
                 };
 

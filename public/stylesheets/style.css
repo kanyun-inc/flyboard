@@ -11,6 +11,10 @@ a{
     text-decoration: none;
 }
 
+.cf-nav ul li a {
+    text-decoration: none;
+}
+
 .widget header p a{
     color: rgb(169, 169, 169);
 }

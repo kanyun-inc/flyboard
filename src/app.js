@@ -9,7 +9,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var passport = require('../configs/app').passport;
 
-var dbConnection = require('../configs/database').development.connection;
+var dbConnection = require('../configs/database')[process.env.NODE_ENV || 'development'].connection;
 
 var app = express();
 
