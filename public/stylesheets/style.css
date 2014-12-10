@@ -401,6 +401,17 @@ div.select-project button{
     top : 10px;
 }
 
+.cf-nav .cf-nav-shortcut span .edit-dashboard:hover,
+.cf-nav .cf-nav-shortcut span .delete-dashboard:hover{
+    color: #fff;
+    background-color: #333333;
+}
+.cf-nav .cf-nav-shortcut.current span .edit-dashboard:hover,
+.cf-nav .cf-nav-shortcut.current span .delete-dashboard:hover{
+    color: #fff;
+    background-color: #2b2b2b;
+}
+
 .cf-nav .cf-nav-min-overflow-hidden {
     overflow: hidden;
 }
