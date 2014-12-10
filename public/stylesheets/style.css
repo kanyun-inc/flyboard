@@ -11,6 +11,10 @@ a{
     text-decoration: none;
 }
 
+.cf-nav ul li a {
+    text-decoration: none;
+}
+
 .widget header p a{
     color: rgb(169, 169, 169);
 }
@@ -163,7 +167,7 @@ button#add-row{
 
 .widget .cf-svp .chart .change{
     position: absolute;
-    font-size: 1.5em;
+    font-size: 3em;
     bottom: 18%;
     left: 0;
     right: 0;
@@ -302,7 +306,9 @@ nav {
   display: block;
 }
 
-nav .select-project,
+nav .select-project{
+    float: left;
+}
 nav .edit-layout,
 nav .switch-slide{
     float: right;
@@ -1003,6 +1009,17 @@ div[sticky].fixed {
     -webkit-border-radius:6px 0 6px 6px;
     -moz-border-radius:6px 0 6px 6px;
     border-radius:6px 0 6px 6px;
+}
+
+.navbar-inverse .right-divider-vertical {
+height: 50px;
+margin: 0 9px;
+border-right: 2px solid #5b5b5b;
+}
+
+.navbar-inverse .divider-vertical {
+border-right-color: #222222;
+border-left-color: #111111;
 }
 
 /* login */

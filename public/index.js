@@ -2023,7 +2023,7 @@ indexApp.directive('widgetDonut', [
 
                 var $this = this;
                 var $container = $elem.find('.cf-svp');
-                var $metrics = $container.find('.metrics');
+                var $metrics = $container.find('.metrics span');
                 var $arrow = $elem.find('.change .arrow');
                 var $changeMetric = $elem.find('div.change');
                 var $changeMetricContent = $changeMetric.find('.change-content');
@@ -2035,6 +2035,10 @@ indexApp.directive('widgetDonut', [
                 var chartWrapper = rSVP($container);
                 //broadcast to call fitText once
                 $scope.$broadcast('fitdonut');
+
+                function updateChangeContentLocation(){
+                    $changeMetricContent.css('margin-left', ($changeMetric.width() - $changeMetricContent.width()) / 2);
+                }
 
                 function reload() {
                     var $container = $(this).find('.cf-svp');
@@ -2078,7 +2082,8 @@ indexApp.directive('widgetDonut', [
                         det = Math.abs(det).toFixed(2).toString().split('.');
                         $large.text(det[0]);
                         $small.text('.' + det[1] + '%');
-                        $changeMetricContent.css('margin-left', ($changeMetric.width() - $changeMetricContent.width()) / 2);
+                        //update content location
+                        updateChangeContentLocation();
 
                         //update current value
                         var chart = chartWrapper.chart;
@@ -2095,12 +2100,15 @@ indexApp.directive('widgetDonut', [
                         // Update the data-percent so it redraws on resize properly
                         $container.find('.chart').data('percent', config.value);
                         // Update the UI metric
-                        $elem.find('.metric').html(numeral(config.value).format('0,0.[00]'));
+                        $elem.find('.metric span').html(numeral(config.value).format('0,0.[00]'));
 
                         //timestamp
                         if(resp && resp.length){
                             $scope.updatedTime = formatDate(new Date(resp[0].date_time));
                         }
+
+                            //call fitText
+                            $(window).trigger('resize.fittext');
                     }).catch(function (errorType) {
                         if (errorType.status === 404) {
                             Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
@@ -2123,6 +2131,8 @@ indexApp.directive('widgetDonut', [
                     }
                 }
 
+                $(window).on('resize', updateChangeContentLocation);
+
                 var cleanUpFuncs = [];
                 cleanUpFuncs.push($scope.$on('widgetlayoutchange', resizeWidget));
                 cleanUpFuncs.push($scope.$on('widgetupdate', updateWidget));
@@ -2133,6 +2143,8 @@ indexApp.directive('widgetDonut', [
                             chartWrapper.destroy();
                         }
                     }, 5000);
+
+                    $(window).off('resize', updateChangeContentLocation);
 
                     cleanUpFuncs.forEach(function (cleanUpFunc) {
                         cleanUpFunc();
@@ -2162,7 +2174,7 @@ indexApp.directive('widgetNumber', [
                 $scope.updatedTime = null;
 
                 var $widget = $($elem);
-                var $metric = $widget.find('.metric');
+                var $metric = $widget.find('.metric span');
                 var $metricSmall = $widget.find('.metric-small');
                 var $change = $widget.find('.change');
                 var $arrow = $widget.find('.arrow');
@@ -2221,6 +2233,9 @@ indexApp.directive('widgetNumber', [
                             if(resp && resp.length){
                                 $scope.updatedTime = formatDate(new Date(resp[0].date_time));
                             }
+
+                            //call fitText
+                            $(window).trigger('resize.fittext');
                         }, 'json').catch(function (errorType) {
                             if (errorType.status === 404) {
                                 Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
@@ -2521,8 +2536,33 @@ indexApp.directive('fitText', [
                 var $this = $elem;
 
                 var resizer = function () {
-                    $this.css('font-size', compressor * Math.sqrt($this.width()));
+                    var minSideLength = Math.min($this.width(), $this.height());
+                    var size = compressor * Math.sqrt(minSideLength);
+
+                    //less than parent's width and height
+                    size = size > minSideLength ? minSideLength: size;
+
+                    $this.css('font-size', size);
                     $this.css('line-height', $this.css('font-size'));
+
+                    //adjust width
+                    var $parentDiv = $this;
+                    var $parentSpan = $this.find('.metric span');
+
+                    if($parentSpan.length === 0){
+                        $parentSpan = $this.find('.metric-small span');
+                    }
+
+                    while(1){
+                        var maxWidth = $parentDiv.width();
+                        var curWidth = $parentSpan.width();
+                        if(curWidth <= maxWidth){
+                            break;
+                        }
+                        size = size * 0.8;
+                        $this.css('font-size', size);
+                    }
+
                 };
 
                 // Call once to set.

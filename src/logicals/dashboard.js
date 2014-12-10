@@ -55,7 +55,8 @@ exports.find = function (query) {
             knex('dashboards')
                 .where(query_public_dashboards)
                 .whereNull('private')
-                .orWhere('private', false)
+                .orWhere(query_public_dashboards)
+                .andWhere('private', false)
                 .select()
                 .map(dbToObj),
             knex('dashboards')
