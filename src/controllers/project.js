@@ -8,7 +8,7 @@ var Project = require('../logicals/project');
 
 router.get('/api/projects', function (req, res, next) {
     Project.find().then(function (projects) {
-        res.send(projects);
+        return res.send(projects);
     }).catch(next);
 });
 
@@ -20,7 +20,7 @@ router.get('/api/projects/:id', function (req, res, next) {
             return res.send(404);
         }
 
-        res.send(project);
+        return res.send(project);
     }).catch(next);
 });
 
@@ -36,7 +36,7 @@ router.post(
         Project.save(project).then(function (id) {
             return Project.get(id);
         }).then(function (project) {
-            res.send(project);
+            return res.send(project);
         }).catch(next);
     }
 );
@@ -55,7 +55,7 @@ router.put(
         Project.update(id, project).then(function () {
             return Project.get(id);
         }).then(function (project) {
-            res.send(project);
+            return res.send(project);
         }).catch(next);
     }
 );
@@ -66,7 +66,7 @@ router.delete(
         var id = parseInt(req.param('id'), 10);
 
         Project.remove(id).then(function () {
-            res.send(200);
+            return res.send(200);
         }).catch(next);
     }
 );

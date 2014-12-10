@@ -8,7 +8,7 @@ var User = require('../logicals/user');
 
 router.get('/api/users', function (req, res, next) {
     User.find().then(function (users) {
-        res.send(users);
+        return res.send(users);
     }).catch(next);
 });
 
@@ -20,7 +20,7 @@ router.get('/api/users/:id', function (req, res, next) {
             return res.send(404);
         }
 
-        res.send(user);
+        return res.send(user);
     }).catch(next);
 });
 
@@ -36,7 +36,7 @@ router.post(
         User.save(user).then(function (id) {
             return User.get(id);
         }).then(function (user) {
-            res.send(user);
+            return res.send(user);
         }).catch(next);
     }
 );
@@ -55,7 +55,7 @@ router.put(
         User.update(id, user).then(function () {
             return User.get(id);
         }).then(function (user) {
-            res.send(user);
+            return res.send(user);
         }).catch(next);
     }
 );
@@ -66,7 +66,7 @@ router.delete(
         var id = parseInt(req.param('id'), 10);
 
         User.remove(id).then(function () {
-            res.send(200);
+            return res.send(200);
         }).catch(next);
     }
 );

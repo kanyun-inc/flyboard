@@ -31,7 +31,7 @@ router.post(
             return Record.save(record).then(function (id) {
                 return Record.get(id);
             }).then(function (record) {
-                res.send(record);
+                return res.send(record);
             });
         }).catch(next);
     }
@@ -47,7 +47,7 @@ router.get(
                 return res.send(404);
             }
 
-            res.send(record);
+            return res.send(record);
         }).catch(next);
     }
 );
@@ -102,7 +102,7 @@ router.get(
                 period: period,
                 distinct: distinct
             }).then(function(records){
-                res.send(records);
+                return res.send(records);
             });
         }).catch(next);
     }
@@ -113,7 +113,7 @@ router.delete(
     function(req, res, next) {
         var id = parseInt(req.param('id'), 10);
         Record.remove(id).then(function () {
-            res.send(200);
+            return res.send(200);
         }).catch(next);
     }
 );
@@ -132,7 +132,7 @@ router.delete('/api/data_sources/:id/records',
             }
 
             Record.removeList(dataSource.id).then(function (){
-                res.send(200);
+                return res.send(200);
             }).catch(next);
         });
     }

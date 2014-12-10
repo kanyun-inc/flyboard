@@ -25,7 +25,7 @@ router.get(
                 return res.send(404);
             }
 
-            res.send(folders);
+            return res.send(folders);
         }).catch(next);
     }
 );
@@ -40,7 +40,7 @@ router.get(
                 return res.send(404);
             }
 
-            res.send(folder);
+            return res.send(folder);
         }).catch(next);
     }
 );
@@ -64,7 +64,7 @@ router.get(
                 return res.send(404);
             }
 
-            res.send(folders);
+            return res.send(folders);
         }).catch(next);
     }
 );
@@ -97,7 +97,7 @@ router.post(
             return Folder.save(folder).then(function (id) {
                 return Folder.get(id);
             }).then(function (folder) {
-                res.send(folder);
+                return res.send(folder);
             });
         }).catch(next);
     }
@@ -132,7 +132,7 @@ router.put(
             return Folder.update(id, folder).then(function() {
                 return Folder.get(id);
             }).then(function (folder) {
-                res.send(folder);
+                return res.send(folder);
             });
         }).catch(next);
     }
@@ -220,7 +220,7 @@ router.delete(
                 blueBird.all([blueBird.all(promises), blueBird.all(pros)]).then(function () {
 
                     Folder.remove(id).then(function () {
-                        res.send(200, 'ok');
+                        return res.send(200, 'ok');
                     }).catch(next);
                 });
             });
@@ -228,7 +228,7 @@ router.delete(
         else {
 
             deleteFolderRecursive(id).then(function () {
-                res.send(200);
+                return res.send(200);
             }).catch(next);
         }
     }

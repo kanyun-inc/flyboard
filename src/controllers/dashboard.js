@@ -20,7 +20,7 @@ router.get('/api/dashboards', function(req, res, next){
     }
 
     Dashboard.find(query).then(function (dashboards){
-        res.send(dashboards);
+        return res.send(dashboards);
     }).catch(next);
 });
 
@@ -32,7 +32,7 @@ router.get('/api/dashboards/:id', function(req, res, next){
             return res.send(404);
         }
 
-        res.send(dashboards);
+        return res.send(dashboards);
     }).catch(next);
 });
 
@@ -60,7 +60,7 @@ router.post(
             return Dashboard.save(dashboard).then(function(id){
                 return Dashboard.get(id);
             }).then(function(dashboard) {
-                res.send(dashboard);
+                return res.send(dashboard);
             });
         }).catch(next);
     }
@@ -96,7 +96,7 @@ router.put(
             return Dashboard.update(id, dashboard).then(function () {
                 return Dashboard.get(id);
             }).then(function (dashboard) {
-                res.send(dashboard);
+                return res.send(dashboard);
             });
         }).catch(next);
     }
@@ -108,7 +108,7 @@ router.delete(
         var id = parseInt(req.param('id'), 10);
 
         Dashboard.remove(id).then(function(){
-            res.send(200);
+            return res.send(200);
         }).catch(next);
     }
 );
