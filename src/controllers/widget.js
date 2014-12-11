@@ -14,7 +14,7 @@ router.get(
         Widget.find({
             dashboard_id: dashboardId
         }).then(function(widgets){
-            res.send(widgets);
+            return res.send(widgets);
         }).catch(next);
     }
 );
@@ -29,7 +29,7 @@ router.get(
                 return res.send(404);
             }
 
-            res.send(widget);
+            return res.send(widget);
         }).catch(next);
     }
 );
@@ -55,7 +55,7 @@ router.post(
         Widget.save(widget).then(function(id){
             return Widget.get(id);
         }).then(function(widget){
-            res.send(widget);
+            return res.send(widget);
         }).catch(next);
     }
 );
@@ -75,7 +75,7 @@ router.put(
         Widget.update(id, widget).then(function(){
             return Widget.get(id);
         }).then(function(widget){
-            res.send(widget);
+            return res.send(widget);
         }).catch(next);
     }
 );
@@ -87,7 +87,7 @@ router.delete(
         console.log('@@@DELETE_WIDGET@@@ id=' + id);
 
         Widget.remove(id).then(function(){
-            res.send(200);
+            return res.send(200);
         }).catch(next);
     }
 );

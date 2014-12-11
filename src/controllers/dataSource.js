@@ -26,7 +26,7 @@ router.get(
         }
 
         DataSource.find(query).then(function(dataSources){
-            res.send(dataSources);
+            return res.send(dataSources);
         }).catch(next);
     }
 );
@@ -41,7 +41,7 @@ router.get(
                 return res.send(404);
             }
 
-            res.send(dataSource);
+            return res.send(dataSource);
         }).catch(next);
     }
 );
@@ -71,7 +71,7 @@ router.post(
             return DataSource.save(dataSource).then(function (id){
                 return DataSource.get(id);
             }).then(function (dataSource) {
-                res.send(dataSource);
+                return res.send(dataSource);
             });
         }).catch(next);
     }
@@ -96,7 +96,7 @@ router.put(
             return DataSource.update(id, dataSource).then(function (){
                 return DataSource.get(id);
             }).then(function (dataSource) {
-                res.send(dataSource);
+                return res.send(dataSource);
             });
         }).catch(next);
     }
@@ -116,7 +116,7 @@ router.delete(
             }).then(function (dataSource){
                 return Record.removeList(dataSource.id).then(function () {
                     return DataSource.remove(dataSource.id).then(function () {
-                        res.send(200);
+                        return res.send(200);
                     });
                 });
         }).catch(next);
