@@ -489,7 +489,9 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
         //bind nav.unfold event
         function navUnfoldHandler (evt, value) {
             $scope.cfNavUnfold = value;
-            $(window).trigger('resize');
+            $timeout(function(){
+                $(window).trigger('resize');
+            }, 310);    //transition-duration + 10ms
         }
 
         $(window).on('nav.unfold', navUnfoldHandler);
