@@ -334,6 +334,7 @@ indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Pr
 
 indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window', '$q', '$location', '$interval', '$timeout', 'Dashboard', 'Project',
     function ($scope, $route, $routeParams, $window, $q, $location, $interval, $timeout, Dashboard, Project) {
+        $scope.cfNavUnfold = false;
         $scope.$on('$routeChangeSuccess', function () {
             var projectId = $routeParams.project_id;
             var dashboardId = $routeParams.id;
@@ -484,6 +485,18 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
             stopPhaseTimer();
             stopPhaseDelayTimer();
         });
+
+        //bind nav.unfold event
+        function navUnfoldHandler (evt, value) {
+            $scope.cfNavUnfold = value;
+            $(window).trigger('resize');
+        }
+
+        $(window).on('nav.unfold', navUnfoldHandler);
+
+        $scope.$on('$destroy', function () {
+            $(window).off('nav.unfold', navUnfoldHandler);
+        });
     }
 ]);
 
@@ -577,6 +590,7 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
 
         $scope.setUnfold = function (value) {
             $scope.unfold = value;
+            $(window).trigger('nav.unfold',  [value ]);
         };
 
         $scope.selectProject = function (project) {
@@ -669,7 +683,6 @@ indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$l
                 return memo;
             }, {});
         });
-
     }
 ]);
 

@@ -13,87 +13,94 @@
     <% }) %>
 </head>
 <body class="black flyboard-app" ng-controller="SlideCtrl" ng-class="{'view-animate': slideMode}">
-<div ng-controller="NavCtrl">
-    <nav class="navbar-default navbar-inverse" role="navigation" ng-controller="EditProjectModalCtrl">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" ng-href="{{NavUrl('index')}}">FlyBoard</a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <div class="btn-group select-project right-divider-vertical" ng-if="project">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                      {{project.name}}
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-left" role="menu">
-                        <li ng-repeat="project in projects" class="project-item">
-                            <a href="" class="project-name" ng-click="selectProject(project)">{{project.name}}</a>
-                            <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
-                        </li>
-                        <li><a href="" class="new-project" ng-click="open(projects)">-------- 新建 --------</a></li>
-                    </ul>
+    <div ng-controller="NavCtrl">
+        <nav class="navbar-default navbar-inverse" role="navigation" ng-controller="EditProjectModalCtrl">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" ng-href="{{NavUrl('index')}}">FlyBoard</a>
                 </div>
 
-                <ul class="nav navbar-nav">
-                    <li><a ng-href="{{NavUrl('stat')}}">数据</a></li>
-                    <li><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <div class="btn-group select-project right-divider-vertical" ng-if="project">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                          {{project.name}}
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-left" role="menu">
+                            <li ng-repeat="project in projects" class="project-item">
+                                <a href="" class="project-name" ng-click="selectProject(project)">{{project.name}}</a>
+                                <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
+                            </li>
+                            <li><a href="" class="new-project" ng-click="open(projects)">-------- 新建 --------</a></li>
+                        </ul>
+                    </div>
+
+                    <ul class="nav navbar-nav">
+                        <li><a ng-href="{{NavUrl('stat')}}">数据</a></li>
+                        <li><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
+                    </ul>
+
+                    <div class="switch-slide">
+                        <a href="" title="轮播开关"  class="fa fa-lg"
+                           ng-class="{'fa-toggle-on': slideMode, 'fa-toggle-off': !slideMode, 'fa-toggle-disabled': editLayoutMode}"
+                           ng-click="toggleSlideMode()"></a>
+                    </div>
+
+                    <div class="edit-layout">
+                        <a href="" title="编辑布局" class="glyphicon glyphicon-cog fa-lg"
+                           ng-class="{'edit-on': !slideMode && editLayoutMode, 'edit-off': !slideMode && !editLayoutMode, 'edit-disabled': slideMode}"
+                           ng-click="toggleEditLayoutMode()"></a>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
+            <a href="" class="cf-nav-toggle" ng-click="setUnfold(!unfold)">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div sticky class="dashboard-list" ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
+                <ul>
+                    <li ng-repeat="item in dashboards"
+                        class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
+                        <a href="#/projects/{{project.id}}/dashboards/{{item.id}}"
+                           class="{{ item.id === dashboard.id ? 'current active' : null}}">
+                            <span class="cf-nav-min">{{$index + 1}}</span>
+                            <span class="cf-nav-max">{{item.name}}</span>
+                        </a>
+
+                        <span ng-if="unfold">
+                            <span ng-controller="EditDashboardModalCtrl">
+                                <a href="" class="edit-dashboard" ng-click="open(project.id, item)">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            </span>
+                            <span ng-controller="ConfirmDeleteDashboardCtrl">
+                                <a href="" class="delete-dashboard" ng-click="open(project.id, item)">
+                                    <i class="fa fa-minus-circle"></i>
+                                </a>
+                            </span>
+                        </span>
+                    </li>
+
+                    <li class="cf-nav-shortcut" ng-controller="EditDashboardModalCtrl">
+                        <a href="" ng-click="open(project.id)" class="new-dashboard">
+                            <i class="fa fa-plus-circle cf-nav-min"></i>
+                        </a>
+                    </li>
                 </ul>
 
-                <div class="switch-slide"><a href="" title="轮播开关" ng-class="{'fa-toggle-on': slideMode, 'fa-toggle-off': !slideMode, 'fa-toggle-disabled': editLayoutMode}" class="fa fa-lg" ng-click="toggleSlideMode()"></a></div>
-
-                <div class="edit-layout"><a href="" title="编辑布局" ng-class="{'edit-on': !slideMode && editLayoutMode, 'edit-off': !slideMode && !editLayoutMode, 'edit-disabled': slideMode}" class="glyphicon glyphicon-cog fa-lg" ng-click="toggleEditLayoutMode()"></a></div>
-
-
             </div>
-        </div>
-    </nav>
 
-    <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
-        <a href="" class="cf-nav-toggle" ng-click="unfold = !unfold">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-
-        <div sticky class="dashboard-list" ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
-            <ul>
-                <li ng-repeat="item in dashboards"
-                    class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
-                    <a href="#/projects/{{project.id}}/dashboards/{{item.id}}"
-                       class="{{ item.id === dashboard.id ? 'current active' : null}}" ng-click="setUnfold(false)">
-                        <span class="cf-nav-min">{{$index + 1}}</span>
-                        <span class="cf-nav-max">{{item.name}}</span>
-                    </a>
-
-                    <span ng-if="unfold">
-                        <span ng-controller="EditDashboardModalCtrl">
-                            <a href="" class="edit-dashboard" ng-click="open(project.id, item)">
-                                <i class="fa fa-pencil-square-o"></i>
-                            </a>
-                        </span>
-                        <span ng-controller="ConfirmDeleteDashboardCtrl">
-                            <a href="" class="delete-dashboard" ng-click="open(project.id, item)">
-                                <i class="fa fa-minus-circle"></i>
-                            </a>
-                        </span>
-                    </span>
-                </li>
-
-                <li class="cf-nav-shortcut" ng-controller="EditDashboardModalCtrl">
-                    <a href="" ng-click="open(project.id)" class="new-dashboard">
-                        <i class="fa fa-plus-circle cf-nav-min"></i>
-                    </a>
-                </li>
-            </ul>
+            <timer data-phase="{{phase}}" ng-show="slideMode"></timer>
 
         </div>
-
-        <timer data-phase="{{phase}}" ng-show="slideMode"></timer>
-
     </div>
-</div>
 
-<div ng-view class="dashboard"></div>
+    <div ng-view class="dashboard" ng-class="{'cf-nav-state-min': !cfNavUnfold, 'cf-nav-state-max': cfNavUnfold}"></div>
 </body>
 </html>

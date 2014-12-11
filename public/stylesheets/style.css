@@ -490,7 +490,7 @@ timer[data-phase='10']{
 
 .modal .modal-dialog { width: 700px; }
 
-.dashboard .widget-display {
+.dashboard .widget-display{
     padding-left: 10px;
     padding-top: 10px;
     position: absolute;
@@ -498,6 +498,20 @@ timer[data-phase='10']{
     bottom: 0;
     left: 25px;
     right: 0;
+}
+.dashboard.cf-nav-state-max .widget-display {
+    margin-left: 265px;
+    -webkit-transition: margin-left 0.3s ease;
+    -moz-transition: margin-left 0.3s ease;
+    -o-transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease;
+}
+.dashboard.cf-nav-state-min .widget-display {
+    margin-left: 0;
+    -webkit-transition: margin-left 0.3s ease;
+    -moz-transition: margin-left 0.3s ease;
+    -o-transition: margin-left 0.3s ease;
+    transition: margin-left 0.3s ease;
 }
 
 .dashboard .layer,
