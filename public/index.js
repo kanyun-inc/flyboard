@@ -2122,8 +2122,8 @@ indexApp.directive('widgetDonut', [
                             $scope.updatedTime = formatDate(new Date(resp[0].date_time));
                         }
 
-                            //call fitText
-                            $(window).trigger('resize.fittext');
+                        //call fitText
+                        $scope.$broadcast('fitdonut');
                     }).catch(function (errorType) {
                         if (errorType.status === 404) {
                             Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
@@ -2250,7 +2250,7 @@ indexApp.directive('widgetNumber', [
                             }
 
                             //call fitText
-                            $(window).trigger('resize.fittext');
+                            $scope.$broadcast('fitnumber');
                         }, 'json').catch(function (errorType) {
                             if (errorType.status === 404) {
                                 Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
@@ -2381,7 +2381,7 @@ indexApp.directive('widgetColumn', [
 
                         timeLine = (sortedMultiRecords && sortedMultiRecords.length > 0) ? (function () {
                             return sortedMultiRecords[0].map(function (record) {
-                                return record.time;
+                                return record.date_time;
                             });
                         })() : [];
 
@@ -2549,6 +2549,8 @@ indexApp.directive('fitText', [
             link: function ($scope, $elem) {
                 var compressor = $scope.compressor || 1;
                 var $this = $elem;
+                var $parentDiv = $this;
+                var $parentSpan = $this.find('.metric span');
 
                 var resizer = function () {
                     var minSideLength = Math.min($this.width(), $this.height());
@@ -2561,9 +2563,6 @@ indexApp.directive('fitText', [
                     $this.css('line-height', $this.css('font-size'));
 
                     //adjust width
-                    var $parentDiv = $this;
-                    var $parentSpan = $this.find('.metric span');
-
                     if($parentSpan.length === 0){
                         $parentSpan = $this.find('.metric-small span');
                     }
@@ -2577,7 +2576,6 @@ indexApp.directive('fitText', [
                         size = size * 0.8;
                         $this.css('font-size', size);
                     }
-
                 };
 
                 // Call once to set.
@@ -2586,6 +2584,7 @@ indexApp.directive('fitText', [
                 // Call on resize. Opera debounces their resize by default.
                 $(window).on('resize.fittext', resizer);
                 $scope.$on('fitdonut', resizer);
+                $scope.$on('fitnumber', resizer);
 
                 $scope.$on('$destroy', function () {
                     $(window).off('resize.fittext', resizer);
