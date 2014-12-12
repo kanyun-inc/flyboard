@@ -1040,7 +1040,7 @@ div[sticky].fixed {
 
 .navbar-inverse .right-divider-vertical {
 height: 50px;
-margin: 0 9px;
+margin: 0;
 border-right: 2px solid #5b5b5b;
 }
 
