@@ -23,7 +23,7 @@ $ npm install pg
 $ npm install sqlite3
 ```
 
-编辑数据库配置
+编辑数据库配置，数据库配置文件参考 [knex 文档]
 
 ```bash
 cp configs/database.example.js config/database.js
@@ -51,3 +51,5 @@ DEBUG=flyboard node bin/www
 ## License 
 
 MIT
+
+* [knex 文档]: http://knexjs.org/#Installation-client
