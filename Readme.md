@@ -7,7 +7,7 @@
 
 简单、灵活、友好的数据可视化系统。
 
-## 安装c
+## 安装
 
 ```bash
 $ git clone git://github.com/yuantiku/flyboard.git && cd flyboard
