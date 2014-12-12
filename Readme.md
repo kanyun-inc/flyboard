@@ -30,6 +30,12 @@ cp configs/database.example.js config/database.js
 vim config/database.js
 ```
 
+初始化 APP 配置
+
+```bash
+cp configs/app.example.js configs/app.js
+```
+
 初始化数据库
 
 ```bash
