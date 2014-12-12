@@ -57,9 +57,7 @@ exports.up = function(knex, Promise) {
             table
                 .integer('project_id')
                 .notNullable()
-                .unsigned()
-                .references('id')
-                .inTable('projects');
+                .unsigned();
         })
      ]);
 };
