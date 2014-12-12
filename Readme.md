@@ -23,11 +23,17 @@ $ npm install pg
 $ npm install sqlite3
 ```
 
-编辑数据库配置
+编辑数据库配置，数据库配置文件参考 [knex 文档](http://knexjs.org/#Installation-client)
 
 ```bash
-cp configs/database.example.js config/database.js
-vim config/database.js
+cp configs/database.example.js configs/database.js
+vim configs/database.js
+```
+
+初始化 APP 配置
+
+```bash
+cp configs/app.example.js configs/app.js
 ```
 
 初始化数据库

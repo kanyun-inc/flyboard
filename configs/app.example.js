@@ -49,6 +49,7 @@ passport.deserializeUser(function (email, done) {
 exports.passport = passport;
 exports.authItems = [{
     key: 'google',
+    keyName: 'Google',
     authUrl: '/auth/google',
     returnUrl: '/auth/google/return'
 }];
