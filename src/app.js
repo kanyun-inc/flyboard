@@ -60,6 +60,7 @@ app.use(function (req, res, next) {
 app.use(require('./middlewares/staticFile')());
 app.use(require('./controllers/auth'));
 app.use(require('./controllers/notFound'));
+app.use(require('./controllers/token'));
 app.use(require('./controllers/project'));
 app.use(require('./controllers/dashboard'));
 app.use(require('./controllers/widget'));
