@@ -33,13 +33,11 @@ exports.vertifyProjectAuthority = function (userId, projectId) {
         }
         //local authority
         else if (role.scope === 1) {
-            projectIds.some(function (id) {
+           return projectIds.some(function (id) {
                 if (id === projectId) {
                     return true;
                 }
             });
-
-            return false;
         }
 
         return false;
