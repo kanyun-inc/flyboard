@@ -3,6 +3,8 @@
 var app = require('../../src/app');
 var request = require('supertest');
 var User = require('../../src/logicals/user');
+var Role = require('../../src/logicals/role');
+var UserRole = require('../../src/logicals/userRole');
 var DataSource = require('../../src/logicals/dataSource');
 var Project = require('../../src/logicals/project');
 var Record = require('../../src/logicals/record');
@@ -13,6 +15,7 @@ var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('record controller', function(){
     var userId = null;
+    var roleId = null;
     var projectId = null;
     var dataSourceId = null;
     var recordId = null;
@@ -25,9 +28,24 @@ describe('record controller', function(){
             email: 'abc@abc.com'
         }).then(function (id) {
             userId = id;
+
             return User.get(id);
         }).then(function (user) {
             token = tokenGenerator.generate(user);
+
+            return Role.save({
+                name: 'admin',
+                scope: 2
+            });
+        }).then(function (id){
+            roleId = id;
+
+            return UserRole.save({
+                user_id: userId,
+                role_id: roleId,
+                project_id: 0
+            });
+        }).then(function (){
             return Project.save({name: 'ape'});
         }).then(function (id) {
             projectId = id;
@@ -103,6 +121,8 @@ describe('record controller', function(){
     after(function (done) {
         return Promise.all([
             knex('users').del(),
+            knex('roles').del(),
+            knex('user_role').del(),
             knex('data_sources').del(),
             knex('projects').del(),
             knex('records').del()

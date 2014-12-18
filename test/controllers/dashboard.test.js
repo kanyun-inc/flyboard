@@ -3,6 +3,8 @@
 var app = require('../../src/app');
 var request = require('supertest');
 var User = require('../../src/logicals/user');
+var Role = require('../../src/logicals/role');
+var UserRole = require('../../src/logicals/userRole');
 var Project = require('../../src/logicals/project');
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
@@ -10,6 +12,7 @@ var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('dashboard controller', function(){
     var userId = null;
+    var roleId = null;
     var projectId = null;
     var dashboardId = null;
     var token = null;
@@ -22,6 +25,20 @@ describe('dashboard controller', function(){
             return User.get(id);
         }).then(function (user) {
             token = tokenGenerator.generate(user);
+
+            return Role.save({
+                name: 'admin',
+                scope: 2
+            });
+        }).then(function (id) {
+            roleId = id;
+
+            return UserRole.save({
+                user_id: userId,
+                role_id: roleId,
+                project_id: 0
+            });
+        }).then(function (){
             return Project.save({
                 name: 'ape'
             });
@@ -34,6 +51,8 @@ describe('dashboard controller', function(){
     after(function (done) {
         return Promise.all([
             knex('users').del(),
+            knex('roles').del(),
+            knex('user_role').del(),
             knex('dashboards').del(),
             knex('projects').del()
         ]).then(function () {
@@ -44,7 +63,7 @@ describe('dashboard controller', function(){
     describe('GET /api/dashboards', function(){
         it('should return dashboard list', function(done){
             request(app)
-                .get('/api/dashboards' + '?token=' + token)
+                .get('/api/dashboards' + '?project_id=' + projectId + '&token=' + token)
                 .expect('content-type', /json/)
                 .expect(200, '[]', done);
         });
@@ -73,7 +92,7 @@ describe('dashboard controller', function(){
     describe('GET /api/dashboards', function(){
        it('should return dashboard list', function(done){
            request(app)
-               .get('/api/dashboards' + '?token=' + token)
+               .get('/api/dashboards' + '?project_id=' + projectId + '&token=' + token)
                .expect('content-type', /json/)
                .expect(200, done);
        });

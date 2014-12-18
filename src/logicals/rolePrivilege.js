@@ -8,7 +8,5 @@ exports.find = function (query){
 };
 
 exports.save = function (obj) {
-    return knex('role_privilege').insert(obj).returning('id').then(function (ret) {
-        return ret[0];
-    });
+    return knex('role_privilege').insert(obj);
 };

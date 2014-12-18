@@ -7,14 +7,15 @@ var bodyParser = require('body-parser');
 var Project = require('../logicals/project');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
+var apiAuthFilter = require('./apiAuthFilter');
 
 router.get(
     '/api/data_sources',
     function(req, res, next){
-        var query = {};
-
         var folderId = parseInt(req.param('folder_id'), 10);
         var projectId = parseInt(req.param('project_id'), 10);
+        var userId = req.user ? req.user.id : null;
+        var query = {};
 
         folderId = (!folderId && folderId !== 0) ? -1 : folderId;
         if(folderId !== -1){
@@ -25,9 +26,16 @@ router.get(
             query.project_id = projectId;
         }
 
-        DataSource.find(query).then(function(dataSources){
-            return res.send(dataSources);
-        }).catch(next);
+        apiAuthFilter.vertifyProjectAuthority(userId, projectId)
+            .then(function (authResult) {
+                if (!authResult) {
+                    return res.send(403);
+                }
+
+                return DataSource.find(query);
+            }).then(function(dataSources){
+                return res.send(dataSources);
+            }).catch(next);
     }
 );
 
@@ -35,14 +43,24 @@ router.get(
     '/api/data_sources/:id',
     function(req, res, next){
         var id = parseInt(req.param('id', 10));
+        var userId = req.user ? req.user.id : null;
 
-        DataSource.get(id).then(function(dataSource){
-            if(!dataSource){
-                return res.send(404);
-            }
+        DataSource.get(id)
+            .then(function(dataSource) {
+                if (!dataSource) {
+                    return res.send(404);
+                }
 
-            return res.send(dataSource);
-        }).catch(next);
+                return apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id);
+            }).then(function (authResult) {
+                if (!authResult) {
+                    return res.send(403);
+                }
+
+                return DataSource.get(id);
+            }).then(function (dataSource){
+                return res.send(dataSource);
+            }).catch(next);
     }
 );
 
@@ -52,6 +70,7 @@ router.post(
     function(req, res, next){
         var dataSource = req.body;
         var config = dataSource.config;
+        var userId = req.user ? req.user.id : null;
 
         if(!dataSource.project_id || !dataSource.name || !dataSource.key){
             return res.send(400);
@@ -63,17 +82,24 @@ router.post(
             }
         }
 
-        Project.get(dataSource.project_id).then(function (project){
-            if(!project){
-                return res.send(400);
-            }
-        }).then(function (){
-            return DataSource.save(dataSource).then(function (id){
+        apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id)
+            .then(function (authResult) {
+                if (!authResult) {
+                    return res.send(403);
+                }
+
+                return Project.get(dataSource.project_id);
+            }).then(function (project) {
+                if (!project) {
+                    return res.send(400);
+                }
+
+                return DataSource.save(dataSource);
+            }).then(function (id){
                 return DataSource.get(id);
             }).then(function (dataSource) {
                 return res.send(dataSource);
-            });
-        }).catch(next);
+            }).catch(next);
     }
 );
 
@@ -83,22 +109,30 @@ router.put(
     function(req, res, next){
         var dataSource = req.body;
         var id = parseInt(req.param('id'), 10);
+        var userId = req.user ? req.user.id : null;
 
         if(!dataSource.name && !dataSource.key){
             return res.send(400);
         }
 
-        Project.get(dataSource.project_id).then(function (project){
-            if(!project){
-                return res.send(400);
-            }
-        }).then(function (){
-            return DataSource.update(id, dataSource).then(function (){
+        apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id)
+            .then(function (authResult) {
+                if (!authResult) {
+                    return res.send(403);
+                }
+
+                return Project.get(dataSource.project_id);
+            }).then(function (project) {
+                if (!project) {
+                    return res.send(400);
+                }
+
+                return DataSource.update(id, dataSource);
+            }).then(function (){
                 return DataSource.get(id);
             }).then(function (dataSource) {
                 return res.send(dataSource);
-            });
-        }).catch(next);
+            }).catch(next);
     }
 );
 
@@ -106,19 +140,25 @@ router.delete(
     '/api/data_sources/:id',
     function(req, res, next){
         var id = parseInt(req.param('id'), 10);
+        var userId = req.user ? req.user.id : null;
 
         DataSource.get(id)
             .then(function (dataSource) {
                 if (!dataSource) {
                     return res.send(404);
                 }
-                return dataSource;
-            }).then(function (dataSource){
-                return Record.removeList(dataSource.id).then(function () {
-                    return DataSource.remove(dataSource.id).then(function () {
-                        return res.send(200);
-                    });
-                });
-        }).catch(next);
+
+                return apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id);
+            }).then(function (authResult) {
+                if (!authResult) {
+                    return res.send(403);
+                }
+
+                return Record.removeList(id);
+            }).then(function () {
+                return DataSource.remove(id);
+            }).then(function () {
+                return res.send(200);
+            }).catch(next);
     }
 );

@@ -4,6 +4,8 @@ var app = require('../../src/app');
 var request = require('supertest');
 var promisedRequest = require('supertest-as-promised');
 var User = require('../../src/logicals/user');
+var Role = require('../../src/logicals/role');
+var UserRole = require('../../src/logicals/userRole');
 var Record = require('../../src/logicals/record');
 var DataSource = require('../../src/logicals/dataSource');
 var Project = require('../../src/logicals/project');
@@ -13,6 +15,7 @@ var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('dataSource controller', function(){
     var userId = null;
+    var roleId = null;
     var projectId = null;
     var dataSourceId = null;
     var recordId = null;
@@ -26,6 +29,20 @@ describe('dataSource controller', function(){
             return User.get(id);
         }).then(function (user) {
             token = tokenGenerator.generate(user);
+
+            return Role.save({
+                name: 'admin',
+                scope: 2
+            });
+        }).then(function (id) {
+            roleId = id;
+
+            return UserRole.save({
+                user_id: userId,
+                role_id: roleId,
+                project_id: 0
+            });
+        }).then(function (){
             return Project.save({
                 name: 'ape'
             });
@@ -56,6 +73,8 @@ describe('dataSource controller', function(){
     after(function (done) {
         return Promise.all([
             knex('users').del(),
+            knex('roles').del(),
+            knex('user_role').del(),
             knex('projects').del(),
             knex('data_sources').del()
         ]).then(function () {
@@ -108,7 +127,7 @@ describe('dataSource controller', function(){
     describe('GET /api/data_sources', function (){
         it('should return dataSource list', function(done){
             request(app)
-                .get('/api/data_sources' + '?token=' + token)
+                .get('/api/data_sources' + '?project_id=' + projectId + '&token=' + token)
                 .expect('content-type', /json/)
                 .expect(200, done);
         });
