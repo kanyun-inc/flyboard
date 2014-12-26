@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbar-collapse">
-                    <div class="btn-group select-project right-divider-vertical" ng-if="project">
+                    <div class="btn-group dropdown-btn right-divider-vertical select-project" ng-if="project">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                           {{project.name}}
                           <span class="caret"></span>
@@ -31,7 +31,7 @@
                                 <a href="" class="project-name" ng-click="selectProject(project)">{{project.name}}</a>
                                 <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
                             </li>
-                            <li><a href="" class="new-project" ng-click="open(projects)">-------- 新建 --------</a></li>
+                            <li ng-if="user.scope === 2"><a href="" class="new-project" ng-click="open(projects)">-------- 新建 --------</a></li>
                         </ul>
                     </div>
 
@@ -40,16 +40,27 @@
                         <li><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
                     </ul>
 
-                    <div class="switch-slide">
+                    <div class="switch-slide navbar-right-btn">
                         <a href="" title="轮播开关"  class="fa fa-lg"
                            ng-class="{'fa-toggle-on': slideMode, 'fa-toggle-off': !slideMode, 'fa-toggle-disabled': editLayoutMode}"
                            ng-click="toggleSlideMode()"></a>
                     </div>
 
-                    <div class="edit-layout">
+                    <div class="edit-layout navbar-right-btn">
                         <a href="" title="编辑布局" class="glyphicon glyphicon-cog fa-lg"
                            ng-class="{'edit-on': !slideMode && editLayoutMode, 'edit-off': !slideMode && !editLayoutMode, 'edit-disabled': slideMode}"
                            ng-click="toggleEditLayoutMode()"></a>
+                    </div>
+
+                    <div class="btn-group dropdown-btn navbar-right-btn user-account" ng-if="user">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            {{ user.email }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li><a href="/profile">个人信息</a></li>
+                            <li><a href="/logout">退出</a></li>
+                        </ul>
                     </div>
 
                 </div>
@@ -63,7 +74,10 @@
                 <span class="icon-bar"></span>
             </a>
 
-            <div sticky class="dashboard-list" ng-class="{'cf-nav-min-overflow-hidden': !unfold}">
+            <div sticky class="dashboard-list"
+                 ng-class="{'cf-nav-min-overflow-hidden': !unfold}"
+                 ng-if="project">
+
                 <ul>
                     <li ng-repeat="item in dashboards"
                         class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">

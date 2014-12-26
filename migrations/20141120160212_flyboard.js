@@ -21,8 +21,8 @@ exports.up = function(knex, Promise) {
             table.integer('scope').notNullable();
         }),
 
-        knex.schema.dropTableIfExists('role_privilege'),
-        knex.schema.createTable('role_privilege', function (table) {
+        knex.schema.dropTableIfExists('role_privileges'),
+        knex.schema.createTable('role_privileges', function (table) {
             table.charset('utf8');
             table.engine('Innodb');
 
@@ -36,8 +36,8 @@ exports.up = function(knex, Promise) {
                 .inTable('roles');
         }),
 
-        knex.schema.dropTableIfExists('user_role'),
-        knex.schema.createTable('user_role', function (table) {
+        knex.schema.dropTableIfExists('user_roles'),
+        knex.schema.createTable('user_roles', function (table) {
             table.charset('utf8');
             table.engine('Innodb');
 
@@ -57,9 +57,7 @@ exports.up = function(knex, Promise) {
             table
                 .integer('project_id')
                 .notNullable()
-                .unsigned()
-                .references('id')
-                .inTable('projects');
+                .unsigned();
         })
      ]);
 };
@@ -68,7 +66,7 @@ exports.down = function(knex, Promise) {
   return Promise.all([
       knex.schema.dropTable('users'),
       knex.schema.dropTable('roles'),
-      knex.schema.dropTable('role_privilege'),
-      knex.schema.dropTable('user_role')
+      knex.schema.dropTable('role_privileges'),
+      knex.schema.dropTable('user_roles')
   ]);
 };

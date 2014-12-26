@@ -57,3 +57,8 @@ exports.findOrCreate = function (query) {
         }
     });
 };
+
+exports.resetSalt = function (id, obj){
+    obj.salt = randomString.generate();
+    return knex('users').where('id', id).update(obj);
+};

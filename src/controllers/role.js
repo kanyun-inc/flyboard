@@ -4,7 +4,10 @@ var router = require('express').Router();
 module.exports = router;
 
 var Role = require('../logicals/role');
+var UserRole = require('../logicals/userRole');
+var RolePrivilege = require('../logicals/rolePrivilege');
 var bodyParser = require('body-parser');
+var blueBird = require('bluebird');
 
 router.get('/api/roles', function (req, res, next){
     Role.find().then(function (roles){
@@ -60,7 +63,27 @@ router.put('/api/roles/:id',
 router.delete('/api/roles/:id', function (req, res, next){
     var id = parseInt(req.param('id'), 10);
 
-    Role.remove(id).then(function (){
+    Role.get(id).then(function (role){
+        if(!role){
+            return res.send(404);
+        }
+
+        return UserRole.find({
+            role_id: role.id
+        });
+    }).then(function (userRoles){
+        var pros = userRoles.map(function (userRole){
+            return UserRole.remove(userRole.id);
+        });
+
+        return blueBird.all(pros);
+    }).then(function (){
+        return RolePrivilege.remove({
+            role_id: id
+        });
+    }).then(function () {
+        return Role.remove(id);
+    }).then(function (){
         return res.send(200);
     }).catch(next);
 });

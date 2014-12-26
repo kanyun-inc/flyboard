@@ -3,6 +3,8 @@
 var app = require('../../src/app');
 var request = require('supertest');
 var User = require('../../src/logicals/user');
+var Role = require('../../src/logicals/role');
+var UserRole = require('../../src/logicals/userRole');
 var Project = require('../../src/logicals/project');
 var Dashboard = require('../../src/logicals/dashboard');
 var Promise = require('bluebird');
@@ -11,6 +13,7 @@ var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('widget controller', function(){
     var userId = null;
+    var roleId = null;
     var projectId = null;
     var dashboardId = null;
     var widgetId = null;
@@ -21,9 +24,24 @@ describe('widget controller', function(){
             email: 'abc@abc.com'
         }).then(function (id) {
             userId = id;
+
             return User.get(id);
         }).then(function (user) {
             token = tokenGenerator.generate(user);
+
+            return Role.save({
+                name: 'admin',
+                scope: 2
+            });
+        }).then(function (id) {
+            roleId = id;
+
+            return UserRole.save({
+                user_id: userId,
+                role_id: roleId,
+                project_id: 0
+            });
+        }).then(function (){
             return Project.save({
                 name: 'ape'
             });

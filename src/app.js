@@ -60,6 +60,7 @@ app.use(function (req, res, next) {
 app.use(require('./middlewares/staticFile')());
 app.use(require('./controllers/auth'));
 app.use(require('./controllers/notFound'));
+app.use(require('./controllers/tokenPreprocess'));
 app.use(require('./controllers/project'));
 app.use(require('./controllers/dashboard'));
 app.use(require('./controllers/widget'));
@@ -71,7 +72,7 @@ app.use(require('./controllers/role'));
 app.use(require('./controllers/userRole'));
 app.use(require('./controllers/rolePrivilege'));
 app.use(require('./controllers/authFilter'));
-app.use(require('./controllers/index'));
+app.use(require('./controllers/route'));
 app.use(require('./controllers/error').notFound);
 app.use(require('./controllers/error').errorHandler);
 

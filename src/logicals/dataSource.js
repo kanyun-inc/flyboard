@@ -2,6 +2,8 @@
 
 var knex = require('../lib/knex');
 var _ = require('underscore');
+var Role = require('./role');
+var UserRole = require('./userRole');
 
 function objToDb(dataSource) {
     if (!dataSource) {
@@ -28,7 +30,33 @@ function dbToObj(dataSource) {
 
 exports.find = function (query) {
     query = query || {};
-    return knex('data_sources').where(query).select().map(dbToObj);
+
+    if(query.user_id){
+        var projectIds = [];
+
+        return UserRole.find({
+            user_id: query.user_id
+        }).then(function (userRoles){
+            projectIds = userRoles.map(function (userRole){
+                return userRole.project_id;
+            });
+
+            return Role.get(userRoles[0].role_id);
+        }).then(function (role){
+            delete query.user_id;
+            var ret = knex('data_sources').where(query).select();
+
+            //local scope
+            if(role.scope === 1){
+                ret = ret.whereIn('project_id', projectIds);
+            }
+
+            return ret.map(dbToObj);
+        });
+    }
+    else{
+        return knex('data_sources').where(query).select().map(dbToObj);
+    }
 };
 
 exports.getByUUIDAndKey = function (uuid, key) {

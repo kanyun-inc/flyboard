@@ -237,7 +237,6 @@ function copyWidget(oldWidget, newWidget) {
                 oldWidget['config'].dataInfos.push(angular.copy(dataInfo));
             });
         });
-
     });
 }
 
@@ -270,7 +269,7 @@ indexApp.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.
             when('/', {
-                template: 'Loading...',
+                template: '<span class="load" ng-if="project">Loading...</span>',
                 controller: 'UrlCtrl'
             }).
             when('/projects/:project_id', {
@@ -502,11 +501,37 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
     }
 ]);
 
-indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$location', '$window', 'Dashboard', 'Project', 'NavUrl',
-    function ($scope, $route, $routeParams, $q, $location, $window, Dashboard, Project, NavUrl) {
+indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$location', '$window', 'Dashboard', 'Project', 'NavUrl', 'CurrentUser', 'UserRole', 'Role',
+    function ($scope, $route, $routeParams, $q, $location, $window, Dashboard, Project, NavUrl, CurrentUser, UserRole, Role) {
         $scope.unfold = false;
         $scope.editLayoutMode = false;
         $scope.NavUrl = NavUrl;
+
+        CurrentUser.get()
+            .$promise.then(function (user){
+                $scope.user = user;
+
+                return UserRole.query({
+                    user_id: user.id
+                }).$promise;
+            })
+            .then(function (userRoles){
+                if(!userRoles || userRoles.length === 0){
+                    return false;
+                }
+
+                return Role.get({
+                    id: userRoles[0].role_id
+                }).$promise;
+            })
+            .then(function (role){
+                if(!role){
+                    return false;
+                }
+
+                $scope.user.scope = role.scope;
+            });
+
         var lastProjectId = null;
 
         function init(evt) {
@@ -645,7 +670,7 @@ indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$l
         $scope.dashboard = $scope.dashboards.then(function (dashboards) {
             $scope.dashboards = dashboards;
 
-            if(!dashboardId) {
+            if(!dashboardId && dashboards.length > 0) {
                 return dashboards[0];
             }
 
@@ -1687,7 +1712,7 @@ indexApp.directive('widgetSpline', [
                     }
 
                     //timestamp
-                    if(dataSeries && dataSeries.length){
+                    if(dataSeries && dataSeries.length && dataSeries[0].data && dataSeries[0].data.length){
                         var timeStamp = new Date(dataSeries[0].data[dataSeries[0].data.length - 1].x);
                         $scope.updatedTime = formatDate(timeStamp);
                     }
@@ -1700,7 +1725,7 @@ indexApp.directive('widgetSpline', [
 
                         $q.all(promises).then(function (dataSeries) {
                             //timestamp
-                            if(dataSeries && dataSeries.length){
+                            if(dataSeries && dataSeries.length && dataSeries[0].data && dataSeries[0].data.length){
                                 var timeStamp = new Date(dataSeries[0].data[dataSeries[0].data.length - 1].x);
                                 $scope.updatedTime = formatDate(timeStamp);
                             }
