@@ -11,6 +11,10 @@ a{
     text-decoration: none;
 }
 
+.permission-denied {
+    margin-left: 35px;
+}
+
 .cf-nav ul li a {
     text-decoration: none;
 }
@@ -306,11 +310,19 @@ nav {
   display: block;
 }
 
+.load {
+    margin-left: 25px;
+}
+
 nav .select-project{
     float: left;
 }
-nav .edit-layout,
-nav .switch-slide{
+
+nav .select-project .dropdown-menu {
+    margin-top: -10px;
+}
+
+nav .navbar-right-btn{
     float: right;
     margin-right: 20px;
 }
@@ -318,7 +330,6 @@ nav .switch-slide{
 .flyboard-app nav .edit-layout{
     padding-top: 16px;
 }
-
 .flyboard-app nav .switch-slide{
     padding-top: 18px;
 }
@@ -340,12 +351,6 @@ nav .switch-slide{
     cursor: default;
 }
 
-.flyboard-app nav .select-project .dropdown-menu li {
-    position: relative;
-    min-height: 26px;
-    margin-right: 40px;
-}
-
 .flyboard-app nav .select-project li .edit-project {
     position: absolute;
     right: -25px;
@@ -353,14 +358,23 @@ nav .switch-slide{
     padding: 0 0 0 0;
 }
 
-nav .select-project .dropdown-toggle {
+.select-project .dropdown-menu li{
+    margin-right: 40px;
+}
+
+/**** nav dropdown button ***/
+nav .dropdown-btn .dropdown-menu li {
+    position: relative;
+    min-height: 26px;
+}
+nav .dropdown-btn .dropdown-toggle {
     border: none;
     color: #999;
     background-color: #222;
 }
-nav .select-project .dropdown-menu li a.edit-project:hover,
-nav .select-project .dropdown-toggle:hover,
-nav .select-project.open .dropdown-toggle {
+nav .dropdown-btn .dropdown-menu li a.edit-project:hover,
+nav .dropdown-btn .dropdown-toggle:hover,
+nav .dropdown-btn.open .dropdown-toggle {
     color: #fff;
     background-color: #222;
 }
@@ -368,15 +382,14 @@ nav .dropdown-menu li a {
     color: #a9a9a9;
 }
 nav .open .dropedown-toggle,
-nav .select-project .dropdown-menu li a:hover{
+nav .dropdown-btn .dropdown-menu li a:hover{
     background-color: #4f4f4f;
     color: #a9a9a9;
 }
-nav .select-project .dropdown-menu{
+nav .dropdown-btn .dropdown-menu{
     background-color: #2b2b2b;
 }
-
-div.select-project button{
+nav .dropdown-btn button{
     background-color: #000000;
     color: #fff;
     margin-top: 8px;
@@ -1053,4 +1066,59 @@ border-left-color: #111111;
 .login-intro {
     width: 30%;
     margin: auto;
+}
+
+/* profile */
+.profile {
+    width: 80%;
+    margin-left: 10%;
+}
+
+.profile-item {
+    margin-bottom: 30px;
+}
+
+.profile-item div {
+    min-height: 34px;
+}
+
+.profile-item span {
+    margin-right: 5px;
+}
+.profile-item span.label {
+    font-size: 12px;
+}
+
+.profile-item button.reset-salt {
+    margin-left: 30px;
+}
+
+.profile-item .member-item {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.label-red {
+    background-color: #db7093;
+}
+.label-green {
+    background-color: #008b8b;
+}
+.label-blue {
+    background-color: #4682b4;
+}
+
+.profile-item span button.delete{
+    font-size: 16px;
+    float: none;
+    margin-left: 5px;
+}
+
+.profile-item .add-user-role-modal {
+    display: inline;
+}
+
+.profile-item table {
+    font-size: 14px;
 }

@@ -37,7 +37,8 @@ var staticFiles = {
 
         'index.js',
         'admin.js',
-        'stat.js'
+        'stat.js',
+        'profile.js'
     ],
 
     css: [

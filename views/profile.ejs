@@ -1,0 +1,125 @@
+<html ng-app="profileApp">
+<head>
+    <title><%= title %></title>
+    <% styles.forEach(function (style) { %>
+    <link rel="stylesheet" href="<%= style %>"/>
+    <% }) %>
+    <script type="text/javascript">
+        var themeColour = 'white';
+    </script>
+    <% scripts.forEach(function (script) { %>
+    <script type="text/javascript" src="<%= script %>"></script>
+    <% }) %>
+</head>
+<body>
+
+    <div nav ></div>
+
+    <div class="profile" ng-controller="ProfileCtrl">
+        <div class="profile-info profile-item">
+            <h4>个人信息</h4>
+            <hr>
+
+            <div>
+                <span>Email：</span>
+                <span>{{profile.user.email}}</span>
+            </div>
+
+            <div>
+                <span>Salt：</span>
+                <span>{{profile.user.salt}}</span>
+                <button type="button" class="btn btn-default reset-salt" ng-click="resetSalt()">重置</button>
+            </div>
+        </div>
+
+        <div class="profile-auth-info profile-item">
+            <h4>权限</h4>
+            <hr>
+
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <td>项目</td>
+                        <td>操作权限</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr ng-if="profile.roles.length === 0">
+                        <td>
+                            <span>无</span>
+                        </td>
+                        <td>
+                            <span>—</span>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="profile.roles.length !== 0 && profile.projects.length === 0">
+                        <td>
+                            <span>所有</span>
+                        </td>
+                        <td>
+                            <span>
+                                <span class="member-item label label-blue"
+                                        ng-repeat="privilege in admin.roleRolePrivilegeMap[profile.roles[0].id]">
+                                    {{privilege.operation}}
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr ng-if="profile.projects.length !== 0" ng-repeat="project in profile.projects">
+                        <td>
+                            <span>{{project.name}}</span>
+                        </td>
+                        <td>
+                            <div ng-repeat="userRole in admin.projectUserRoleMap[project.id].local" ng-if="userRole.user_id === profile.user.id">
+                                <span ng-repeat="privilege in admin.roleRolePrivilegeMap[userRole.role_id]">
+                                    <span class="member-item label label-blue">{{privilege.operation}}</span>
+                                </span>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="profile-auth-admin profile-item" ng-if="profile.roles && profile.roles[0].scope === 2">
+            <h4>项目成员管理</h4>
+            <hr>
+
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <td>项目</td>
+                        <td>成员（<span class="label label-red">红色</span>为global成员，<span class="label label-green">绿色</span>为local成员）</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="project in admin.projects">
+                        <td>{{project.name}}</td>
+                        <td>
+                            <span class="member-item label label-red" ng-repeat="userRole in admin.projectUserRoleMap[project.id].global" ng-if="userRole.user_id !== profile.user.id">
+                                {{admin.userMap[userRole.user_id].email}}
+                                <button ng-click="deleteMember(userRole)" class="close delete"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            </span>
+                            <span class="member-item label label-green" ng-repeat="userRole in admin.projectUserRoleMap[project.id].local">
+                                {{admin.userMap[userRole.user_id].email}}
+                                <button ng-click="deleteMember(userRole)" class="close delete"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            </span>
+
+                            <div ng-controller="addUserRoleCtrl" class="add-user-role-modal">
+                                <button class="close" ng-click="open(project.id, admin.roleMap, admin.projectUserRoleMap, admin.userUserRoleMap)">
+                                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
