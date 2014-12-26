@@ -15,7 +15,13 @@ function statCtrl(req, res){
 }
 
 function adminCtrl(req, res) {
+    res.locals.title = 'admin';
     res.render('admin');
+}
+
+function profileCtrl(req, res){
+    res.locals.title = 'profile';
+    res.render('profile');
 }
 
 router.get('/', indexCtrl);
@@ -25,3 +31,5 @@ router.get('/dashboards/:id', indexCtrl);
 router.get('/stat', statCtrl);
 
 router.get('/admin', adminCtrl);
+
+router.get('/profile', profileCtrl);
