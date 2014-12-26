@@ -26,12 +26,10 @@ describe('project logical', function () {
 
             return Promise.all([
                 User.save({
-                    email: 'abc@abc.com',
-                    salt: 'fwaewuihui'
+                    email: 'abc@abc.com'
                 }),
                 User.save({
-                    email: 'ab@ab.com',
-                    salt: 'sdfaw9eurwe'
+                    email: 'ab@ab.com'
                 })
             ]);
         }).then(function (ret){
@@ -72,7 +70,7 @@ describe('project logical', function () {
             knex('projects').del(),
             knex('users').del(),
             knex('roles').del(),
-            knex('user_role').del()
+            knex('user_roles').del()
         ]).then(function () {
             done();
         }).catch(done);

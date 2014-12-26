@@ -12,9 +12,9 @@ var blueBird = require('bluebird');
 
 //get  user_roles for all users or one user according to user_id
 router.get('/api/user_roles', function (req, res, next) {
-    var userId = req.param('user_id') ? parseInt(req.param('user_id', 10)) : null;
-    var roleId = req.param('role_id') ? parseInt(req.param('user_id', 10)) : null;
-    var projectId = req.param('project_id') ? parseInt(req.param('user_id', 10)) : null;
+    var userId = req.param('user_id') ? parseInt(req.param('user_id'), 10) : null;
+    var roleId = req.param('role_id') ? parseInt(req.param('role_id'), 10) : null;
+    var projectId = req.param('project_id') ? parseInt(req.param('project_id'), 10) : null;
     var query = {};
 
     if(userId){
@@ -23,7 +23,7 @@ router.get('/api/user_roles', function (req, res, next) {
     if(roleId){
         query.role_id = roleId;
     }
-    if(projectId){
+    if(projectId || projectId === 0){
         query.project_id = projectId;
     }
 
@@ -96,30 +96,29 @@ router.put(
         var id = parseInt(req.param('id'), 10);
 
         //check id validity
-        UserRole.get(id).then(function (userRole){
-            if(!userRole){
+        UserRole.get(id)
+        .then(function (ret) {
+            if (!ret) {
                 return res.send(404);
             }
-        });
 
-        //check data validity
-        if(!userRole || !userRole.user_id || !userRole.role_id || (!userRole.project_id && userRole.project_id !== 0)){
-            return res.send(400);
-        }
+            //check data validity
+            if (!userRole || !userRole.user_id || !userRole.role_id || (!userRole.project_id && userRole.project_id !== 0)) {
+                return res.send(400);
+            }
 
-        User.get(userRole.user_id)
-            .then(function (user){
-            if(!user){
+            return User.get(userRole.user_id);
+        }).then(function (user) {
+                if (!user) {
+                    return res.send(404);
+                }
+
+                return Role.get(userRole.role_id);
+        }).then(function (role){
+            if(!role){
                 return res.send(404);
             }
-        }).then(function (){
-            return Role.get(userRole.role_id)
-                .then(function (role){
-                    if(!role){
-                        return res.send(404);
-                    }
-                });
-        }).then(function () {
+
             if(userRole.project_id){
                 return Project.get(userRole.project_id)
                     .then(function (project){

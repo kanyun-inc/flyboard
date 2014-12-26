@@ -56,16 +56,16 @@ describe('user_role controller', function(){
         Promise.all([
             knex('users').del(),
             knex('roles').del(),
-            knex('role_privilege').del()
+            knex('role_privileges').del()
         ]).then(function () {
             done();
         }).catch(done);
     });
 
-    describe('GET /api/role_privileges/:role_id', function(){
+    describe('GET /api/role_privileges', function(){
         it('should return role_privilege list', function(done){
             request(app)
-                .get('/api/role_privileges/' + roleId + '?token=' + token)
+                .get('/api/role_privileges' + '?role_id=' + roleId + '&token=' + token)
                 .expect('content-type', /json/)
                 .expect(200)
                 .expect(function(res){
@@ -74,6 +74,44 @@ describe('user_role controller', function(){
                     }
                 })
                 .end(done);
+        });
+    });
+
+    describe('POST /api/role_privileges', function(){
+        it('should create a role_privilege', function(done){
+            request(app)
+                .post('/api/role_privileges' + '?token=' + token)
+                .send({
+                    resource : 'PROJECT',
+                    operation: 'PUT',
+                    role_id: roleId
+                })
+                .expect('content-type', /json/)
+                .expect(200)
+                .end(done);
+        });
+    });
+
+    describe('DELETE /api/role_privileges/:role_id', function (){
+        it('should delete all role_privileges of the role', function (done){
+            request(app)
+                .delete('/api/role_privileges/' + roleId + '?token=' + token)
+                .expect(200)
+                .end(function(err) {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request(app)
+                        .get('/api/role_privileges' + '?role_id=' + roleId + '&token=' + token)
+                        .expect('content-type', /json/)
+                        .expect(function (res){
+                            if(res.body.length !== 0){
+                                throw new Error('ret length invalid');
+                            }
+                        })
+                        .end(done);
+                });
         });
     });
 });

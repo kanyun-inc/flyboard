@@ -6,6 +6,7 @@ var promisedRequest = require('supertest-as-promised');
 var User = require('../../src/logicals/user');
 var Role = require('../../src/logicals/role');
 var UserRole = require('../../src/logicals/userRole');
+var RolePrivilege = require('../../src/logicals/rolePrivilege');
 var Record = require('../../src/logicals/record');
 var DataSource = require('../../src/logicals/dataSource');
 var Project = require('../../src/logicals/project');
@@ -14,51 +15,121 @@ var knex = require('../../src/lib/knex');
 var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('dataSource controller', function(){
-    var userId = null;
-    var roleId = null;
-    var projectId = null;
-    var dataSourceId = null;
+    var userIds = [];
+    var roleIds = [];
+    var projectIds = [];
+    var dataSourceIds = [];
     var recordId = null;
-    var token = null;
+    var tokens = [];
 
     before(function (done) {
-        User.save({
-            email: 'abc@abc.com'
-        }).then(function (id) {
-            userId = id;
-            return User.get(id);
-        }).then(function (user) {
-            token = tokenGenerator.generate(user);
-
-            return Role.save({
-                name: 'admin',
-                scope: 2
-            });
-        }).then(function (id) {
-            roleId = id;
-
-            return UserRole.save({
-                user_id: userId,
-                role_id: roleId,
-                project_id: 0
-            });
-        }).then(function (){
-            return Project.save({
+        Promise.all([
+            Project.save({
                 name: 'ape'
-            });
-        }).then(function (id) {
-            projectId = id;
+            }),
+            Project.save({
+                name: 'abc'
+            })
+        ]).then(function (ret) {
+            projectIds = ret;
 
-            return DataSource.save({
-                name: 'loginUser',
-                key: 'loginUser',
-                project_id: id
+            return Promise.all([
+                User.save({
+                    email: 'abc@abc.com'
+                }),
+                User.save({
+                    email: 'ab@ab.com'
+                })
+            ]);
+        }).then(function (ret){
+            userIds = ret;
+
+            return Promise.all([
+                    User.get(userIds[0]),
+                    User.get(userIds[1])
+                ]);
+        }).then(function (users) {
+            tokens = users.map(function (user) {
+                return tokenGenerator.generate(user);
             });
-        }).then(function (id) {
-            dataSourceId = id;
+
+            return Promise.all([
+                Role.save({
+                    name: 'admin',
+                    scope: 2
+                }),
+                Role.save({
+                    name: 'member',
+                    scope: 1
+                })
+            ]);
+        }).then(function (ret) {
+            roleIds = ret;
+
+            return Promise.all([
+                UserRole.save({
+                    user_id: userIds[0],
+                    role_id: roleIds[0],
+                    project_id: 0
+                }),
+                UserRole.save({
+                    user_id: userIds[1],
+                    role_id: roleIds[1],
+                    project_id: projectIds[0]
+                })
+            ]);
+        }).then(function () {
+            return Promise.all([
+                RolePrivilege.save({
+                    resource: 'PROJECT',
+                    operation: 'GET',
+                    role_id: roleIds[0]
+                }),
+                RolePrivilege.save({
+                    resource: 'PROJECT',
+                    operation: 'POST',
+                    role_id: roleIds[0]
+                }),
+                RolePrivilege.save({
+                    resource: 'PROJECT',
+                    operation: 'PUT',
+                    role_id: roleIds[0]
+                }),
+                RolePrivilege.save({
+                    resource: 'PROJECT',
+                    operation: 'DELETE',
+                    role_id: roleIds[0]
+                }),
+                RolePrivilege.save({
+                    resource: 'PROJECT',
+                    operation: 'GET',
+                    role_id: roleIds[1]
+                }),
+                RolePrivilege.save({
+                    resource: 'PROJECT',
+                    operation: 'PUT',
+                    role_id: roleIds[1]
+                })
+            ]);
+        }).then(function () {
+
+            return Promise.all([
+                DataSource.save({
+                    name: 'loginUser',
+                    key: 'loginUser',
+                    project_id: projectIds[0]
+                }),
+                DataSource.save({
+                    name: 'logoutUser',
+                    key: 'logoutUser',
+                    project_id: projectIds[1]
+                })
+            ]);
+        }).then(function (ret) {
+            dataSourceIds = ret;
 
             return Record.save({
-                data_source_id: dataSourceId,
+                data_source_id: dataSourceIds[0],
                 value: 98,
                 year: 2014,
                 month: 6,
@@ -74,7 +145,8 @@ describe('dataSource controller', function(){
         return Promise.all([
             knex('users').del(),
             knex('roles').del(),
-            knex('user_role').del(),
+            knex('user_roles').del(),
+            knex('role_privileges').del(),
             knex('projects').del(),
             knex('data_sources').del()
         ]).then(function () {
@@ -82,12 +154,53 @@ describe('dataSource controller', function(){
         }).catch(done);
     });
 
+    describe('GET /api/data_sources', function (){
+        it('should return dataSource list of the project, length is 1', function(done){
+            request(app)
+                .get('/api/data_sources' + '?project_id=' + projectIds[0] + '&token=' + tokens[0])
+                .expect('content-type', /json/)
+                .expect(200)
+                .expect(function (res){
+                    if(res.body.length !== 1){
+                        throw new Error('ret length invalid');
+                    }
+                })
+                .end(done);
+        });
+
+        it('should return dataSource list of the global user, length is 2', function(done){
+            request(app)
+                .get('/api/data_sources' + '?token=' + tokens[0])
+                .expect('content-type', /json/)
+                .expect(200)
+                .expect(function (res){
+                    if(res.body.length !== 2){
+                        throw new Error('ret length invalid');
+                    }
+                })
+                .end(done);
+        });
+
+        it('should return dataSource list of the local user, length is 1', function(done){
+            request(app)
+                .get('/api/data_sources' + '?token=' + tokens[1])
+                .expect('content-type', /json/)
+                .expect(200)
+                .expect(function (res){
+                    if(res.body.length !== 1){
+                        throw new Error('ret length invalid');
+                    }
+                })
+                .end(done);
+        });
+    });
+
     describe('POST /api/data_sources', function(){
         it('should create a dataSource', function (done){
             request(app)
-                .post('/api/data_sources' + '?token=' + token)
+                .post('/api/data_sources' + '?token=' + tokens[0])
                 .send({
-                    project_id: projectId,
+                    project_id: projectIds[0],
                     name: '登录时间',
                     key: 'loginTime'
                 })
@@ -97,9 +210,9 @@ describe('dataSource controller', function(){
         });
         it('should reject to create a dataSource', function (done){
             request(app)
-                .post('/api/data_sources' + '?token=' + token)
+                .post('/api/data_sources' + '?token=' + tokens[0])
                 .send({
-                    project_id: projectId,
+                    project_id: projectIds[0],
                     name: '登出时间',
                     key: 'logoutTime',
                     config: {
@@ -124,19 +237,10 @@ describe('dataSource controller', function(){
         });
     });
 
-    describe('GET /api/data_sources', function (){
-        it('should return dataSource list', function(done){
-            request(app)
-                .get('/api/data_sources' + '?project_id=' + projectId + '&token=' + token)
-                .expect('content-type', /json/)
-                .expect(200, done);
-        });
-    });
-
     describe('GET /api/data_sources/:id', function (){
         it('should return a dataSource', function(done){
             request(app)
-                .get('/api/data_sources/' + dataSourceId + '?token=' + token)
+                .get('/api/data_sources/' + dataSourceIds[0] + '?token=' + tokens[0])
                 .expect('content-type', /json/)
                 .expect(200, done);
         });
@@ -145,10 +249,10 @@ describe('dataSource controller', function(){
     describe('PUT /api/data_sources/:id', function () {
         it('should update a dataSource', function(done){
             request(app)
-                .put('/api/data_sources/' + dataSourceId + '?token=' + token)
+                .put('/api/data_sources/' + dataSourceIds[0] + '?token=' + tokens[0])
                 .send({
                     name: 'loginDate',
-                    project_id: projectId
+                    project_id: projectIds[0]
                 })
                 .expect(200)
                 .expect('content-type', /json/)
@@ -159,7 +263,7 @@ describe('dataSource controller', function(){
     describe('DELETE /api/data_sources/:id', function (){
         it('should delete a dataSource', function(done){
             request(app)
-                .delete('/api/data_sources/' + dataSourceId + '?token=' + token)
+                .delete('/api/data_sources/' + dataSourceIds[0] + '?token=' + tokens[0])
                 .expect(200)
                 .end(function (err){
                     if(err){
@@ -167,12 +271,12 @@ describe('dataSource controller', function(){
                     }
 
                     promisedRequest(app)
-                        .get('/api/data_sources/' + dataSourceId + '?token=' + token)
+                        .get('/api/data_sources/' + dataSourceIds[0] + '?token=' + tokens[0])
                         .expect('content-type', /json/)
                         .expect(404)
                         .then(function () {
                             return promisedRequest(app)
-                                .get('/api/records/' + recordId + '?token=' + token)
+                                .get('/api/records/' + recordId + '?token=' + tokens[0])
                                 .expect('content-type', /json/)
                                 .expect(404);
                         }).then(function () {

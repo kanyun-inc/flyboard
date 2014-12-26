@@ -50,7 +50,7 @@ describe('role_privilege logical', function () {
         Promise.all([
             knex('users').del(),
             knex('roles').del(),
-            knex('role_privilege').del()
+            knex('role_privileges').del()
         ]).then(function () {
             done();
         }).catch(done);

@@ -91,7 +91,7 @@ router.get(
 router.get(
     '/api/data_sources/:id/records',
     function(req, res, next){
-        var dataSourceId = parseInt(req.param('id', 10));
+        var dataSourceId = parseInt(req.param('id'), 10);
         var limit = parseInt(req.param('limit') || 0, 10);
         var count = parseInt(req.param('count') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;

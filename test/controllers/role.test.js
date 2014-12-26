@@ -4,13 +4,17 @@ var app = require('../../src/app');
 var request = require('supertest');
 var User = require('../../src/logicals/user');
 var Role = require('../../src/logicals/role');
+var UserRole = require('../../src/logicals/userRole');
+var RolePrivilege = require('../../src/logicals/rolePrivilege');
 var Promise = require('bluebird');
+var promisedRequest = require('supertest-as-promised');
 var knex = require('../../src/lib/knex');
 var tokenGenerator = require('../../src/controllers/tokenGenerator');
 
 describe('role controller', function(){
     var userId = null;
     var roleId = null;
+    var userRoleId = null;
     var token = null;
 
     before(function (done) {
@@ -21,6 +25,28 @@ describe('role controller', function(){
             return User.get(id);
         }).then(function (user) {
             token = tokenGenerator.generate(user);
+
+            return Role.save({
+                name: 'admin',
+                scope: 2
+            });
+        }).then(function (id){
+            roleId = id;
+
+            return UserRole.save({
+                user_id: userId,
+                role_id: roleId,
+                project_id: 0
+            });
+        }).then(function (userRole) {
+            userRoleId = userRole.id;
+
+            return RolePrivilege.save({
+                resource: 'PROJECT',
+                operation: 'GET',
+                role_id: roleId
+            });
+        }).then(function (){
             done();
         }).catch(done);
     });
@@ -28,7 +54,9 @@ describe('role controller', function(){
     after(function (done) {
         Promise.all([
             knex('users').del(),
-            knex('roles').del()
+            knex('roles').del(),
+            knex('user_roles').del(),
+            knex('role_privileges').del()
         ]).then(function () {
             done();
         }).catch(done);
@@ -39,7 +67,12 @@ describe('role controller', function(){
             request(app)
                 .get('/api/roles' + '?token=' + token)
                 .expect('content-type', /json/)
-                .expect(200, '[]', done);
+                .expect(200)
+                .expect(function (res){
+                    if(res.body.length !== 1){
+                        throw new Error('ret length invalid');
+                    }
+                }).end(done);
         });
     });
 
@@ -48,8 +81,8 @@ describe('role controller', function(){
             request(app)
                 .post('/api/roles' + '?token=' + token)
                 .send({
-                    name: 'admin',
-                    scope: 2
+                    name: 'member',
+                    scope: 1
                 })
                 .expect(200)
                 .expect('content-type', /json/)
@@ -57,7 +90,6 @@ describe('role controller', function(){
                     if(err){
                         return done(err);
                     }
-                    roleId = res.body.id;
                     done();
                 });
         });
@@ -80,7 +112,7 @@ describe('role controller', function(){
                .expect('content-type', /json/)
                .expect(200)
                .expect(function (res){
-                   if(res.body.length !== 1){
+                   if(res.body.length !== 2){
                        throw new Error('ret length invalid');
                    }
                })
@@ -131,10 +163,27 @@ describe('role controller', function(){
                         return done(err);
                     }
 
-                    request(app)
+                    promisedRequest(app)
                         .get('/api/roles/' + roleId + '?token=' + token)
                         .expect('content-type', /json/)
-                        .expect(404, done);
+                        .expect(404)
+                        .then(function () {
+                            return promisedRequest(app)
+                                .get('/api/user_roles/' + userRoleId + '?token=' + token)
+                                .expect('content-type', /json/)
+                                .expect(404);
+                        }).then(function () {
+                            return promisedRequest(app)
+                                .get('/api/role_privileges/' + '?role_id=' + roleId + '&token=' + token)
+                                .expect('content-type', /json/)
+                                .expect(function (res) {
+                                    if (res.body.length !== 0) {
+                                        throw new Error('invalid length');
+                                    }
+                                });
+                        }).then(function (){
+                            done();
+                        });
                 });
         });
     });

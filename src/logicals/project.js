@@ -20,12 +20,13 @@ exports.find = function (query) {
 
             return Role.get(userRoles[0].role_id);
         }).then(function (role){
-            if(role.scope === 2){
-                return knex('projects').select();
+            var ret = knex('projects').select();
+
+            if(role.scope === 1){
+                ret = ret.whereIn('id', projectIds);
             }
-            else{
-                return knex('projects').whereIn('id', projectIds).select();
-            }
+
+            return ret;
         });
     }
     else{

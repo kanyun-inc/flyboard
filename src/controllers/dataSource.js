@@ -25,6 +25,9 @@ router.get(
         if(projectId){
             query.project_id = projectId;
         }
+        if(userId){
+            query.user_id = userId;
+        }
 
         apiAuthFilter.vertifyProjectAuthority(userId, projectId)
             .then(function (authResult) {
@@ -42,7 +45,7 @@ router.get(
 router.get(
     '/api/data_sources/:id',
     function(req, res, next){
-        var id = parseInt(req.param('id', 10));
+        var id = parseInt(req.param('id'), 10);
         var userId = req.user ? req.user.id : null;
 
         DataSource.get(id)

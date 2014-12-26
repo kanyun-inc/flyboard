@@ -30,12 +30,10 @@ describe('project controller', function () {
 
             return Promise.all([
                 User.save({
-                    email: 'abc@abc.com',
-                    salt: 'sf2342d'
+                    email: 'abc@abc.com'
                 }),
                 User.save({
-                    email: 'ab@ab.com',
-                    salt: 'sf9wr32dsfl'
+                    email: 'ab@ab.com'
                 })
             ]);
         }).then(function (ret) {
@@ -117,8 +115,8 @@ describe('project controller', function () {
         return Promise.all([
             knex('users').del(),
             knex('roles').del(),
-            knex('user_role').del(),
-            knex('role_privilege').del(),
+            knex('user_roles').del(),
+            knex('role_privileges').del(),
             knex('projects').del()
         ]).then(function () {
             done();

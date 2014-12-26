@@ -122,7 +122,7 @@ describe('record controller', function(){
         return Promise.all([
             knex('users').del(),
             knex('roles').del(),
-            knex('user_role').del(),
+            knex('user_roles').del(),
             knex('data_sources').del(),
             knex('projects').del(),
             knex('records').del()

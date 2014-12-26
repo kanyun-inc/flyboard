@@ -9,7 +9,7 @@ var Project = require('../logicals/project');
 var apiAuthFilter = require('./apiAuthFilter');
 
 router.get('/api/dashboards', function(req, res, next){
-    var projectId = req.param('project_id') ? parseInt(req.param('project_id', 10)) : null;
+    var projectId = req.param('project_id') ? parseInt(req.param('project_id'), 10) : null;
     var userId = req.user ? req.user.id : null;
     var query = {};
 

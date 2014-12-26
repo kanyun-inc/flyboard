@@ -14,12 +14,15 @@ var apiAuthFilter = require('./apiAuthFilter');
 router.get(
     '/api/folders',
     function (req, res, next) {
-        var projectId = parseInt(req.param('project_id', 10));
+        var projectId = parseInt(req.param('project_id'), 10);
         var userId = req.user ? req.user.id : null;
         var query = {};
 
         if(projectId){
             query.project_id = projectId;
+        }
+        if(userId){
+            query.user_id = userId;
         }
 
         apiAuthFilter.vertifyProjectAuthority(userId, projectId)
@@ -68,7 +71,7 @@ router.get(
     '/api/folders/:parent_id/folders',
     function(req, res, next){
         var parentId = parseInt(req.param('parent_id'), 10);
-        var projectId = parseInt(req.param('project_id', 10));
+        var projectId = parseInt(req.param('project_id'), 10);
         var userId = req.user ? req.user.id : null;
 
         var query = {
@@ -77,6 +80,9 @@ router.get(
 
         if(projectId){
             query.project_id = projectId;
+        }
+        if(userId){
+            query.user_id = userId;
         }
 
         Folder.get(parentId)
@@ -149,7 +155,7 @@ router.put(
     '/api/folders/:id',
     bodyParser.json(),
     function (req, res, next) {
-        var id = parseInt(req.param('id', 10));
+        var id = parseInt(req.param('id'), 10);
         var userId = req.user ? req.user.id : null;
 
         var folder = req.body;
@@ -209,7 +215,8 @@ router.delete(
 
                     //delete child folders
                     promises = Folder.find({
-                        parent_id: folder.id
+                        parent_id: folder.id,
+                        user_id: userId
                     }).then(function (folders) {
 
                         return folders.map(function (subFolder) {
@@ -256,7 +263,8 @@ router.delete(
 
                         //set parent of child folders to folder.parent_id
                         promises = Folder.find({
-                            parent_id: folder.id
+                            parent_id: folder.id,
+                            user_id: userId
                         }).then(function (folders) {
                             return folders.map(function (subFolder) {
 

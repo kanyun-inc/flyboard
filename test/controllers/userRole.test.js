@@ -50,7 +50,7 @@ describe('user_role controller', function(){
             knex('users').del(),
             knex('roles').del(),
             knex('projects').del(),
-            knex('user_role').del()
+            knex('user_roles').del()
         ]).then(function () {
             done();
         }).catch(done);
