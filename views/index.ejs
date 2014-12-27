@@ -40,13 +40,13 @@
                         <li><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
                     </ul>
 
-                    <div class="switch-slide navbar-right-btn">
+                    <div class="switch-slide navbar-right-btn" ng-if="project">
                         <a href="" title="轮播开关"  class="fa fa-lg"
                            ng-class="{'fa-toggle-on': slideMode, 'fa-toggle-off': !slideMode, 'fa-toggle-disabled': editLayoutMode}"
                            ng-click="toggleSlideMode()"></a>
                     </div>
 
-                    <div class="edit-layout navbar-right-btn">
+                    <div class="edit-layout navbar-right-btn" ng-if="project">
                         <a href="" title="编辑布局" class="glyphicon glyphicon-cog fa-lg"
                            ng-class="{'edit-on': !slideMode && editLayoutMode, 'edit-off': !slideMode && !editLayoutMode, 'edit-disabled': slideMode}"
                            ng-click="toggleEditLayoutMode()"></a>
