@@ -1089,8 +1089,18 @@ border-left-color: #111111;
     font-size: 12px;
 }
 
-.profile-item button.reset-salt {
-    margin-left: 30px;
+.profile span.profile-token{
+    word-break:normal;
+    width:auto;
+    display:inline-block;
+    white-space:pre-wrap;
+    word-wrap: break-word ;
+    overflow: hidden ;
+    width: 80%;
+}
+
+.profile-item button.reset-token {
+    float: right;
 }
 
 .profile-item .member-item {

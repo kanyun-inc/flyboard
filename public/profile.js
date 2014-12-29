@@ -6,10 +6,11 @@ var profileApp = angular.module('profileApp', [
     'directives'
 ]);
 
-profileApp.controller('ProfileCtrl', ['$scope', '$q', 'Project', 'CurrentUser', 'UserReset', 'User', 'UserRole', 'Role', 'RolePrivilege',
-    function ($scope, $q, Project, CurrentUser, UserReset, User, UserRole, Role, RolePrivilege){
+profileApp.controller('ProfileCtrl', ['$scope', '$q', 'Project', 'CurrentUser', 'UserToken', 'TokenReset', 'User', 'UserRole', 'Role', 'RolePrivilege',
+    function ($scope, $q, Project, CurrentUser, UserToken, TokenReset, User, UserRole, Role, RolePrivilege){
         $scope.profile = {
             user: {},
+            token: null,
             roles: [],
             projects: []
         };
@@ -28,11 +29,19 @@ profileApp.controller('ProfileCtrl', ['$scope', '$q', 'Project', 'CurrentUser', 
 
         var userProfilePromise = CurrentUser.get().$promise;
 
-        var projectsProfilePromise = userProfilePromise.then(function (user){
+        var tokenProfilePromise = userProfilePromise.then(function (user){
             $scope.profile.user = user || {};
 
+            return UserToken.get({
+                id: user.id
+            }).$promise;
+        });
+
+        var projectsProfilePromise = tokenProfilePromise.then(function (ret){
+            $scope.profile.token = ret.token;
+
             return UserRole.query({
-                user_id: user.id
+                user_id: $scope.user.id
             }).$promise;
         });
 
@@ -151,12 +160,18 @@ profileApp.controller('ProfileCtrl', ['$scope', '$q', 'Project', 'CurrentUser', 
         });
 
         //reset salt
-        $scope.resetSalt = function (){
-            UserReset.update({
+        $scope.resetToken = function (){
+            TokenReset.update({
                 id: $scope.profile.user.id
-            }, $scope.profile.user).$promise
-            .then(function (user){
-                $scope.profile.user = user;
+            }, {}).$promise
+            .then(function (ret){
+                $scope.profile.token = ret.token;
+
+                return User.get({
+                    id: $scope.profile.user.id
+                });
+            }).then(function (user){
+                $scope.profile.user.salt = user.salt;
             });
         };
 
