@@ -24,20 +24,23 @@ router.get('/api/users/current', function (req, res, next){
 });
 
 router.put(
-    '/api/users/salt_reset/:id',
+    '/api/users/token_reset/:id',
     bodyParser.json(),
     function (req, res, next){
-        var user = req.body;
-        if (!user || !user.email) {
-            return res.send(400);
-        }
-
         var id = parseInt(req.param('id'), 10);
 
-        User.resetSalt(id, user).then(function () {
+        User.get(id).then(function (user) {
+            if (!user) {
+                return res.send(404);
+            }
+
+            return User.resetSalt(id, user);
+        }).then(function () {
             return User.get(id);
         }).then(function (user) {
-            return res.send(user);
+            return res.send({
+                token:tokenGenerator.generate(user)
+            });
         }).catch(next);
     }
 );
@@ -50,7 +53,9 @@ router.get('/api/users/token/:id', function (req, res, next){
             return res.send(404);
         }
 
-        return res.send(tokenGenerator.generate(user));
+        return res.send({
+            token: tokenGenerator.generate(user)
+        });
     }).catch(next);
 });
 
