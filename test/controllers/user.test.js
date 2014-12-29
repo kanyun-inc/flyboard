@@ -152,7 +152,7 @@ describe('user controller', function(){
                 .expect('content-type', /json/)
                 .expect(200)
                 .expect(function (res){
-                    var userObj = tokenGenerator.resolve(res.text);
+                    var userObj = tokenGenerator.resolve(res.body.token);
 
                     if(userObj.id !== userIds[1]){
                         throw new Error('invalid token');
