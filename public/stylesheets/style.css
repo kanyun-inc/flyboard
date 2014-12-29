@@ -1005,6 +1005,12 @@ div[sticky].fixed {
     padding: 5px;
 }
 
+.data-source-content #data-source-records button.clear-record-btn {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
 .error-message {
     color: darkred;
 }
