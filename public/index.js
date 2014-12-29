@@ -297,7 +297,7 @@ indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Pr
 
         if($routeParams.project_id){
             projectPromise = Project.get({
-                id: $routeParams.project_id
+                id: parseInt($routeParams.project_id, 10)
             }).$promise.then(function (project){
                 return project;
             });
@@ -335,8 +335,8 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
     function ($scope, $route, $routeParams, $window, $q, $location, $interval, $timeout, Dashboard, Project) {
         $scope.cfNavUnfold = false;
         $scope.$on('$routeChangeSuccess', function () {
-            var projectId = $routeParams.project_id;
-            var dashboardId = $routeParams.id;
+            var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
+            var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
 
             if(!projectId || !dashboardId) {
                 return ;
@@ -540,8 +540,8 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
                 return;
             }
 
-            var projectId = $routeParams.project_id;
-            var dashboardId = $routeParams.id;
+            var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
+            var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
 
             var projectsPromise = Project.query().$promise;
 
@@ -637,8 +637,8 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
 
 indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$location', '$interval', 'Dashboard', 'Project', 'Widget', 'widgetUrl',
     function ($scope, $q, $window, $routeParams, $location, $interval, Dashboard, Project, Widget, widgetUrl) {
-        var projectId = $routeParams.project_id || null;
-        var dashboardId = $routeParams.id || null;
+        var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
+        var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
 
         $scope.projects = Project.query();
 
@@ -720,8 +720,8 @@ indexApp.controller('editLayoutCtrl', ['$scope', '$window', '$routeParams', '$lo
         $scope.addedControllers = [];
         $scope.gridLayerStatus = [];
 
-        var projectId = $routeParams.project_id;
-        var dashboardId = $routeParams.id;
+        var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
+        var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
 
         $scope.projects = Project.query();
 
@@ -2642,7 +2642,7 @@ indexApp.controller('DeleteWidgetCtrl', ['$scope', '$routeParams', '$q', 'Dashbo
             $scope.$emit('deleteWidget', controller);
 
             Widget.delete({
-                dashboardid: $routeParams.id,
+                dashboardid: parseInt($routeParams.id, 10),
                 id: controller.id
             });
         };
