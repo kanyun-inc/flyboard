@@ -1572,8 +1572,8 @@ indexApp.directive('draggable', ['gridLayerConfig',
                 var $dragElement = $elem.parent();
 
                 function drag() {
-                    var newX = Math.round($(this).offset().top / $(this).parents('.layer').height() * gridLayerConfig.number);
-                    var newY = Math.round($(this).offset().left / $(this).parents('.layer').width() * gridLayerConfig.number);
+                    var newX = Math.round($(this).position().top / $(this).parents('.layer').height() * gridLayerConfig.number);
+                    var newY = Math.round($(this).position().left / $(this).parents('.layer').width() * gridLayerConfig.number);
 
                     var newController = {
                         id: $scope.controller.id,
