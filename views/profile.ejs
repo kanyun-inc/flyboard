@@ -30,7 +30,9 @@
             <div>
                 <label class="text-success">Access key ( Token )</label>
                 <div>
-                    <span class="token">{{profile.token}}</span>
+                    <div class="token-wrapper">
+                        <span class="token">{{profile.token}}</span>
+                    </div>
                     <button type="button" class="btn btn-default reset-token" ng-click="resetToken()">重置</button>
                 </div>
             </div>
