@@ -17,6 +17,7 @@ router.post(
         var key = req.param('key');
         var userId = req.user ? req.user.id : null;
         var dataSourceId = null;
+        var projectId = null;
 
         if(record.value === undefined){
             return res.send(400);
@@ -29,8 +30,9 @@ router.post(
                 }
 
                 dataSourceId = dataSource.id;
+                projectId = dataSource.project_id;
 
-                return apiAuthFilter.vertifyProjectAuthority(userId, dataSourceId);
+                return apiAuthFilter.vertifyProjectAuthority(userId, projectId);
             }).then(function (authResult){
                 if(!authResult){
                     return res.send(403);
