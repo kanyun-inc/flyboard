@@ -590,6 +590,11 @@ timer[data-phase='10']{
     height: 100%;
 }
 
+.dashboard .layer .widget-controller .ui-icon {
+    width: 25px;
+    height: 25px;
+}
+
 .dashboard .widget-wrapper {
     position: absolute;
 }
