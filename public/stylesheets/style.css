@@ -988,6 +988,10 @@ div[sticky].fixed {
     }
 }
 
+.data-source {
+    padding-right: 45px;
+}
+
 .data-source .delete-data-source {
     position: fixed;
     bottom: 20px;
@@ -1095,14 +1099,17 @@ border-left-color: #111111;
     font-size: 12px;
 }
 
-.profile span.profile-token{
+div.token-wrapper {
+    width: 90%;
+    float: left;
+}
+
+.token {
     word-break:normal;
-    width:auto;
     display:inline-block;
-    white-space:pre-wrap;
     word-wrap: break-word ;
     overflow: hidden ;
-    width: 80%;
+    width: 100%;
 }
 
 .profile-item button.reset-token {
