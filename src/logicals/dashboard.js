@@ -46,6 +46,10 @@ exports.find = function (query) {
 
     if(query.user_id) {
         var projectIds = [];
+        var publicFilter = query.public_filter;
+        var privateFilter = query.private_filter;
+        delete query.public_filter;
+        delete query.private_filter;
 
         return UserRole.find({
             user_id: query.user_id
@@ -65,31 +69,39 @@ exports.find = function (query) {
             query_private_dashboards.owner_id = query.user_id;
             delete query.user_id;
 
-            var ret_public = knex('dashboards')
-                                .where(query_public_dashboards)
-                                .whereNull('private')
-                                .orWhere('private', false)
-                                .andWhere(query_public_dashboards)
-                                .select();
-            var ret_private = knex('dashboards')
-                                .where(query_private_dashboards)
-                                .where('private', true)
-                                .select();
+            var ret_public = publicFilter ?
+                knex('dashboards')
+                    .where(query_public_dashboards)
+                    .whereNull('private')
+                    .orWhere('private', false)
+                    .andWhere(query_public_dashboards)
+                    .select()
+                : null;
+            var ret_private = privateFilter ?
+                knex('dashboards')
+                    .where(query_private_dashboards)
+                    .where('private', true)
+                    .select()
+                : null;
+
             //local scope
             if(role.scope === 1){
-                ret_public = ret_public.whereIn('project_id', projectIds);
-                ret_private = ret_private.whereIn('project_id', projectIds);
+                ret_public = ret_public ? ret_public.whereIn('project_id', projectIds) : null;
+                ret_private = ret_private ? ret_private.whereIn('project_id', projectIds) : null;
             }
 
-            ret_public = ret_public.map(dbToObj);
-            ret_private = ret_private.map(dbToObj);
-
+            ret_public = ret_public ? ret_public.map(dbToObj) : ret_public;
+            ret_private = ret_private ? ret_private.map(dbToObj) : ret_private;
 
             return blueBird.all([
                 ret_public,
                 ret_private
             ]).then(function (rets){
-                return rets[0].concat(rets[1]);
+                if(rets[0] && rets[1]){
+                    return rets[0].concat(rets[1]);
+                }
+
+                return rets[0] ? rets[0] : rets[1];
             });
         });
     }
@@ -105,16 +117,18 @@ exports.get = function (id) {
 exports.save = function (obj) {
     obj.created_at = new Date();
     obj.updated_at = obj.created_at;
-    obj.private = obj.private ? true: false;
+    obj.private = obj.private ? true : false;
 
-    if(!obj.user_id){
-        obj.private = false;
-        obj.owner_id = null;
+    if(obj.user_id){
+        if(!obj.private){
+            obj.owner_id = null;
+        }
+        else{
+            obj.owner_id = obj.user_id;
+        }
+
+        delete obj.user_id;
     }
-    else if(obj.user_id && obj.private) {
-          obj.owner_id = obj.user_id;
-    }
-    delete obj.user_id;
 
     return knex('dashboards').insert(objToDb(obj)).returning('id').then(function (ret) {
         return ret[0];
@@ -122,17 +136,19 @@ exports.save = function (obj) {
 };
 
 exports.update = function (id, obj) {
-    obj.private = obj.private === true;
+    obj.private = obj.private ? true : false;
     obj.updated_at = new Date();
 
-    if(!obj.user_id){
-        obj.private = false;
-        obj.owner_id = null;
+    if(obj.user_id){
+        if(!obj.private){
+            obj.owner_id = null;
+        }
+        else{
+            obj.owner_id = obj.user_id;
+        }
+
+        delete obj.user_id;
     }
-    else if(obj.user_id && obj.private) {
-        obj.owner_id = obj.user_id;
-    }
-    delete obj.user_id;
 
     return knex('dashboards').where('id', id).update(objToDb(obj));
 };

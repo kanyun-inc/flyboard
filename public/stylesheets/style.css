@@ -405,6 +405,19 @@ nav .dropdown-btn button{
     margin-top: 50px;
 }
 
+.cf-nav .dashboard-filter {
+    position: absolute;
+    top: 12px;
+    left: 35px;
+}
+.cf-nav .dashboard-filter span {
+    margin-right: 15px;
+}
+.cf-nav .dashboard-filter span a, .cf-nav .dashboard-filter span a:hover{
+    text-decoration: none;
+    background-color: #333333;
+}
+
 .cf-nav .cf-nav-shortcut {
     position: relative;
 }

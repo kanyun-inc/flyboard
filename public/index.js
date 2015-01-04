@@ -295,6 +295,11 @@ indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Pr
         $scope.dashboard = null;
         var projectPromise = null;
 
+        $scope.$on('$routeChangeSuccess', function () {
+            $scope.publicSelected = !!($routeParams.public_filter === undefined || $routeParams.public_filter === 'true' || $routeParams.public_filter === true);
+            $scope.privateSelected = !!($routeParams.private_filter === undefined || $routeParams.private_filter === 'true' || $routeParams.private_filter === true);
+        });
+
         if($routeParams.project_id){
             projectPromise = Project.get({
                 id: parseInt($routeParams.project_id, 10)
@@ -318,14 +323,19 @@ indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Pr
 
         projectPromise.then(function(project){
             Dashboard.query({
-                project_id: project.id
+                project_id: project.id,
+                public_filter: $scope.publicSelected,
+                private_filter: $scope.privateSelected
             }).$promise.then(function (dashboards) {
                 if(!dashboards || !dashboards.length) {
                     return ;
                 }
 
                 var url = '/projects/' + project.id + '/dashboards/' + dashboards[0].id;
-                $location.path(url);
+                $location.path(url).search({
+                    public_filter: $scope.publicSelected,
+                    private_filter: $scope.privateSelected
+                });
             });
         });
     }
@@ -337,6 +347,9 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
         $scope.$on('$routeChangeSuccess', function () {
             var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
             var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
+
+            $scope.publicSelected = !!($routeParams.public_filter === undefined || $routeParams.public_filter === 'true' || $routeParams.public_filter === true);
+            $scope.privateSelected = !!($routeParams.private_filter === undefined || $routeParams.private_filter === 'true' || $routeParams.private_filter === true);
 
             if(!projectId || !dashboardId) {
                 return ;
@@ -365,7 +378,9 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
                 }
 
                 return Dashboard.query({
-                    project_id: project.id
+                    project_id: project.id,
+                    public_filter: $scope.publicSelected,
+                    private_filter: $scope.privateSelected
                 }).$promise;
             });
 
@@ -407,7 +422,10 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
             currentDashboardIdx = (currentDashboardIdx + 1) % $scope.dashboards.length;
 
             var newUrl = '/projects/' + $scope.project.id + '/dashboards/' + $scope.dashboards[currentDashboardIdx].id;
-            $location.path(newUrl);
+            $location.path(newUrl).search({
+                public_filter: $scope.publicSelected,
+                private_filter: $scope.privateSelected
+            });
 
             stopPhaseTimer();
             startPhaseDelayTimer();
@@ -540,6 +558,9 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
                 return;
             }
 
+            $scope.publicSelected = !!($routeParams.public_filter === undefined || $routeParams.public_filter === 'true' || $routeParams.public_filter === true);
+            $scope.privateSelected = !!($routeParams.private_filter === undefined || $routeParams.private_filter === 'true' || $routeParams.private_filter === true);
+
             var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
             var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
 
@@ -566,7 +587,9 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
                 }
 
                 return Dashboard.query({
-                    project_id: project.id
+                    project_id: project.id,
+                    public_filter: $scope.publicSelected,
+                    private_filter: $scope.privateSelected
                 }).$promise;
             });
 
@@ -612,7 +635,10 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
             $scope.editLayoutMode = !$scope.editLayoutMode;
 
             var newUrl = '/projects/' + $scope.project.id + '/dashboards/' + $scope.dashboard.id + ($scope.editLayoutMode ? '/edit' : '');
-            $location.path(newUrl);
+            $location.path(newUrl).search({
+                public_filter: $scope.publicSelected,
+                private_filter: $scope.privateSelected
+            });
         };
 
         $scope.setUnfold = function (value) {
@@ -624,21 +650,42 @@ indexApp.controller('NavCtrl', ['$scope', '$route', '$routeParams', '$q', '$loca
             $scope.project = project;
 
             Dashboard.query({
-                project_id: project.id
+                project_id: project.id,
+                public_filter: $scope.publicSelected,
+                private_filter: $scope.privateSelected
             }).$promise.then(function (dashboards) {
                 $scope.dashboard = dashboards && dashboards.length ? dashboards[0] : null;
 
                 var newUrl = '/projects/' + $scope.project.id + '/dashboards/' + ( $scope.dashboard ? $scope.dashboard.id : '' );
-                $location.path(newUrl);
+                $location.path(newUrl).search({
+                    public_filter: $scope.publicSelected,
+                    private_filter: $scope.privateSelected
+                });
+            });
+        };
+
+        $scope.togglePublicSelection = function () {
+            $location.path('/projects/' + $scope.project.id).search({
+                public_filter: !$scope.publicSelected,
+                private_filter: $scope.privateSelected
+            });
+        };
+
+        $scope.togglePrivateSelection = function () {
+            $location.path('/projects/' + $scope.project.id).search({
+                public_filter: $scope.publicSelected,
+                private_filter: !$scope.privateSelected
             });
         };
     }
 ]);
 
-indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$location', '$interval', 'Dashboard', 'Project', 'Widget', 'widgetUrl',
-    function ($scope, $q, $window, $routeParams, $location, $interval, Dashboard, Project, Widget, widgetUrl) {
+indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$interval', 'Dashboard', 'Project', 'Widget', 'widgetUrl',
+    function ($scope, $q, $window, $routeParams, $interval, Dashboard, Project, Widget, widgetUrl) {
         var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
         var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
+        $scope.publicSelected = !!($routeParams.public_filter === undefined || $routeParams.public_filter === 'true' || $routeParams.public_filter === true);
+        $scope.privateSelected = !!($routeParams.private_filter === undefined || $routeParams.private_filter === 'true' || $routeParams.private_filter === true);
 
         $scope.projects = Project.query();
 
@@ -663,7 +710,9 @@ indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$l
             }
 
             return Dashboard.query({
-                project_id: project.id
+                project_id: project.id,
+                public_filter: $scope.publicSelected,
+                private_filter: $scope.privateSelected
             }).$promise;
         });
 
@@ -716,9 +765,13 @@ indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$l
 indexApp.controller('editLayoutCtrl', ['$scope', '$window', '$routeParams', '$location', '$interval', 'Project', 'Dashboard', 'Widget', '$q', 'gridLayerConfig',
     function ($scope, $window, $routeParams, $location, $interval, Project, Dashboard, Widget, $q, gridLayerConfig) {
         $scope.gridLayer = gridLayer;
-        $scope.dashboards = Dashboard.query();
         $scope.addedControllers = [];
         $scope.gridLayerStatus = [];
+
+        $scope.$on('$routeChangeSuccess', function () {
+            $scope.publicSelected = !!($routeParams.public_filter === undefined || $routeParams.public_filter === 'true' || $routeParams.public_filter === true);
+            $scope.privateSelected = !!($routeParams.private_filter === undefined || $routeParams.private_filter === 'true' || $routeParams.private_filter === true);
+        });
 
         var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
         var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
@@ -727,6 +780,12 @@ indexApp.controller('editLayoutCtrl', ['$scope', '$window', '$routeParams', '$lo
 
         $scope.project = Project.get({
            id: projectId
+        });
+
+        $scope.dashboards = Dashboard.query({
+            project_id: projectId,
+            public_filter: $scope.publicSelected,
+            private_filter: $scope.privateSelected
         });
 
         $scope.dashboard = Dashboard.get({
