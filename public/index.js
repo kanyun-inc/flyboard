@@ -1714,7 +1714,7 @@ indexApp.directive('widgetSpline', [
                     //timestamp
                     if(dataSeries && dataSeries.length && dataSeries[0].data && dataSeries[0].data.length){
                         var timeStamp = new Date(dataSeries[0].data[dataSeries[0].data.length - 1].x);
-                        $scope.updatedTime = formatDate(timeStamp);
+                        $scope.updatedTime = formatTime(timeStamp);
                     }
 
                     //redraw the chart
@@ -1727,7 +1727,7 @@ indexApp.directive('widgetSpline', [
                             //timestamp
                             if(dataSeries && dataSeries.length && dataSeries[0].data && dataSeries[0].data.length){
                                 var timeStamp = new Date(dataSeries[0].data[dataSeries[0].data.length - 1].x);
-                                $scope.updatedTime = formatDate(timeStamp);
+                                $scope.updatedTime = formatTime(timeStamp);
                             }
 
                             for (var idx = chart.series.length - 1; idx >= 0; idx--) {
@@ -1926,7 +1926,7 @@ indexApp.directive('widgetPie', [
 
                     //timestamp
                     if(data && data.length && data[0][2]){
-                        $scope.updatedTime = formatDate(new Date(data[0][2]));
+                        $scope.updatedTime = formatTime(new Date(data[0][2]));
                     }
 
                     function reload() {
@@ -1935,7 +1935,7 @@ indexApp.directive('widgetPie', [
                         $q.all(promises).then(function (data) {
                             //timestamp
                             if(data && data.length && data[0][2]){
-                                $scope.updatedTime = formatDate(new Date(data[0][2]));
+                                $scope.updatedTime = formatTime(new Date(data[0][2]));
                             }
 
                             chart.series[0].setData(data);
@@ -2144,7 +2144,7 @@ indexApp.directive('widgetDonut', [
 
                         //timestamp
                         if(resp && resp.length){
-                            $scope.updatedTime = formatDate(new Date(resp[0].date_time));
+                            $scope.updatedTime = formatTime(new Date(resp[0].date_time));
                         }
 
                         //call fitText
@@ -2271,7 +2271,7 @@ indexApp.directive('widgetNumber', [
 
                             //timestamp
                             if(resp && resp.length){
-                                $scope.updatedTime = formatDate(new Date(resp[0].date_time));
+                                $scope.updatedTime = formatTime(new Date(resp[0].date_time));
                             }
 
                             //call fitText
@@ -2389,7 +2389,7 @@ indexApp.directive('widgetColumn', [
                                 });
                             })(),
                             {
-                                formatDate: formatDate
+                                formatTime: formatTime
                             }
                         );
 
@@ -2436,7 +2436,7 @@ indexApp.directive('widgetColumn', [
 
                         //timestamp
                         if(timeLine && timeLine.length){
-                            $scope.updatedTime = formatDate(new Date(timeLine[timeLine.length - 1]));
+                            $scope.updatedTime = formatTime(new Date(timeLine[timeLine.length - 1]));
                         }
                     }).catch(function (errorType) {
                         if (errorType.status === 404) {

@@ -223,6 +223,12 @@ nav {
     margin-right: 10%;
 }
 
+.stat .export-data-btn {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+}
+
 .stat-nav {
     margin-bottom: 25px;
     margin-top: 25px;
