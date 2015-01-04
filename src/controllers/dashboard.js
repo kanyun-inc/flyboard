@@ -11,6 +11,8 @@ var apiAuthFilter = require('./apiAuthFilter');
 router.get('/api/dashboards', function(req, res, next){
     var projectId = req.param('project_id') ? parseInt(req.param('project_id'), 10) : null;
     var userId = req.user ? req.user.id : null;
+    var publicFilter = req.param('public_filter');
+    var privateFilter = req.param('private_filter');
     var query = {};
 
     if(projectId) {
@@ -19,6 +21,8 @@ router.get('/api/dashboards', function(req, res, next){
     if(userId){
         query.user_id = userId;
     }
+    query.public_filter = publicFilter !== 'false';
+    query.private_filter = privateFilter !== 'false';
 
     apiAuthFilter.vertifyProjectAuthority(userId, projectId)
         .then(function (authResult) {

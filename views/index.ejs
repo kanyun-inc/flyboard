@@ -68,11 +68,24 @@
         </nav>
 
         <div class="cf-nav" ng-class="{'cf-nav-state-min': !unfold, 'cf-nav-state-max': unfold}">
-            <a href="" class="cf-nav-toggle" ng-click="setUnfold(!unfold)">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
+            <div>
+                <a href="" class="cf-nav-toggle" ng-click="setUnfold(!unfold)">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div ng-if="unfold" class="dashboard-filter">
+                    <span>
+                        <a href="" ng-click="togglePublicSelection()"><i class="fa" ng-class="{'fa-check-square-o': publicSelected, 'fa-square-o': !publicSelected}"></i>
+                        公有</a>
+                    </span>
+
+                    <span>
+                        <a href="" ng-click="togglePrivateSelection()"><i class="fa" ng-class="{'fa-check-square-o': privateSelected, 'fa-square-o': !privateSelected}"></i>
+                        私有</a>
+                    </span>
+                </div>
+            </div>
 
             <div sticky class="dashboard-list"
                  ng-class="{'cf-nav-min-overflow-hidden': !unfold}"
@@ -81,7 +94,7 @@
                 <ul>
                     <li ng-repeat="item in dashboards"
                         class="{{item.id === dashboard.id ? 'current ' : null}} cf-nav-shortcut">
-                        <a href="#/projects/{{project.id}}/dashboards/{{item.id}}"
+                        <a href="#/projects/{{project.id}}/dashboards/{{item.id}}?public_filter={{publicSelected}}&private_filter={{privateSelected}}"
                            class="{{ item.id === dashboard.id ? 'current active' : null}}">
                             <span class="cf-nav-min">{{$index + 1}}</span>
                             <span class="cf-nav-max">{{item.name}}</span>
