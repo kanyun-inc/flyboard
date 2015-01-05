@@ -136,6 +136,8 @@ exports.remove = function (id) {
     return knex('records').where('id', id).del();
 };
 
-exports.removeList = function (dataSourceId) {
-    return knex('records').where('data_source_id', dataSourceId).del();
+exports.removeList = function (dataSourceId, query) {
+    query = query || {};
+
+    return knex('records').where('data_source_id', dataSourceId).where(query).del();
 };

@@ -18,12 +18,12 @@ describe('record controller', function(){
     var roleId = null;
     var projectId = null;
     var dataSourceId = null;
-    var recordId = null;
+    var recordIds = [];
     var projectUuid = null;
     var key = null;
     var token = null;
 
-    before(function (done) {
+    beforeEach(function (done) {
         User.save({
             email: 'abc@abc.com'
         }).then(function (id) {
@@ -95,7 +95,7 @@ describe('record controller', function(){
                             value: 99,
                             year: 2014,
                             month: 6,
-                            day: 29,
+                            day: 28,
                             course: 'languge',
                             client: 'IPHONE',
                             versions: '2.0.3'
@@ -113,12 +113,13 @@ describe('record controller', function(){
                     ]);
                 });
         })
-        .then(function () {
+        .then(function (rets) {
+            recordIds = rets;
             done();
         }).catch(done);
     });
 
-    after(function (done) {
+    afterEach(function (done) {
         return Promise.all([
             knex('users').del(),
             knex('roles').del(),
@@ -149,7 +150,6 @@ describe('record controller', function(){
                         return done(err);
                     }
 
-                    recordId = res.body.id;
                     done();
                 });
             });
@@ -158,11 +158,11 @@ describe('record controller', function(){
     describe('GET /api/records/:id', function(){
         it('should return a record object', function(done){
             request(app)
-                .get('/api/records/' + recordId + '?token=' + token)
+                .get('/api/records/' + recordIds[0] + '?token=' + token)
                 .expect('content-type', /json/)
                 .expect(200)
                 .expect(function (res) {
-                    assert.equal(res.body.course, 'english');
+                    assert.equal(res.body.course, 'math');
                     assert.equal(res.body.client, 'ANDROID');
                     assert.equal(res.body.versions, '3.0.1');
                 })
@@ -191,7 +191,7 @@ describe('record controller', function(){
     describe('DELETE /api/records/:id', function(){
         it('should remove record', function(done){
             request(app)
-                .delete('/api/records/' + recordId + '?token=' + token)
+                .delete('/api/records/' + recordIds[0] + '?token=' + token)
                 .expect(200)
                 .end(function(err){
                     if(err){
@@ -199,9 +199,31 @@ describe('record controller', function(){
                     }
 
                     request(app)
-                        .get('/api/records/' + recordId + '?token=' + token)
+                        .get('/api/records/' + recordIds[0] + '?token=' + token)
                         .expect('content-type', /json/)
                         .expect(404, done);
+                });
+        });
+    });
+
+    describe('DELETE /api/data_sources/:id/records', function(){
+        it('should remove 1 record', function(done){
+            request(app)
+                .delete('/api/data_sources/' + dataSourceId + '/records' + '?year=2014&month=6&day=28&token=' + token)
+                .expect(200)
+                .end(function(err){
+                    if(err){
+                        return done(err);
+                    }
+
+                    request(app)
+                        .get('/api/data_sources/' + dataSourceId + '/records' + '?token=' + token)
+                        .expect('content-type', /json/)
+                        .expect(200)
+                        .expect(function (res){
+                            assert.equal(res.body.length, 1);
+                        })
+                        .end(done);
                 });
         });
     });

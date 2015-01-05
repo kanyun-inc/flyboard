@@ -188,8 +188,35 @@ router.delete('/api/data_sources/:id/records',
         var dataSourceId = req.param('id') ? parseInt(req.param('id'), 10) : null;
         var userId = req.user ? req.user.id : null;
 
+        var year = req.param('year') ? parseInt(req.param('year'), 10) : null;
+        var month = req.param('month') ? parseInt(req.param('month'), 10) : null;
+        var day = req.param('day') ? parseInt(req.param('day'), 10) : null;
+        var hour = req.param('hour') ? parseInt(req.param('hour'), 10) : null;
+        var minute = req.param('minute') ? parseInt(req.param('minute'), 10) : null;
+        var second = req.param('second') ? parseInt(req.param('second'), 10) : null;
+
         if(!dataSourceId) {
             return res.send(400);
+        }
+
+        var query = {};
+        if(year){
+            query.year = year;
+        }
+        if(month){
+            query.month = month;
+        }
+        if(day){
+            query.day = day;
+        }
+        if(hour){
+            query.hour = hour;
+        }
+        if(minute){
+            query.minute = minute;
+        }
+        if(second){
+            query.second = second;
         }
 
         DataSource.get(dataSourceId)
@@ -206,7 +233,7 @@ router.delete('/api/data_sources/:id/records',
 
                 return DataSource.get(dataSourceId);
             }).then(function (dataSource) {
-                return Record.removeList(dataSource.id);
+                return Record.removeList(dataSource.id, query);
             }).then(function (){
                 return res.send(200);
             }).catch(next);
