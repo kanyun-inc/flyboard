@@ -208,4 +208,4 @@ exports.additionalLabel = function (dataInfo, records) {
     }).join('｜');
 
     return dimensionNameCombineStr.length > 0 ? '-' + dimensionNameCombineStr : dimensionNameCombineStr;
-}
+};
