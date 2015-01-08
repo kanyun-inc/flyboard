@@ -229,6 +229,10 @@ nav {
     bottom: 15px;
 }
 
+.stat .export-data-btn .download-file-btn {
+    text-decoration: none;
+}
+
 .stat-nav {
     margin-bottom: 25px;
     margin-top: 25px;

@@ -22,6 +22,7 @@ describe('record controller', function(){
     var projectUuid = null;
     var key = null;
     var token = null;
+    var dimensions = null;
 
     beforeEach(function (done) {
         User.save({
@@ -78,6 +79,10 @@ describe('record controller', function(){
             return DataSource.get(dataSourceId)
                 .then(function (dataSource) {
                     key = dataSource.key;
+                    dimensions = [{
+                        key: 'client',
+                        value: 'ANDROID'
+                    }];
 
                     return Promise.all([
                         Record.save({
@@ -171,19 +176,36 @@ describe('record controller', function(){
     });
 
     describe('GET /api/data_sources/:id/records', function(){
-        it('should return limit numbers of record', function (done){
-            request(app)
-                .get('/api/data_sources/' + dataSourceId + '/records?limit=4' + '&token=' + token)
-                .expect(200)
-                .expect('content-type', /json/)
-                .end(done);
-        });
-
-        it('should return  record list', function (done){
+        it('should return record list', function (done){
             request(app)
                 .get('/api/data_sources/' + dataSourceId + '/records' + '?token=' + token)
                 .expect(200)
                 .expect('content-type', /json/)
+                .expect(function (res) {
+                    assert.equal(res.body.length, 3);
+                })
+                .end(done);
+        });
+
+        it('should return count numbers of record', function (done){
+            request(app)
+                .get('/api/data_sources/' + dataSourceId + '/records?count=2' + '&token=' + token)
+                .expect(200)
+                .expect('content-type', /json/)
+                .expect(function (res) {
+                    assert.equal(res.body.length, 2);
+                })
+                .end(done);
+        });
+
+        it('should return record list of some dimensions', function (done){
+            request(app)
+                .get('/api/data_sources/' + dataSourceId + '/records' + '?token=' + token + '&dimensions=' + JSON.stringify(dimensions))
+                .expect(200)
+                .expect('content-type', /json/)
+                .expect(function (res) {
+                    assert.equal(res.body.length, 2);
+                })
                 .end(done);
         });
     });

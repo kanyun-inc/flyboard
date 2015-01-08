@@ -4,9 +4,12 @@ var router = require('express').Router();
 module.exports = router;
 
 var bodyParser = require('body-parser');
+var blueBird = require('bluebird');
+var iconv = require('iconv-lite');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
 var apiAuthFilter = require('./apiAuthFilter');
+var process = require('./util');
 
 router.post(
     '/api/projects/:uuid/data_sources/:key',
@@ -120,7 +123,7 @@ router.get(
                 return apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id);
             }).then(function (authResult) {
                 if (!authResult) {
-                    return res.send(404);
+                    return res.send(403);
                 }
 
                 return DataSource.get(dataSourceId);
@@ -153,6 +156,262 @@ router.get(
             }).then(function(records){
                 return res.send(records);
             }).catch(next);
+    }
+);
+
+router.get('/api/multiple_data_sources/:data_infos/records',
+    function (req, res, next){
+        var dataInfos = JSON.parse(req.param('data_infos') || '[]');
+        var periodValue = (req.param('period') || '').split(',');
+        var period = null;
+        var limit = parseInt(req.param('limit') || 0, 10);
+        var sort = req.param('sort') === 'true' || false;
+        var exportation = req.param('exportation') || null;
+        var operation = req.param('operation') || null;
+        var userId = req.user ? req.user.id : null;
+        if(dataInfos.length === 0){
+            return res.send([]);
+        }
+
+        if(periodValue && periodValue.length === 2){
+            var now = new Date();
+            period = {
+                begin: new Date(now.getTime() - periodValue[1]*1000*60*60*24),
+                end: new Date(now.getTime() - periodValue[0]*1000*60*60*24)
+            };
+        }
+
+        var vertifyPromises = dataInfos.map(function (dataInfo){
+            return DataSource.get(dataInfo.id)
+                .then(function (dataSource){
+                    return apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id);
+                });
+        });
+
+        //request data
+        var requestPromise = blueBird.all(vertifyPromises).then(function (authResults){
+            authResults.forEach(function (authResult){
+                if(!authResult){
+                    return res.send(403);
+                }
+            });
+
+            operation = operation ? operation : (dataInfos.length > 1 ? 'aggregation' : 'filter');
+
+            if(dataInfos.length === 1) {
+                var dataInfo = dataInfos[0];
+                var dataSource = null;
+
+                var promise = DataSource.get(dataInfo.id)
+                    .then(function (ds) {
+                        dataSource = ds;
+                        var opts = {};
+
+                        opts.query = {
+                            data_source_id: dataSource.id
+                        };
+
+                        if(limit){
+                            opts.limit = limit;
+                        }
+                        if(period){
+                            opts.period = period;
+                        }
+
+                        return Record.find(opts);
+                    }).then(function (resp) {
+                        var recordLists = process.aggregationAndFilter(resp, dataInfo, operation);
+
+                        return recordLists.map(function (recordList){
+                            return {
+                                dataSource: dataSource,
+                                records: recordList,
+                                label: dataSource.name + process.additionalLabel(dataInfo, recordList)
+                            };
+                        });
+                    });
+
+                return promise.then(function(rets){
+                    return rets;
+                });
+            }
+            else{
+                var promises = dataInfos.map(function (dataInfo) {
+                    var ret = {};
+
+                    return DataSource.get(dataInfo.id)
+                        .then(function (dataSource) {
+                            ret.dataSource = dataSource;
+                            var opts = {};
+
+                            opts.query = {
+                                data_source_id: dataSource.id
+                            };
+
+                            if(limit){
+                                opts.limit = limit;
+                            }
+                            if(period){
+                                opts.period = period;
+                            }
+
+                            return Record.find(opts);
+                        }).then(function (resp) {
+                            ret.records = process.aggregationAndFilter(resp, dataInfo, operation);
+                            ret.label = ret.dataSource.name + process.additionalLabel(dataInfo, ret.records);
+
+                            return ret;
+                        });
+                });
+
+                return blueBird.all(promises).then(function (rets){
+                    return rets;
+                });
+            }
+        });
+
+        //sort data
+        var sortedPromise = requestPromise.then(function (rets){
+            if(!sort){
+                return rets;
+            }
+
+            var sortedMultiRecords = process.sortMultiRecords(
+                (function () {
+                    return rets.map(function (ret) {
+                        return ret.records;
+                    });
+                }()), {
+                    formatTime: process.formatTime,
+                    invalidValue: '--'
+                }
+            );
+
+            var multiRecords = sortedMultiRecords.map(function (sortedRecords, idx){
+                return {
+                    dataSource: rets[idx].dataSource,
+                    records: sortedRecords,
+                    label: rets[idx].label
+                };
+            });
+
+            return multiRecords;
+        });
+
+        //export file
+        sortedPromise.then(function (rets){
+            if(!exportation){
+                return res.send(rets);
+            }
+
+            if(exportation === 'csv'){
+                var separator = ',';
+                var lineBreak = '\r\n';
+
+                //file name
+                var fileName = process.formatDate(new Date()) + '_';
+                fileName += rets.map(function (recordObj){
+                    return recordObj.label;
+                }).join('-');
+                fileName += '.csv';
+
+                //file data
+                var tableHead = '时间' + separator;
+                tableHead += rets.map(function (recordObj){
+                        return recordObj.dataSource.increment ? recordObj.label + separator : recordObj.label;
+                    }).join(separator);
+                tableHead += lineBreak;
+
+                var tableBody = '';
+                if(rets && rets !== 0){
+                    tableBody = rets[0].records.map(function (record, idx){
+                        var row = record.time + separator;
+
+                        row += rets.map(function (recordObj){
+                            var value = recordObj.records[idx].value;
+                            var diff = '';
+
+                            if(recordObj.dataSource.increment && idx !== recordObj.records.length - 1 &&
+                                (recordObj.records[idx] && recordObj.records[idx].value !== '--') &&
+                                (recordObj.records[idx + 1] && recordObj.records[idx + 1].value !== '--')){
+
+                                diff = recordObj.records[idx].value - recordObj.records[idx + 1].value;
+                            }
+
+                            return recordObj.dataSource.increment ? value + separator + diff : value;
+                        }).join(separator);
+
+                        return row;
+                    }).join(lineBreak);
+                }
+
+                //encode: convert utf-8 to GBK
+                var data = tableHead + tableBody;
+                var gbkBuffer = iconv.encode(data, 'cp936');
+                var encodedFileName = encodeURIComponent(fileName);
+
+                res.setHeader('content-type', 'text/csv');
+                res.setHeader('Content-disposition', 'attachment; filename=' + encodedFileName);
+                return res.send(gbkBuffer);
+            }
+            //export json
+            else if(exportation === 'table'){
+                var content = [];
+
+                var headRow = [];
+                headRow.push({
+                    value: '时间'
+                });
+                rets.forEach(function (ret){
+                    headRow.push({
+                        value: ret.label,
+                        increment: ret.dataSource.increment
+                    });
+                });
+
+                //table head
+                content.push(headRow);
+
+                var bodyRows = rets[0].records.map(function (record, idx){
+                    var row = [];
+
+                    row.push({
+                        value: record.time
+                    });
+
+                    rets.forEach(function (ret){
+                        row.push({
+                            value: ret.records[idx].value
+                        });
+
+                        if(!ret.dataSource.increment){
+                            return ;
+                        }
+
+                        var diff = null;
+                        if(idx !== ret.records.length - 1 &&
+                            (ret.records[idx] && ret.records[idx].value !== '--') &&
+                            (ret.records[idx + 1] && ret.records[idx + 1].value !== '--')){
+
+                            diff = ret.records[idx].value - ret.records[idx + 1].value;
+                        }
+
+                        row.push({
+                            value: diff,
+                            isDiff: true
+                        });
+                    });
+
+                    return row;
+                });
+
+                //table body
+                content = content.concat(bodyRows);
+
+                return res.send(content);
+            }
+
+        }).catch(next);
     }
 );
 
