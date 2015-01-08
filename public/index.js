@@ -1676,7 +1676,8 @@ indexApp.directive('widgetSpline', [
     '$timeout',
     'widgetUrl',
     'Message',
-    function ($q, DataSource, Record, $timeout, widgetUrl, Message) {
+    'RecordMultiple',
+    function ($q, DataSource, Record, $timeout, widgetUrl, Message, RecordMultiple) {
         return {
             restirct: 'A',
             scope: {
@@ -1695,75 +1696,41 @@ indexApp.directive('widgetSpline', [
                 config.dataInfos = config.dataInfos || [];
 
                 //request data
-                function requestData() {
-                    if (config.dataInfos.length === 1) {
-                        return DataSource.get({
-                            id: config.dataInfos[0].id
-                        }).$promise.then(function (dataSource) {
-                                return Record.query({
-                                    id: dataSource.id,
-                                    limit: config.limit || 0
-                                }).$promise.then(function (resp) {
-                                    //filter
-                                    var formatedRespList = aggregationAndFilter(resp, config.dataInfos[0], 'filter');
+                function requestData (config){
+                    return RecordMultiple.query({
+                        data_infos: JSON.stringify(config.dataInfos),
+                        limit: config.limit || 0
+                    }).$promise.then(function (rets){
+                        return rets;
+                    });
+                }
+                function request() {
+                    var dataPromise = requestData(config);
 
-                                    return formatedRespList.map(function (formatedResp, index) {
-                                        var lineOpt = {};
-                                        lineOpt.name = dataSource.name + additionalLabel(config.dataInfos[0], formatedResp);
-                                        index = index >= defaultColors.length ? (index % defaultColors.length) : index;
-                                        lineOpt.color = defaultColors[index];
-                                        lineOpt.data = [];
-                                        formatedRespList = formatedRespList || [];
+                    return dataPromise.then(function (formatedRespObjs){
+                        return formatedRespObjs.map(function (formatedRespObj, idx){
+                            var lineOpt = {};
+                            var dataInfo = config.dataInfos.length === 1 ? config.dataInfos[0] : config.dataInfos[idx];
+                            lineOpt.name = formatedRespObj.dataSource.name + additionalLabel(dataInfo, formatedRespObj.records);
+                            idx = idx >= defaultColors.length ? (idx % defaultColors.length) : idx;
+                            lineOpt.color = defaultColors[idx];
+                            lineOpt.data = [];
 
-                                        formatedResp.reverse().forEach(function (record) {
-                                            lineOpt.data.push({
-                                                x: getTimeFromRecord(record),
-                                                y: record.value
-                                            });
-                                        });
-
-                                        return lineOpt;
-                                    });
+                            formatedRespObj.records.reverse().forEach(function (record) {
+                                lineOpt.data.push({
+                                    x: getTimeFromRecord(record),
+                                    y: record.value
                                 });
                             });
-                    }
-                    else {
-                        return config.dataInfos.map(function (dataInfo, index) {
-                            return DataSource.get({
-                                id: dataInfo.id
-                            }).$promise.then(function (dataSource) {
-                                    return Record.query({
-                                        id: dataInfo.id,
-                                        limit: config.limit || 0
-                                    }).$promise.then(function (resp) {
 
-                                        //aggregation
-                                        var formatedResp = aggregationAndFilter(resp, dataInfo, 'aggregation');
-
-                                        var lineOpt = {};
-                                        lineOpt.name = dataSource.name + additionalLabel(dataInfo, formatedResp);
-                                        index = index >= defaultColors.length ? (index % defaultColors.length) : index;
-                                        lineOpt.color = defaultColors[index];
-                                        lineOpt.data = [];
-                                        formatedResp = formatedResp || [];
-
-                                        formatedResp.reverse().forEach(function (record) {
-                                            lineOpt.data.push({
-                                                x: getTimeFromRecord(record),
-                                                y: record.value
-                                            });
-                                        });
-
-                                        return lineOpt;
-                                    });
-                                });
+                            return lineOpt;
                         });
-                    }
+                    });
                 }
 
                 //draw chart
 
-                var promises = requestData();
+                var promises = request();
 
                 $q.all(promises).then(function (dataSeries) {
                     if (isScopeDestroyed($scope)) {
@@ -1780,7 +1747,7 @@ indexApp.directive('widgetSpline', [
                     function redraw() {
                         var chart = this;
 
-                        var promises = requestData();
+                        var promises = request();
 
                         $q.all(promises).then(function (dataSeries) {
                             //timestamp
@@ -1911,7 +1878,8 @@ indexApp.directive('widgetPie', [
     'Record',
     '$timeout',
     'Message',
-    function (widgetUrl, $q, DataSource, Record, $timeout, Message) {
+    'RecordMultiple',
+    function (widgetUrl, $q, DataSource, Record, $timeout, Message, RecordMultiple) {
         return {
             restrict: 'A',
             scope: {
@@ -1933,49 +1901,37 @@ indexApp.directive('widgetPie', [
                 // Store chart information
                 cf_rPs[pId] = {};
 
-                function requestData() {
-                    if (config.dataInfos.length === 1) {
-                        return DataSource.get({
-                            id: config.dataInfos[0].id
-                        }).$promise.then(function (dataSource) {
-                            return Record.query({
-                                id: dataSource.id,
-                                limit: 1
-                            }).$promise.then(function (response) {
-                                var respList = aggregationAndFilter(response, config.dataInfos[0], 'filter');
+                //request data
+                function requestData (config){
+                    return RecordMultiple.query({
+                        data_infos: JSON.stringify(config.dataInfos),
+                        limit: 1
+                    }).$promise.then(function (rets){
+                        return rets;
+                    });
+                }
+                function request() {
+                    var dataPromise = requestData(config);
 
-                                return respList.map(function (resp) {
-                                    if ((resp ? resp.length : 0) === 0) {
-                                        return [dataSource.name, 0, null];
-                                    }
-                                    return [dataSource.name + additionalLabel(config.dataInfos[0], resp), resp[0].value, resp[0].date_time];
-                                });
-                            });
-                        });
-                    }
-                    else {
-                        return config.dataInfos.map(function (dataInfo) {
-                            return DataSource.get({
-                                id: dataInfo.id
-                            }).$promise.then(function (dataSource) {
-                                return Record.query({
-                                    id: dataSource.id,
-                                    limit: 1
-                                }).$promise.then(function (response) {
-                                    var resp = aggregationAndFilter(response, dataInfo, 'aggregation');
+                    return dataPromise.then(function (formatedRespObjs){
+                        return formatedRespObjs.map(function (formatedRespObj, idx){
+                            var dataInfo = config.dataInfos.length === 1 ? config.dataInfos[0] : config.dataInfos[idx];
 
-                                    if ((resp ? resp.length : 0) === 0) {
-                                        return [dataSource.name, 0, null];
-                                    }
-                                    return [dataSource.name + additionalLabel(dataInfo, resp), resp[0].value, resp[0].date_time];
-                                });
-                            });
+                            if ((formatedRespObj.records ? formatedRespObj.records.length : 0) === 0) {
+                                return [formatedRespObj.dataSource.name, 0, null];
+                            }
+
+                            return [
+                                    formatedRespObj.dataSource.name + additionalLabel(dataInfo, formatedRespObj.records),
+                                    formatedRespObj.records[0].value,
+                                    formatedRespObj.records[0].date_time
+                            ];
                         });
-                    }
+                    });
                 }
 
                 //request data
-                var promises = requestData();
+                var promises = request();
 
                 //draw chart
                 $q.all(promises).then(function (data) {
@@ -1989,7 +1945,7 @@ indexApp.directive('widgetPie', [
                     }
 
                     function reload() {
-                        var promises = requestData();
+                        var promises = request();
 
                         $q.all(promises).then(function (data) {
                             //timestamp
@@ -2107,7 +2063,8 @@ indexApp.directive('widgetDonut', [
     'Record',
     '$timeout',
     'Message',
-    function (widgetUrl, Record, $timeout, Message) {
+    'RecordMultiple',
+    function (widgetUrl, Record, $timeout, Message, RecordMultiple) {
         return {
             restrict: 'A',
             scope: {
@@ -2142,15 +2099,29 @@ indexApp.directive('widgetDonut', [
                 function reload() {
                     var $container = $(this).find('.cf-svp');
 
-                    Record.query({
-                        id: config.dataInfos[0].id,
-                        limit: 2,
-                        dimensions: JSON.stringify(config.dataInfos[0].dimensions)
-                    }).$promise.then(function (response) {
+                    //request data
+                    function requestData (config){
+                        return RecordMultiple.query({
+                            data_infos: JSON.stringify(config.dataInfos),
+                            limit: 2,
+                            operation: 'aggregation'
+                        }).$promise.then(function (rets){
+                            return rets;
+                        });
+                    }
+                    function request() {
+                        var dataPromise = requestData(config);
 
-                        //aggregation
-                        var resp = aggregationAndFilter(response, config.dataInfos[0], 'aggregation');
+                        return dataPromise.then(function (rets){
+                            return rets.map(function (ret){
+                                return ret.records;
+                            });
+                        });
+                    }
 
+                    var promise = request();
+
+                    promise.then(function (resp) {
                         //update change percentage
                         resp = (!resp || resp.length === 0) ? [
                             {value: null}
@@ -2259,7 +2230,8 @@ indexApp.directive('widgetNumber', [
     '$q',
     'Record',
     'Message',
-    function (widgetUrl, $q, Record, Message) {
+    'RecordMultiple',
+    function (widgetUrl, $q, Record, Message, RecordMultiple) {
         return {
             restrict: 'A',
             scope: {
@@ -2284,62 +2256,78 @@ indexApp.directive('widgetNumber', [
                 // No custom options
 
                 function reload() {
-                    Record.query({
-                        id: config.dataInfos[0].id,
-                        limit: 2,
-                        dimensions: JSON.stringify(config.dataInfos[0].dimensions)
-                    }).$promise.then(function (response) {
-                            //aggregation
-                            var resp = aggregationAndFilter(response, config.dataInfos[0], 'aggregation');
-
-                            resp = (!resp || resp.length === 0) ? [
-                                {value: null}
-                            ] : resp;
-                            var det;
-
-                            if (!resp || resp.length !== 2 || ( resp.length === 2 && resp[1].value === 0 )) {
-                                det = 0;
-                            }
-                            else {
-                                det = ((resp[0].value - resp[1].value) / Math.abs(resp[1].value)) * 100;
-                            }
-
-                            if (det > 0) {
-                                $arrow.removeClass('glyphicon-arrow-down');
-                                $arrow.addClass('glyphicon-arrow-up');
-                                $metricSmall.removeClass('m-green');
-                                $metricSmall.addClass('m-red');
-                            }
-                            else {
-                                $arrow.removeClass('glyphicon-arrow-up');
-                                $arrow.addClass('glyphicon-arrow-down');
-                                $metricSmall.removeClass('m-red');
-                                $metricSmall.addClass('m-green');
-                            }
-
-                            $metric.html(numeral(resp[0].value).format('0,0.[00]'));
-                            if (resp[0].value === null) {
-                                $change.css('display', 'none');
-                            } else {
-                                $change.css('display', '');
-                            }
-
-                            det = Math.abs(det).toFixed(2).toString().split('.');
-                            $large.text(det[0]);
-                            $small.text('.' + det[1] + '%');
-
-                            //timestamp
-                            if(resp && resp.length){
-                                $scope.updatedTime = formatTime(new Date(resp[0].date_time));
-                            }
-
-                            //call fitText
-                            $scope.$broadcast('fitnumber');
-                        }, 'json').catch(function (errorType) {
-                            if (errorType.status === 404) {
-                                Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
-                            }
+                    //request data
+                    function requestData (config){
+                        return RecordMultiple.query({
+                            data_infos: JSON.stringify(config.dataInfos),
+                            limit: 2,
+                            operation: 'aggregation'
+                        }).$promise.then(function (rets){
+                            return rets;
                         });
+                    }
+                    function request() {
+                        var dataPromise = requestData(config);
+
+                        return dataPromise.then(function (rets){
+                            return rets.map(function (ret){
+                                return ret.records;
+                            });
+                        });
+                    }
+
+                    var promise = request();
+
+                    promise.then(function (resp) {
+                        //update change percentage
+                        resp = (!resp || resp.length === 0) ? [
+                            {value: null}
+                        ] : resp;
+                        var det;
+
+                        if (!resp || resp.length !== 2 || ( resp.length === 2 && resp[1].value === 0 )) {
+                            det = 0;
+                        }
+                        else {
+                            det = ((resp[0].value - resp[1].value) / Math.abs(resp[1].value)) * 100;
+                        }
+
+                        if (det > 0) {
+                            $arrow.removeClass('glyphicon-arrow-down');
+                            $arrow.addClass('glyphicon-arrow-up');
+                            $metricSmall.removeClass('m-green');
+                            $metricSmall.addClass('m-red');
+                        }
+                        else {
+                            $arrow.removeClass('glyphicon-arrow-up');
+                            $arrow.addClass('glyphicon-arrow-down');
+                            $metricSmall.removeClass('m-red');
+                            $metricSmall.addClass('m-green');
+                        }
+
+                        $metric.html(numeral(resp[0].value).format('0,0.[00]'));
+                        if (resp[0].value === null) {
+                            $change.css('display', 'none');
+                        } else {
+                            $change.css('display', '');
+                        }
+
+                        det = Math.abs(det).toFixed(2).toString().split('.');
+                        $large.text(det[0]);
+                        $small.text('.' + det[1] + '%');
+
+                        //timestamp
+                        if(resp && resp.length){
+                            $scope.updatedTime = formatTime(new Date(resp[0].date_time));
+                        }
+
+                        //call fitText
+                        $scope.$broadcast('fitnumber');
+                    }, 'json').catch(function (errorType) {
+                        if (errorType.status === 404) {
+                            Message.alert('Widget' + ' “' + $scope.widget.config.name + '” ' + '中包含不存在的数据源！');
+                        }
+                    });
                 }
 
                 reload.apply(this);
@@ -2369,7 +2357,8 @@ indexApp.directive('widgetColumn', [
     'Record',
     '$timeout',
     'Message',
-    function (widgetUrl, $q, DataSource, Record, $timeout, Message) {
+    'RecordMultiple',
+    function (widgetUrl, $q, DataSource, Record, $timeout, Message, RecordMultiple) {
         return {
             restrict: 'A',
             scope: {
@@ -2391,87 +2380,46 @@ indexApp.directive('widgetColumn', [
                 function reload() {
                     var promises = null;
 
-                    if (config.dataInfos.length === 1) {
-                        promises = DataSource.get({
-                            id: config.dataInfos[0].id
-                        }).$promise.then(function (dataSource) {
-                                return Record.query({
-                                    id: dataSource.id,
-                                    limit: config.limit
-                                }).$promise.then(function (resp) {
-                                        //filter
-                                        var recordsList = aggregationAndFilter(resp, config.dataInfos[0], 'filter');
-
-                                        return recordsList.map(function (records) {
-                                            return {
-                                                name: dataSource.name + additionalLabel(config.dataInfos[0], records),
-                                                records: (function () {
-                                                    return records.map(function (record) {
-                                                        return record;
-                                                    });
-                                                })()
-                                            };
-                                        });
-                                    });
-                            });
-                    }
-                    else {
-                        promises = config.dataInfos.map(function (dataInfo) {
-                            return DataSource.get({
-                                id: dataInfo.id
-                            }).$promise.then(function (dataSource) {
-                                    return Record.query({
-                                        id: dataSource.id,
-                                        limit: config.limit
-                                    }).$promise.then(function (resp) {
-                                            //aggregation
-                                            var records = aggregationAndFilter(resp, dataInfo, 'aggregation');
-
-                                            return {
-                                                name: dataSource.name + additionalLabel(dataInfo, records),
-                                                records: (function () {
-                                                    return records.map(function (record) {
-                                                        return record;
-                                                    });
-                                                })()
-                                            };
-                                        });
-                                });
+                    //request data
+                    function requestData (config){
+                        return RecordMultiple.query({
+                            data_infos: JSON.stringify(config.dataInfos),
+                            sort: true,
+                            limit: config.limit || 0
+                        }).$promise.then(function (rets){
+                            return rets;
                         });
                     }
+                    function request() {
+                        return requestData(config);
+                    }
 
-                    $q.all(promises).then(function (results) {
-                        var sortedMultiRecords = sortMultiRecords(
-                            (function () {
-                                return results.map(function (result) {
-                                    return result.records;
-                                });
-                            })(),
-                            {
-                                formatTime: formatTime
-                            }
-                        );
+                    var promise = request();
 
-                        var dataSeries = results.map(function (result, idx) {
+                    promise.then(function (formatedRespObjs) {
+                        //data series
+                        var dataSeries = formatedRespObjs.map(function (formatedRespObj, idx) {
                             return {
-                                name: result.name,
+                                name: formatedRespObj.label,
                                 color: defaultColors[(idx >= defaultColors.length ? (idx % defaultColors.length) : idx)],
-                                data: sortedMultiRecords[idx].map(
+                                data: formatedRespObj.records.map(
                                     function (record) {
                                         return record.value;
                                     })
                             };
                         });
 
-                        timeLine = (sortedMultiRecords && sortedMultiRecords.length > 0) ? (function () {
-                            return sortedMultiRecords[0].map(function (record) {
-                                return record.date_time;
-                            });
-                        })() : [];
-
                         dataSeries.forEach(function (seriesObj) {
                             seriesObj.data.reverse();
                         });
+
+                        //timeline
+                        if(formatedRespObjs && formatedRespObjs.length > 0 && formatedRespObjs[0].records && formatedRespObjs[0].records.length > 0) {
+                            timeLine = formatedRespObjs[0].records.map(function (record) {
+                                return record.time;
+                            });
+                        }
+
                         timeLine.reverse();
 
                         //update data
