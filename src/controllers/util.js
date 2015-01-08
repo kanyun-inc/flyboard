@@ -74,9 +74,6 @@ exports.aggregationAndFilter = function (response, dataInfo, opt) {
             resp.forEach(function (dataLine) {
                 var latestRecordIdx = -1;
                 for (var j = dataLine.length - 1; j >= 0; j--) {
-                    if(latestRecordIdx !== -1){
-
-                    }
                     if (latestRecordIdx !== -1 && dataLine[latestRecordIdx].date_time.getTime() === dataLine[j].date_time.getTime()) {
                         dataLine[j].value += dataLine[latestRecordIdx].value;
                         dataLine.splice(latestRecordIdx, 1);
