@@ -1043,6 +1043,10 @@ div[sticky].fixed {
     margin-right: 10px;
 }
 
+.data-source-content #data-source-info .radio-group.horizon {
+    margin-right: 20px;
+}
+
 .error-message {
     color: darkred;
 }
