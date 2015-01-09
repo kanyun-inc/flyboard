@@ -2,6 +2,13 @@
 
 'use strict';
 
+var heapdump = require('heapdump');
+var memwatch = require('memwatch');
+memwatch.on('leak', function (info) {
+    console.error('memory leak detected\n%s', JSON.stringify(info, null, 4));
+    heapdump.writeSnapshot('./' + Date.now() + '.heapsnapshot');
+});
+
 var debug = require('debug')('flyboard');
 var app = require('../src/app');
 
