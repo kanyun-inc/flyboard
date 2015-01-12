@@ -34,6 +34,7 @@
     "jwt-simple": "^0.2.0",
     "knex": "^0.7.3",
     "memwatch": "^0.2.2",
+    "moment": "^2.9.0",
     "morgan": "~1.0.0",
     "node-uuid": "^1.4.1",
     "passport": "^0.2.1",
