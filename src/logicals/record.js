@@ -129,7 +129,17 @@ exports.save = function (obj) {
 exports.update = function (id, obj) {
     obj.updated_at = new Date();
     obj.date_time = new Date(obj.year || 0, (obj.month - 1) || 0, obj.day || 0, obj.hour || 0, obj.minute || 0, obj.second || 0);
-    return knex('records').where('id', id).update(obj);
+
+    return DataSource.get(obj.data_source_id).then(function (dataSource) {
+        if (dataSource.config && dataSource.config.dimensions) {
+            dataSource.config.dimensions.forEach(function (dim, idx) {
+                obj['dim' + (idx + 1)] = obj[dim.key] || null;
+                delete obj[dim.key];
+            });
+        }
+
+        return knex('records').where('id', id).update(obj);
+    });
 };
 
 exports.remove = function (id) {
@@ -140,4 +150,26 @@ exports.removeList = function (dataSourceId, query) {
     query = query || {};
 
     return knex('records').where('data_source_id', dataSourceId).where(query).del();
+};
+
+exports.findOne = function (obj){
+    var query = {
+        data_source_id: obj.data_source_id,
+        year: obj.year,
+        month: obj.month,
+        day: obj.day,
+        hour: obj.hour,
+        minute: obj.minute,
+        second: obj.second
+    };
+
+    return DataSource.get(obj.data_source_id).then(function (dataSource) {
+        if (dataSource.config && dataSource.config.dimensions) {
+            dataSource.config.dimensions.forEach(function (dim, idx) {
+                query['dim' + (idx + 1)] = obj[dim.key] || null;
+            });
+        }
+
+        return knex('records').where(query).select();
+    });
 };
