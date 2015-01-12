@@ -91,6 +91,7 @@ describe('record logical', function () {
                 value: 100
             }).then(function (id) {
                 return Record.update(id, {
+                    data_source_id: dataSourceId,
                     value: 200
                 }).then(function () {
                     return id;
