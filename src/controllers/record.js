@@ -10,6 +10,7 @@ var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
 var apiAuthFilter = require('./apiAuthFilter');
 var process = require('./util');
+var moment = require('moment');
 
 router.post(
     '/api/projects/:uuid/data_sources/:key',
@@ -109,8 +110,8 @@ router.get(
         if(periodValue && periodValue.length === 2){
             var now = new Date();
             period = {
-                begin: new Date(now.getTime() - periodValue[1]*1000*60*60*24),
-                end: new Date(now.getTime() - periodValue[0]*1000*60*60*24)
+                begin: moment(now).subtract(parseInt(periodValue[1]), 'days').startOf('day').toDate(),
+                end: periodValue[0] === '0' ? moment(now).toDate() : moment(now).subtract(parseInt(periodValue[0]), 'days').endOf('day').toDate()
             };
         }
 
@@ -176,8 +177,8 @@ router.get('/api/multiple_data_sources/:data_infos/records',
         if(periodValue && periodValue.length === 2){
             var now = new Date();
             period = {
-                begin: new Date(now.getTime() - periodValue[1]*1000*60*60*24),
-                end: new Date(now.getTime() - periodValue[0]*1000*60*60*24)
+                begin: moment(now).subtract(parseInt(periodValue[1]), 'days').startOf('day').toDate(),
+                end: periodValue[0] === '0' ? moment(now).toDate() : moment(now).subtract(parseInt(periodValue[0]), 'days').endOf('day').toDate()
             };
         }
 
