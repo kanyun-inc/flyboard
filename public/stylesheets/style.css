@@ -255,10 +255,21 @@ nav {
     margin-top: 50px;
 }
 
-.stat .period {
+.stat .default-period {
     position: absolute;
-    right: 0;
+    right: 120px;
     top: 0;
+}
+
+.stat .custom-period {
+    position: absolute;
+    width: 110px;
+    right: -30px;
+    top: 0;
+}
+
+.stat .custom-period input, .stat .custom-period button {
+    display: inline-block;
 }
 
 .stat .stat-data table th,
