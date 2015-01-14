@@ -114,6 +114,7 @@ router.get(
         var dataSourceId = parseInt(req.param('id'), 10);
         var limit = parseInt(req.param('limit') || 0, 10);
         var count = parseInt(req.param('count') || 0, 10);
+        var offset = parseInt(req.param('offset') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
         var distinct = req.param('distinct') || null;
         var periodValue = req.param('period') && req.param('period') !== 'all' ? req.param('period').split(',') : null;
@@ -166,7 +167,8 @@ router.get(
                     limit: limit,
                     orderBy: orderBy,
                     period: period,
-                    distinct: distinct
+                    distinct: distinct,
+                    offset: offset
                 });
             }).then(function(records){
                 return res.send(records);
@@ -180,6 +182,7 @@ router.get('/api/multiple_data_sources/:data_infos/records',
         var periodValue = req.param('period') && req.param('period') !== 'all' ? req.param('period').split(',') : null;
         var period = null;
         var limit = parseInt(req.param('limit') || 0, 10);
+        var offset = parseInt(req.param('offset') || 0, 10);
         var sort = req.param('sort') === 'true' || false;
         var exportation = req.param('exportation') || null;
         var operation = req.param('operation') || null;
@@ -232,6 +235,9 @@ router.get('/api/multiple_data_sources/:data_infos/records',
                         if(period){
                             opts.period = period;
                         }
+                        if(offset){
+                            opts.offset = offset;
+                        }
 
                         return Record.find(opts);
                     }).then(function (resp) {
@@ -268,6 +274,9 @@ router.get('/api/multiple_data_sources/:data_infos/records',
                             }
                             if(period){
                                 opts.period = period;
+                            }
+                            if(offset){
+                                opts.offset = offset;
                             }
 
                             return Record.find(opts);

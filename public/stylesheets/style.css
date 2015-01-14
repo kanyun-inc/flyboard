@@ -1048,10 +1048,20 @@ div[sticky].fixed {
     padding: 5px;
 }
 
+.data-source-content #data-source-records{
+    margin-bottom: 100px;
+}
+
+.data-source-content #data-source-records .pager li.disabled a {
+    color: #999;
+    background-color: #fff;
+    pointer-events: none;
+}
+
 .data-source-content #data-source-records .clear-record-btn {
     float: right;
-    margin-top: 10px;
     margin-right: 10px;
+    margin-bottom: 0;
 }
 
 label.radio-group.horizon {

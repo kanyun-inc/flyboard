@@ -14,6 +14,10 @@ exports.find = function (options) {
         ret = ret.limit(opts.count);
     }
 
+    if(opts.offset){
+        ret = ret.offset(opts.offset);
+    }
+
     if (opts.period) {
         var beginTime = opts.period.begin;
         var endTime = opts.period.end;
