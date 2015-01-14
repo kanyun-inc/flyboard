@@ -24,7 +24,7 @@
                     <div class="btn-group dropdown-btn right-divider-vertical select-project" ng-if="project">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                           {{project.name}}
-                          <span class="caret"></span>
+                          <span class="caret" ng-if="project"></span>
                         </button>
                         <ul class="dropdown-menu pull-left" role="menu">
                             <li ng-repeat="project in projects" class="project-item">
@@ -33,6 +33,12 @@
                             </li>
                             <li ng-if="user.scope === 2"><a href="" class="new-project" ng-click="open(projects)">-------- 新建 --------</a></li>
                         </ul>
+                    </div>
+
+                    <div class="btn-group dropdown-btn right-divider-vertical select-project" ng-if="project === null && user && user.scope === 2">
+                        <button type="button" class="btn btn-default dropdown-toggle" ng-click="open(projects, project)">
+                            ＋项目
+                        </button>
                     </div>
 
                     <ul class="nav navbar-nav">

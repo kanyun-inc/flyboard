@@ -269,7 +269,7 @@ indexApp.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.
             when('/', {
-                template: '<span class="load" ng-if="project">Loading...</span>',
+                template: '<span class="load" ng-if="project && dashboard">Loading...</span>',
                 controller: 'UrlCtrl'
             }).
             when('/projects/:project_id', {
@@ -310,7 +310,7 @@ indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Pr
         else{
             projectPromise = Project.query().$promise.then(function (projects) {
                 if (!projects || !projects.length) {
-                    return null;
+                    return [];
                 }
 
                 return projects[0];
@@ -344,16 +344,15 @@ indexApp.controller('UrlCtrl', ['$scope', '$routeParams', '$location', '$q', 'Pr
 indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window', '$q', '$location', '$interval', '$timeout', 'Dashboard', 'Project',
     function ($scope, $route, $routeParams, $window, $q, $location, $interval, $timeout, Dashboard, Project) {
         $scope.cfNavUnfold = false;
+        $scope.project = null;
+        $scope.dashboards = [];
+
         $scope.$on('$routeChangeSuccess', function () {
             var projectId = $routeParams.project_id ? parseInt($routeParams.project_id, 10) : null;
             var dashboardId = $routeParams.id ? parseInt($routeParams.id, 10) : null;
 
             $scope.publicSelected = !!($routeParams.public_filter === undefined || $routeParams.public_filter === 'true' || $routeParams.public_filter === true);
             $scope.privateSelected = !!($routeParams.private_filter === undefined || $routeParams.private_filter === 'true' || $routeParams.private_filter === true);
-
-            if(!projectId || !dashboardId) {
-                return ;
-            }
 
             var projectsPromise = Project.query().$promise;
 
@@ -410,6 +409,10 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
 
         //slide
         function doSlide() {
+            if(!$scope.dashboards || $scope.dashboards.length === 0){
+                return ;
+            }
+
             var currentDashboardIdx = null;
 
             $scope.dashboards.some(function (dashboard, idx) {
@@ -512,6 +515,15 @@ indexApp.controller('SlideCtrl', ['$scope', '$route', '$routeParams', '$window',
         }
 
         $(window).on('nav.unfold', navUnfoldHandler);
+
+        $scope.$on('add.dashboards', function (evt, dashboard){
+            var newUrl = '/projects/' + $scope.project.id + '/dashboards/' + dashboard.id;
+
+            $location.path(newUrl).search({
+                public_filter: $scope.publicSelected,
+                private_filter: $scope.privateSelected
+            });
+        });
 
         $scope.$on('$destroy', function () {
             $(window).off('nav.unfold', navUnfoldHandler);
@@ -719,7 +731,11 @@ indexApp.controller('IndexCtrl', ['$scope', '$q', '$window', '$routeParams', '$i
         $scope.dashboard = $scope.dashboards.then(function (dashboards) {
             $scope.dashboards = dashboards;
 
-            if(!dashboardId && dashboards.length > 0) {
+            if(dashboards.length === 0){
+                return null;
+            }
+
+            if(!dashboardId) {
                 return dashboards[0];
             }
 
@@ -1405,6 +1421,7 @@ indexApp.controller('EditDashboardModalCtrl', ['$scope', '$modal',
                         Dashboard.save($scope.dashboard).$promise.then(function (id) {
                             Dashboard.get(id).$promise.then(function (dashboard) {
                                 dashboards.push(dashboard);
+                                $rootScope.$broadcast('add.dashboards', dashboard);
                             });
                         });
                     }
@@ -1507,8 +1524,8 @@ indexApp.controller('ConfirmDeleteDashboardCtrl', ['$scope', '$modal',
     }
 ]);
 
-indexApp.controller('EditProjectModalCtrl', ['$scope', '$modal',
-    function ($scope, $modal) {
+indexApp.controller('EditProjectModalCtrl', ['$scope', '$location', '$modal',
+    function ($scope, $location, $modal) {
         var newDashboardModalInstanceCtrl = ['$scope', '$rootScope', 'Project', '$modalInstance', 'projects', 'project',
             function ($scope, $rootScope, Project, $modalInstance, projects, project) {
                 $scope.project = project ? project : {};
@@ -1523,8 +1540,13 @@ indexApp.controller('EditProjectModalCtrl', ['$scope', '$modal',
                     }
                     else {
                         Project.save($scope.project).$promise.then(function (id) {
-                            Project.get(id).$promise.then(function (project) {
-                                projects.push(project);
+                            Project.get(id).$promise.then(function (proj) {
+                                var newUrl = '/projects/' + proj.id + '/dashboards/';
+
+                                $location.path(newUrl).search({
+                                    public_filter: $scope.publicSelected,
+                                    private_filter: $scope.privateSelected
+                                });
                             });
                         });
                     }
