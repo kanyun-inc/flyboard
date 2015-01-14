@@ -331,9 +331,9 @@ router.get('/api/multiple_data_sources/:data_infos/records',
                 fileName += '.csv';
 
                 //file data
-                var tableHead = '时间' + separator;
+                var tableHead = '\"时间\"' + separator;
                 tableHead += rets.map(function (recordObj){
-                        return recordObj.dataSource.increment ? recordObj.label + separator : recordObj.label;
+                        return recordObj.dataSource.increment ? '\"' + recordObj.label + '\"' + separator : '\"' + recordObj.label + '\"';
                     }).join(separator);
                 tableHead += lineBreak;
 
