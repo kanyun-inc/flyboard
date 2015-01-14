@@ -116,7 +116,7 @@ router.get(
         var count = parseInt(req.param('count') || 0, 10);
         var orderBy = req.param('orderBy') || undefined;
         var distinct = req.param('distinct') || null;
-        var periodValue = (req.param('period') || '').split(',');
+        var periodValue = req.param('period') && req.param('period') !== 'all' ? req.param('period').split(',') : null;
         var period = null;
         var dimensions = JSON.parse(req.param('dimensions') || '[]');
         var userId = req.user ? req.user.id : null;
@@ -177,7 +177,7 @@ router.get(
 router.get('/api/multiple_data_sources/:data_infos/records',
     function (req, res, next){
         var dataInfos = JSON.parse(req.param('data_infos') || '[]');
-        var periodValue = (req.param('period') || '').split(',');
+        var periodValue = req.param('period') && req.param('period') !== 'all' ? req.param('period').split(',') : null;
         var period = null;
         var limit = parseInt(req.param('limit') || 0, 10);
         var sort = req.param('sort') === 'true' || false;
