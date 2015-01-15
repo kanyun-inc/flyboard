@@ -19,7 +19,7 @@ describe('record controller', function(){
     var projectId = null;
     var dataSourceId = null;
     var recordIds = [];
-    var projectUuid = null;
+    var projectUUID = null;
     var key = null;
     var token = null;
     var dimensions = null;
@@ -53,25 +53,25 @@ describe('record controller', function(){
 
             return Project.get(projectId)
                 .then(function (project) {
-                projectUuid = project.uuid;
+                    projectUUID = project.uuid;
 
-                return DataSource.save({
-                    name: 'loginUser',
-                    key: 'loginUser',
-                    project_id: projectId,
-                    config: {
-                        dimensions: [{
-                            key: 'course',
-                            name: '课程'
-                        },{
-                            key: 'client',
-                            name: '客户端'
-                        },{
-                            key: 'versions',
-                            name: '版本号'
-                        }]
-                    }
-                });
+                    return DataSource.save({
+                        name: 'loginUser',
+                        key: 'loginUser',
+                        project_id: projectId,
+                        config: {
+                            dimensions: [{
+                                key: 'course',
+                                name: '课程'
+                            },{
+                                key: 'client',
+                                name: '客户端'
+                            },{
+                                key: 'versions',
+                                name: '版本号'
+                            }]
+                        }
+                    });
             });
         }).then(function (id) {
             dataSourceId = id;
@@ -120,6 +120,7 @@ describe('record controller', function(){
         })
         .then(function (rets) {
             recordIds = rets;
+
             done();
         }).catch(done);
     });
@@ -141,7 +142,7 @@ describe('record controller', function(){
         it('should create a record', function (done){
 
             request(app)
-                .post('/api/projects/' + projectUuid + '/data_sources/' + key + '?token=' + token)
+                .post('/api/projects/' + projectUUID + '/data_sources/' + key + '?token=' + token)
                 .send({
                     value: 100,
                     course: 'english',
@@ -228,10 +229,10 @@ describe('record controller', function(){
         });
     });
 
-    describe('DELETE /api/data_sources/:id/records', function(){
+    describe('DELETE /api/projects/:uuid/data_sources/:key', function(){
         it('should remove 1 record', function(done){
             request(app)
-                .delete('/api/data_sources/' + dataSourceId + '/records' + '?year=2014&month=6&day=28&token=' + token)
+                .delete('/api/projects/' + projectUUID + '/data_sources/' + key + '?year=2014&month=6&day=28&token=' + token)
                 .expect(200)
                 .end(function(err){
                     if(err){
@@ -250,10 +251,10 @@ describe('record controller', function(){
         });
     });
 
-    describe('DELETE /api/data_sources/:id/records', function(){
-        it('should remove all records', function(done){
+    describe('DELETE /api/projects/:uuid/data_sources/:key', function(){
+        it('should remove 0 record', function(done){
             request(app)
-                .delete('/api/data_sources/' + dataSourceId + '/records' + '?token=' + token)
+                .delete('/api/projects/' + projectUUID + '/data_sources/' + key + '?token=' + token)
                 .expect(200)
                 .end(function(err){
                     if(err){
@@ -265,7 +266,7 @@ describe('record controller', function(){
                         .expect('content-type', /json/)
                         .expect(200)
                         .expect(function (res){
-                            assert.equal(res.body.length, 0);
+                            assert.equal(res.body.length, 3);
                         })
                         .end(done);
                 });
