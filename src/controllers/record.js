@@ -514,3 +514,34 @@ router.delete('/api/projects/:uuid/data_sources/:key',
             }).catch(next);
     }
 );
+
+router.delete('/api/projects/:uuid/data_sources/:key/records/all',
+    function (req, res, next){
+        var uuid = req.param('uuid');
+        var key = req.param('key');
+
+        var userId = req.user ? req.user.id : null;
+        var dataSource = null;
+
+        DataSource.getByUUIDAndKey(uuid, key)
+            .then(function (obj) {
+                if (!obj) {
+                    return res.send(404);
+                }
+
+                return DataSource.get(obj.id);
+            }).then(function (ds){
+                dataSource = ds;
+
+                return apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id);
+            }).then(function (authResult) {
+                if (!authResult) {
+                    return res.send(403);
+                }
+
+                return Record.removeList(dataSource.id);
+            }).then(function (){
+                return res.send(200);
+            }).catch(next);
+    }
+);
