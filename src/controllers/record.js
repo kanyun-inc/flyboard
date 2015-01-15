@@ -466,10 +466,10 @@ router.delete(
     }
 );
 
-router.delete('/api/data_sources/:id/records',
-    function(req, res, next) {
-        var dataSourceId = req.param('id') ? parseInt(req.param('id'), 10) : null;
-        var userId = req.user ? req.user.id : null;
+router.delete('/api/projects/:uuid/data_sources/:key',
+    function(req, res, next){
+        var uuid = req.param('uuid');
+        var key = req.param('key');
 
         var year = req.param('year') ? parseInt(req.param('year'), 10) : null;
         var month = req.param('month') ? parseInt(req.param('month'), 10) : null;
@@ -477,36 +477,30 @@ router.delete('/api/data_sources/:id/records',
         var hour = req.param('hour') ? parseInt(req.param('hour'), 10) : null;
         var minute = req.param('minute') ? parseInt(req.param('minute'), 10) : null;
         var second = req.param('second') ? parseInt(req.param('second'), 10) : null;
+        year = year > 0 ? year : null;
+        month = month > 0 ? month : null;
+        day = day > 0 ? day : null;
+        hour = hour >= 0 ? hour : null;
+        minute = minute >= 0 ? minute : null;
+        second = second >= 0 ? second : null;
 
-        if(!dataSourceId) {
-            return res.send(400);
-        }
+        var userId = req.user ? req.user.id : null;
 
-        var query = {};
-        if(year){
-            query.year = year;
-        }
-        if(month){
-            query.month = month;
-        }
-        if(day){
-            query.day = day;
-        }
-        if(hour){
-            query.hour = hour;
-        }
-        if(minute){
-            query.minute = minute;
-        }
-        if(second){
-            query.second = second;
-        }
+        var dataSource = null;
+        var dateTime = new Date(year || 0, (month - 1) || 0, day || 0, hour || 0, minute || 0, second || 0);
+        var query = {
+            date_time: dateTime
+        };
 
-        DataSource.get(dataSourceId)
-            .then(function (dataSource) {
-                if (!dataSource) {
+        DataSource.getByUUIDAndKey(uuid, key)
+            .then(function (obj) {
+                if (!obj) {
                     return res.send(404);
                 }
+
+                return DataSource.get(obj.id);
+            }).then(function (ds){
+                dataSource = ds;
 
                 return apiAuthFilter.vertifyProjectAuthority(userId, dataSource.project_id);
             }).then(function (authResult) {
@@ -514,8 +508,6 @@ router.delete('/api/data_sources/:id/records',
                     return res.send(403);
                 }
 
-                return DataSource.get(dataSourceId);
-            }).then(function (dataSource) {
                 return Record.removeList(dataSource.id, query);
             }).then(function (){
                 return res.send(200);
