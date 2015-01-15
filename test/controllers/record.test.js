@@ -272,4 +272,26 @@ describe('record controller', function(){
                 });
         });
     });
+
+    describe('DELETE /api/projects/:uuid/data_sources/:key/records/all', function(){
+        it('should remove all record', function(done){
+            request(app)
+                .delete('/api/projects/' + projectUUID + '/data_sources/' + key + '/records/all' + '?token=' + token)
+                .expect(200)
+                .end(function(err){
+                    if(err){
+                        return done(err);
+                    }
+
+                    request(app)
+                        .get('/api/data_sources/' + dataSourceId + '/records' + '?token=' + token)
+                        .expect('content-type', /json/)
+                        .expect(200)
+                        .expect(function (res){
+                            assert.equal(res.body.length, 0);
+                        })
+                        .end(done);
+                });
+        });
+    });
 });
