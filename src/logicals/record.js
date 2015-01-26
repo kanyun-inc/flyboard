@@ -2,7 +2,19 @@
 
 var knex = require('../lib/knex');
 var blueBird = require('bluebird');
-var DataSource = require('../logicals/dataSource');
+var DataSource = require('./dataSource');
+
+function clone(obj, add) {
+    var copyObj = JSON.parse(JSON.stringify(obj));
+
+    if(add){
+        Object.keys(add).forEach(function (key){
+            copyObj[key] = add[key];
+        });
+    }
+
+    return copyObj;
+}
 
 exports.find = function (options) {
     var opts = options || {};
@@ -74,7 +86,7 @@ exports.find = function (options) {
             var dataSource = DataSource.get(records[0].data_source_id);
 
             return dataSource.then(function (dataSource) {
-                if(!dataSource.config.dimensions || dataSource.config.dimensions.length === 0) {
+                if(!dataSource || !dataSource.config || !dataSource.config.dimensions) {
                     return records;
                 }
 
@@ -88,6 +100,28 @@ exports.find = function (options) {
                 return records;
             });
         });
+    });
+};
+
+exports.findOne = function (obj){
+    var query = {
+        data_source_id: obj.data_source_id,
+        year: obj.year,
+        month: obj.month,
+        day: obj.day,
+        hour: obj.hour,
+        minute: obj.minute,
+        second: obj.second
+    };
+
+    return DataSource.get(obj.data_source_id).then(function (dataSource) {
+        if (dataSource.config && dataSource.config.dimensions) {
+            dataSource.config.dimensions.forEach(function (dim, idx) {
+                query['dim' + (idx + 1)] = obj[dim.key] || null;
+            });
+        }
+
+        return knex('records').where(query).select();
     });
 };
 
@@ -125,7 +159,17 @@ exports.save = function (obj) {
         }
 
         return knex('records').insert(obj).returning('id').then(function (ret) {
-            return ret[0];
+
+            return exports.get(ret[0]).then(function (record){
+                var io = require('../lib/io').get();
+                io.emit('recordUpdate', {
+                    dataSource: dataSource,
+                    operation: 'save',
+                    record: record
+                });
+            }).then(function (){
+                return ret[0];
+            });
         });
     });
 };
@@ -142,38 +186,69 @@ exports.update = function (id, obj) {
             });
         }
 
-        return knex('records').where('id', id).update(obj);
+        return exports.get(id).then(function (ret) {
+            var oldRecord = ret;
+
+            return knex('records').where('id', id).update(obj).then(function () {
+
+                return exports.get(id);
+            }).then(function (record){
+
+                var io = require('../lib/io').get();
+                io.emit('recordUpdate', {
+                    dataSource: dataSource,
+                    operation: 'update',
+                    record: record,
+                    oldRecord: oldRecord
+                });
+            });
+        });
     });
 };
 
 exports.remove = function (id) {
-    return knex('records').where('id', id).del();
+    var record = null;
+    var dataSource = null;
+
+    return exports.get(id)
+        .then(function (ret) {
+            record = ret;
+
+            return DataSource.get(record.data_source_id);
+        }).then(function (ds){
+            dataSource = ds;
+
+            return knex('records').where('id', id).del().then(function () {
+                var io = require('../lib/io').get();
+                io.emit('recordUpdate', {
+                    dataSource: dataSource,
+                    operation: 'remove',
+                    record: record
+                });
+            });
+        });
 };
 
 exports.removeList = function (dataSourceId, query) {
     query = query || {};
 
-    return knex('records').where('data_source_id', dataSourceId).where(query).del();
-};
+    var findQuery = clone(query);
+    findQuery.data_source_id = dataSourceId;
 
-exports.findOne = function (obj){
-    var query = {
-        data_source_id: obj.data_source_id,
-        year: obj.year,
-        month: obj.month,
-        day: obj.day,
-        hour: obj.hour,
-        minute: obj.minute,
-        second: obj.second
-    };
+    return DataSource.get(dataSourceId)
+        .then(function (dataSource) {
+            exports.find({
+                query: findQuery
+            }).then(function (records) {
 
-    return DataSource.get(obj.data_source_id).then(function (dataSource) {
-        if (dataSource.config && dataSource.config.dimensions) {
-            dataSource.config.dimensions.forEach(function (dim, idx) {
-                query['dim' + (idx + 1)] = obj[dim.key] || null;
+                return knex('records').where('data_source_id', dataSourceId).where(query).del().then(function () {
+                    var io = require('../lib/io').get();
+                    io.emit('recordUpdate', {
+                        dataSource: dataSource,
+                        operation: 'remove list',
+                        records: records
+                    });
+                });
             });
-        }
-
-        return knex('records').where(query).select();
-    });
+        });
 };

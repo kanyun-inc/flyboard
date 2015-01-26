@@ -10,6 +10,9 @@
     <% scripts.forEach(function (script) { %>
     <script type="text/javascript" src="<%= script %>"></script>
     <% }) %>
+    <% socketFiles.forEach(function (file) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }) %>
 </head>
 <body>
 

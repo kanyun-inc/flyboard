@@ -125,10 +125,18 @@ exports.aggregationAndFilter = function (response, dataInfo, opt) {
  *  }
  */
 
-exports.sortMultiRecords = function (multiRecords, opts) {
+exports.sortMultiRecords = function (respLists, opts) {
     var sortedMultiRecords = [];
     var stopFlag = false;
     var pointers = [];
+
+    var multiDataSource = respLists.map(function (resp){
+        return resp.dataSource;
+    });
+
+    var multiRecords = respLists.map(function (resp){
+        return resp.records;
+    });
 
     multiRecords.forEach(function (records, idx) {
         pointers[idx] = 0;
@@ -164,20 +172,27 @@ exports.sortMultiRecords = function (multiRecords, opts) {
         }
 
         multiRecords.forEach(function (records, idx) {
+            var recordObj = {};
+
             if (newRecords.indexOf(idx) === -1) {
-                sortedMultiRecords[idx].push({
-                    time: (opts && opts.formatTime) ? opts.formatTime(max) : max,
-                    date_time: new Date(max),
-                    value: (opts && opts.invalidValue)? opts.invalidValue : 0
-                });
+                recordObj.time = (opts && opts.formatTime) ? opts.formatTime(max) : max;
+                recordObj.date_time = new Date(max);
+                recordObj.value = (opts && opts.invalidValue)? opts.invalidValue : 0;
+
+                sortedMultiRecords[idx].push(recordObj);
             }
             else {
-                sortedMultiRecords[idx].push({
-                    time: (opts && opts.formatTime) ? opts.formatTime(max) : max,
-                    date_time: new Date(max),
-                    value: records[pointers[idx]].value
-                });
+                recordObj.time = (opts && opts.formatTime) ? opts.formatTime(max) : max;
+                recordObj.date_time = new Date(max);
+                recordObj.value = records[pointers[idx]].value;
 
+                if(multiDataSource[idx].config && multiDataSource[idx].config.dimensions){
+                    multiDataSource[idx].config.dimensions.forEach(function (dimension) {
+                        recordObj[dimension.key] = records[pointers[idx]][dimension.key];
+                    });
+                }
+
+                sortedMultiRecords[idx].push(recordObj);
                 pointers[idx] = pointers[idx] + 1;
             }
         });

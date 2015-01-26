@@ -11,6 +11,9 @@
     <% scripts.forEach(function (script) { %>
     <script type="text/javascript" src="<%= script %>"></script>
     <% }) %>
+    <% socketFiles.forEach(function (file) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }) %>
 </head>
 <body class="black flyboard-app" ng-controller="SlideCtrl" ng-class="{'view-animate': slideMode}">
     <div ng-controller="NavCtrl">

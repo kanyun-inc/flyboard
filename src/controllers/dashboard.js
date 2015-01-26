@@ -101,7 +101,6 @@ router.put(
         var id = parseInt(req.param('id'), 10);
         var userId = req.user ? req.user.id : null;
 
-        console.log('@@@EDIT_DASHBOARD@@@ ' + JSON.stringify(req.body));
         var dashboard = req.body;
 
         if (dashboard.name !== undefined && !dashboard.name) {
