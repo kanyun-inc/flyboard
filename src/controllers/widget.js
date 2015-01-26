@@ -67,7 +67,6 @@ router.post(
     '/api/dashboards/:dashboardId/widgets',
     bodyParser.json(),
     function(req, res, next) {
-        console.log('@@@CREATE_WIDGET@@@ ' + JSON.stringify(req.body));
         var dashboardId = parseInt(req.param('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
         var widget = req.body;
@@ -101,7 +100,6 @@ router.put(
     '/api/dashboards/:dashboardId/widgets/:id',
     bodyParser.json(),
     function(req, res, next) {
-        console.log('@@@UPDATE_WIDGET@@@ ' + JSON.stringify(req.body));
         var id = parseInt(req.param('id'), 10);
         var dashboardId = parseInt(req.param('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
@@ -138,7 +136,6 @@ router.delete(
         var id = parseInt(req.param('id'), 10);
         var dashboardId = parseInt(req.param('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
-        console.log('@@@DELETE_WIDGET@@@ id=' + id);
 
         Dashboard.get(dashboardId)
             .then(function (dashboard){

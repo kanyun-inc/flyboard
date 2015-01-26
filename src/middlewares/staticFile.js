@@ -18,6 +18,8 @@ var staticFiles = {
         'bower_components/underscore/underscore.js',
         'bower_components/numeral/numeral.js',
         'bower_components/angular-numeraljs/dist/angular-numeraljs.min.js',
+        'bower_components/highcharts/highcharts.src.js',
+        'bower_components/angular-socket-io/socket.js',
 
         'controlfrog/js/easypiechart.js',
         'controlfrog/js/excanvas.min.js',
@@ -29,11 +31,16 @@ var staticFiles = {
         'controlfrog/js/controlfrog.js',
         'controlfrog/js/chart.js',
 
-        'bower_components/highcharts/highcharts.js',
-
         'utils.js',
         'services.js',
         'directives.js',
+
+        'widgets.js',
+        'widget_spline.js',
+        'widget_pie.js',
+        'widget_donut.js',
+        'widget_number.js',
+        'widget_column.js',
 
         'index.js',
         'admin.js',
@@ -50,17 +57,25 @@ var staticFiles = {
     ]
 };
 
+var socketFiles = [
+    '/socket.io/socket.io.js'
+];
+
 staticFiles.js = bluebird.resolve(staticFiles.js).map(staticFile.url);
 staticFiles.css = bluebird.resolve(staticFiles.css).map(staticFile.url);
+
+socketFiles = bluebird.resolve(socketFiles);
 
 module.exports = function () {
     return function (req, res, next) {
         bluebird.all([
             staticFiles.js,
-            staticFiles.css
-        ]).spread(function (js, css) {
+            staticFiles.css,
+            socketFiles
+        ]).spread(function (js, css, socketFiles) {
             res.locals.styles = css;
             res.locals.scripts = js;
+            res.locals.socketFiles = socketFiles;
             next();
         }).catch(next).done();
     };

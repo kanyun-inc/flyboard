@@ -42,6 +42,7 @@
     "passport-google": "^0.3.0",
     "passport-ldapauth": "^0.2.3",
     "randomstring": "^1.0.3",
+    "socket.io": "^1.2.1",
     "static-favicon": "~1.0.0",
     "supertest-as-promised": "^1.0.0",
     "underscore": "^1.6.0"

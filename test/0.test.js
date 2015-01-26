@@ -7,6 +7,7 @@ var Migrate = require('knex/lib/migrate');
 var knex = require('../src/lib/knex');
 var fs = require('fs');
 var assert = require('chai').assert;
+var io = require('../src/lib/io').init();
 
 before(function (callback) {
     var migrate = new Migrate(knex);

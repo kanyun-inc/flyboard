@@ -5,7 +5,9 @@ var passport = require('../../configs/app').passport;
 var authItems = require('../../configs/app').authItems;
 var _ = require('underscore');
 var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded();
+var urlencodedParser = bodyParser.urlencoded({
+    extended: true
+});
 
 module.exports = router;
 

@@ -9,7 +9,7 @@ var iconv = require('iconv-lite');
 var DataSource = require('../logicals/dataSource');
 var Record = require('../logicals/record');
 var apiAuthFilter = require('./apiAuthFilter');
-var process = require('./util');
+var process = require('./utils');
 var moment = require('moment');
 
 router.post(
@@ -184,9 +184,11 @@ router.get('/api/multiple_data_sources/:data_infos/records',
         var limit = parseInt(req.param('limit') || 0, 10);
         var offset = parseInt(req.param('offset') || 0, 10);
         var sort = req.param('sort') === 'true' || false;
+        var invalidValue = req.param('invalid_value') || false;
         var exportation = req.param('exportation') || null;
         var operation = req.param('operation') || null;
         var userId = req.user ? req.user.id : null;
+
         if(dataInfos.length === 0){
             return res.send([]);
         }
@@ -246,8 +248,9 @@ router.get('/api/multiple_data_sources/:data_infos/records',
                         return recordLists.map(function (recordList){
                             return {
                                 dataSource: dataSource,
-                                records: recordList,
-                                label: dataSource.name + process.additionalLabel(dataInfo, recordList)
+                                dataInfo: dataInfo,
+                                label: dataSource.name + process.additionalLabel(dataInfo, recordList),
+                                records: recordList
                             };
                         });
                     });
@@ -263,6 +266,7 @@ router.get('/api/multiple_data_sources/:data_infos/records',
                     return DataSource.get(dataInfo.id)
                         .then(function (dataSource) {
                             ret.dataSource = dataSource;
+                            ret.dataInfo = dataInfo;
                             var opts = {};
 
                             opts.query = {
@@ -303,19 +307,23 @@ router.get('/api/multiple_data_sources/:data_infos/records',
             var sortedMultiRecords = process.sortMultiRecords(
                 (function () {
                     return rets.map(function (ret) {
-                        return ret.records;
+                        return {
+                            dataSource: ret.dataSource,
+                            records: ret.records
+                        };
                     });
                 }()), {
                     formatTime: process.formatTime,
-                    invalidValue: '--'
+                    invalidValue: invalidValue
                 }
             );
 
             var multiRecords = sortedMultiRecords.map(function (sortedRecords, idx){
                 return {
                     dataSource: rets[idx].dataSource,
-                    records: sortedRecords,
-                    label: rets[idx].label
+                    dataInfo: rets[idx].dataInfo,
+                    label: rets[idx].label,
+                    records: sortedRecords
                 };
             });
 

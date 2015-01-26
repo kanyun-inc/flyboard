@@ -28,6 +28,7 @@
     "angular-dragdrop": "~1.0.7",
     "font-awesome": "~4.2.0",
     "angular-numeraljs": "~1.1.6",
-    "numeral": "~1.5.3"
+    "numeral": "~1.5.3",
+    "angular-socket-io": "~0.7.0"
   }
 }
