@@ -1,4 +1,7 @@
-html {
+body.admin-page,
+body.login-page,
+body.profile-page,
+body.stat-page {
     min-width: 1200px;
     width: expression_r(document.body.clientWidth < 1000 ? "1000px" : "auto" );
 }
