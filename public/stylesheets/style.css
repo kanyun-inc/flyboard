@@ -1,3 +1,8 @@
+html {
+    min-width: 1200px;
+    width: expression_r(document.body.clientWidth < 1000 ? "1000px" : "auto" );
+}
+
 table th, table td{
     text-align: center;
 }
@@ -1025,6 +1030,18 @@ div[sticky].fixed {
         top: auto;
         height: auto;
     }
+}
+
+.data-source-list {
+    width: 30%;
+    min-width: 340px;
+    position: absolute;
+}
+
+.data-source-edit {
+    float: right;
+    width: 65%;
+    min-width: 700px;
 }
 
 .data-source {
