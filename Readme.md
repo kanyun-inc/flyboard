@@ -7,6 +7,8 @@
 
 A simple, flexible, friendly data visualization system.
 
+![flyboard](./doc/pictures/flyboard-view.png)
+
 ## Installation
 
 ```bash
