@@ -5,16 +5,16 @@
 [![Coverage Status](https://coveralls.io/repos/yuantiku/flyboard/badge.png?branch=master)](https://coveralls.io/r/yuantiku/flyboard?branch=master)
 [![Code Climate](https://codeclimate.com/github/yuantiku/flyboard.png)](https://codeclimate.com/github/yuantiku/flyboard)
 
-简单、灵活、友好的数据可视化系统。
+A simple, flexible, friendly data visualization system.
 
-## 安装
+## Installation
 
 ```bash
 $ git clone git://github.com/yuantiku/flyboard.git && cd flyboard
 $ npm install
 ```
 
-Flyboard 支持的数据库有 Postgres, MySQL, MariaDB 以及 SQLite3，根据实际需要安装数据库驱动。
+Flyboard supports Postgres, MySQL, MariaDB and SQLite3, choose a database driver according to need.
 
 ```bash
 $ npm install mysql
@@ -23,26 +23,26 @@ $ npm install pg
 $ npm install sqlite3
 ```
 
-编辑数据库配置，数据库配置文件参考 [knex 文档](http://knexjs.org/#Installation-client)
+For editing configuration of table and database connection, refer to [knex Document](http://knexjs.org/#Installation-client)
 
 ```bash
 cp configs/database.example.js configs/database.js
 vim configs/database.js
 ```
 
-初始化 APP 配置
+Initial APP Configuration
 
 ```bash
 cp configs/app.example.js configs/app.js
 ```
 
-初始化数据库
+Initial Database
 
 ```bash
 npm run migrate:latest
 ```
 
-运行服务:
+Run Service:
 
 ```bash
 DEBUG=flyboard node bin/www
@@ -51,3 +51,4 @@ DEBUG=flyboard node bin/www
 ## License 
 
 MIT
+
