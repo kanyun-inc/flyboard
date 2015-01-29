@@ -1,6 +1,8 @@
 'use strict';
 
 var User = require('../../src/logicals/user');
+//var Role = require('../../src/logicals/role');
+//var UserRole = require('../../src/logicals/userRole');
 var assert = require('chai').assert;
 var Promise = require('bluebird');
 var knex = require('../../src/lib/knex');
@@ -35,7 +37,17 @@ describe('user logical', function () {
             User.get(userIds[0]).then(function (ret) {
                 assert.isObject(ret);
                 assert.equal(ret.email, 'abc@abc.com');
-                done();
+
+//                UserRole.find({
+//                    user_id: userIds[0]
+//                }).then(function (rets){
+//                    assert.equal(rets.length, 1);
+//
+//                    return Role.get(rets[0].role_id);
+//                }).then(function (rets){
+//                    assert(rets[0].scope, 2);
+                    done();
+//                });
             }).catch(done);
         });
     });
