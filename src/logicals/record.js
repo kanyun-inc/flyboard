@@ -106,12 +106,13 @@ exports.find = function (options) {
 exports.findOne = function (obj){
     var query = {
         data_source_id: obj.data_source_id,
-        year: obj.year,
-        month: obj.month,
-        day: obj.day,
-        hour: obj.hour,
-        minute: obj.minute,
-        second: obj.second
+        date_time: new Date(obj.year || 0,
+                            obj.month || 0,
+                            obj.day || 0,
+                            obj.hour || 0,
+                            obj.minute || 0,
+                            obj.second || 0
+                        )
     };
 
     return DataSource.get(obj.data_source_id).then(function (dataSource) {
