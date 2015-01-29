@@ -3,7 +3,6 @@
 var knex = require('../lib/knex');
 var Role = require('./role');
 var UserRole = require('./userRole');
-var blueBird = require('bluebird');
 var randomString = require('randomstring');
 
 exports.find = function (query){

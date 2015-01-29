@@ -33,7 +33,7 @@ app.use(cookieParser());
 /* --------- sqlite session ----------- */
 if(dbConfig.client === 'sqlite3'){
     app.use(session({
-        store: new SQLiteStore,
+        store: new SQLiteStore (),
         secret: '092r3jsdfkghasdfg.s23rsdfafd',
         cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },  // 1 week
         resave: true,
