@@ -41,7 +41,7 @@ if(dbConfig.client === 'sqlite3'){
       }));
 }
 /* --------- mysql session ----------- */
-if(dbConfig.clent === 'mysql'){
+if(dbConfig.client === 'mysql'){
     var sessionOptions = {
         host: dbConfig.connection.host,
         port: 3306,
