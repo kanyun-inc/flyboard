@@ -11,13 +11,25 @@ var urlencodedParser = bodyParser.urlencoded({
 
 module.exports = router;
 
+// local router
+router.get('/auth/local', function (req, res){
+    var defaultUser = {email: 'bob@example.com', password: 'secret'};
+
+    return res.redirect('/auth/local/return' + '?email=' + defaultUser.email + '&password=' + defaultUser.password);
+});
+router.post('/auth/local/return', function (req, res){
+    return res.send(200);
+});
+
 authItems.forEach(function (item) {
     //auth
-    router.all(item.authUrl, urlencodedParser, passport.authenticate(item.key, _.defaults({
-        failureFlash: true,
-        successRedirect: '/',
-        failureRedirect: '/login'
-    }, item.authenticate)));
+    if(item.authUrl){
+        router.all(item.authUrl, urlencodedParser, passport.authenticate(item.key, _.defaults({
+            failureFlash: true,
+            successRedirect: '/',
+            failureRedirect: '/login'
+        }, item.authenticate)));
+    }
 
     if (item.returnUrl) {
         router.all(item.returnUrl,
@@ -34,10 +46,12 @@ function loginCtrl(req, res) {
     res.render('login');
 }
 
-router.get('/login', loginCtrl);
-router.get('/logout', function (req, res) {
+function logoutCtrl(req, res) {
     req.session.destroy();
 
     var redirect = req.param('redirect', '/');
     res.redirect(redirect);
-});
+}
+
+router.get('/login', loginCtrl);
+router.get('/logout', logoutCtrl);
