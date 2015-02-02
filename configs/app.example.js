@@ -102,9 +102,9 @@ exports.authItems = [
 //});
 //
 //passport.deserializeUser(function (email, done) {
-//    blueBird.resolve(User.findOne({
+//    User.findOne({
 //        email: email
-//    })).then(function (user) {
+//    }).then(function (user) {
 //        if (!user) {
 //            var err = new Error('invalid session');
 //            err.status = 403;
