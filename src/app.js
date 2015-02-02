@@ -3,14 +3,15 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var sessionStore = require('express-mysql-session');
+var mysqlStore = require('express-mysql-session');
+var SQLiteStore = require('connect-sqlite3')(session);
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var passport = require('../configs/app').passport;
 var flash = require('connect-flash');
 
-var dbConnection = require('../configs/database')[process.env.NODE_ENV || 'development'].connection;
+var dbConfig = require('../configs/database')[process.env.NODE_ENV || 'development'];
 
 var app = express();
 
@@ -29,21 +30,36 @@ app.use('/public', express.static(path.join(__dirname, '../public')));
 
 app.use(cookieParser());
 
-var sessionOptions = {
-    host: dbConnection.host,
-    port: 3306,
-    user: dbConnection.user,
-    password: dbConnection.password,
-    database: dbConnection.database
-};
-app.use(session({
-    key: 'session_cookie_name',
-    secret: 'fdsajlzcxv.,amsdfjiljkldafdsa',
-    store: new sessionStore(sessionOptions),
-    resave: true,
-    saveUninitialized: true
-}));
+/* --------- sqlite session ----------- */
+if(dbConfig.client === 'sqlite3'){
+    app.use(session({
+        store: new SQLiteStore (),
+        secret: '092r3jsdfkghasdfg.s23rsdfafd',
+        cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },  // 1 week
+        resave: true,
+        saveUninitialized: true
+      }));
+}
+/* --------- mysql session ----------- */
+if(dbConfig.client === 'mysql'){
+    var sessionOptions = {
+        host: dbConfig.connection.host,
+        port: 3306,
+        user: dbConfig.connection.user,
+        password: dbConfig.connection.password,
+        database: dbConfig.connection.database
+    };
+
+    app.use(session({
+        key: 'session_cookie_name',
+        secret: 'fdsajlzcxv.,amsdfjiljkldafdsa',
+        store: new mysqlStore(sessionOptions),
+        resave: true,
+        saveUninitialized: true
+    }));
+}
 app.use(flash());
+
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -1090,42 +1090,45 @@ indexApp.controller('editLayoutCtrl', ['$scope', '$window', '$routeParams', '$lo
         $scope.$on('deleteWidget', function(evt, controller){
             var widgetId = controller.id;
 
-            //delete widget info in dashboard
-            $scope.dashboard.config.layout.some(function (widgetLayout, idx) {
+            // delete widget info in dashboard
+            var deleteComplete = $scope.dashboard.config.layout.some(function (widgetLayout, idx) {
                 if (widgetLayout.id === widgetId) {
                     $scope.dashboard.config.layout.splice(idx, 1);
                     return true;
                 }
             });
 
-            Dashboard.update({
-                id: $scope.dashboard.id
-            }, $scope.dashboard).$promise.then(function () {
-                //update widgets
-                Object.keys($scope.widgets).forEach(function (key) {
-                    if (key === widgetId) {
-                        delete $scope.widgets[key];
-                    }
-                });
+            // update dashboard
+            if(deleteComplete){
+                Dashboard.update({
+                    id: $scope.dashboard.id
+                }, $scope.dashboard).$promise.then(function () {
+                    //update widgets
+                    Object.keys($scope.widgets).forEach(function (key) {
+                        if (key === widgetId) {
+                            delete $scope.widgets[key];
+                        }
+                    });
 
-                //update controllers
-                $scope.widgetLayer.some(function (widgetLayout, idx) {
-                    if (widgetLayout.id === widgetId) {
-                        $scope.widgetLayer.splice(idx, 1);
-                        return true;
-                    }
-                });
+                    //update controllers
+                    $scope.widgetLayer.some(function (widgetLayout, idx) {
+                        if (widgetLayout.id === widgetId) {
+                            $scope.widgetLayer.splice(idx, 1);
+                            return true;
+                        }
+                    });
 
-                for (var i = controller.x; i < controller.x + controller.h; i++) {
-                    for (var j = controller.y; j < controller.y + controller.w; j++) {
-                        $scope.gridLayerStatus[i][j] = false;
+                    for (var i = controller.x; i < controller.x + controller.h; i++) {
+                        for (var j = controller.y; j < controller.y + controller.w; j++) {
+                            $scope.gridLayerStatus[i][j] = false;
+                        }
                     }
-                }
-                $scope.addedControllers.splice(0);
-                $scope.calculateAddedControllers($scope.gridLayerStatus).forEach(function (addedController) {
-                    $scope.addedControllers.push(addedController);
+                    $scope.addedControllers.splice(0);
+                    $scope.calculateAddedControllers($scope.gridLayerStatus).forEach(function (addedController) {
+                        $scope.addedControllers.push(addedController);
+                    });
                 });
-            });
+            }
         });
     }
 ]);

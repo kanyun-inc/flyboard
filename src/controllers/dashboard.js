@@ -107,7 +107,7 @@ router.put(
             return res.status(400).send('dashboard.name 不能为空');
         }else if(!dashboard.project_id){
             return res.status(400).send('dashboard.project_id 不能为空');
-        } else if (!dashboard.config || !dashboard.config.layout || !dashboard.config.layout.length) {
+        } else if (!dashboard.config || !dashboard.config.layout) {
             return res.status(400).send('dashboard.config.layout 不能为空');
         }
 

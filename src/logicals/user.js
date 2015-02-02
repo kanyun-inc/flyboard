@@ -1,7 +1,8 @@
 'use strict';
 
 var knex = require('../lib/knex');
-var blueBird = require('bluebird');
+var Role = require('./role');
+var UserRole = require('./userRole');
 var randomString = require('randomstring');
 
 exports.find = function (query){
@@ -36,25 +37,44 @@ exports.remove = function (id) {
 exports.findOrCreate = function (query) {
     query = query || {};
 
-    var ret = exports.find({
+    return exports.find({
         email: query.email
-    });
+    }).then(function (users) {
+        var userId = null;
 
-    return blueBird.resolve(ret).then(function (users) {
-        if(users && users.length){
-            //user exists
+        // user exists
+        if(users && users.length > 0){
             return users[0];
         }
-        else{
-            //user not exist
-            var ret = exports.save({
-                email: query.email
-            });
 
-            return blueBird.resolve(ret).then(function (id) {
-                return exports.get(id);
+        return exports.save({
+            email: query.email
+        }).then(function (id){
+            userId = id;
+
+            return exports.find();
+        }).then(function (rets){
+            if(!rets || rets.length !== 1 || rets[0].id !== userId) {
+                return ;
+            }
+
+            // if this is the first user, set it as administrator
+            return Role.find({
+                scope: 2
+            }).then(function (rets){
+                if(!rets || rets.length === 0){
+                    return ;
+                }
+
+                return UserRole.save({
+                    user_id: userId,
+                    role_id: rets[0].id,
+                    project_id: 0
+                });
             });
-        }
+        }).then(function (){
+            return exports.get(userId);
+        });
     });
 };
 

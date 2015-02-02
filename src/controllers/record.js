@@ -55,20 +55,7 @@ router.post(
 
                 record.data_source_id = dataSource.id;
 
-                //if the record already exists, replace the old record
-//                return Record.findOne(record);
-//            }).then(function (ret){
-//                if(ret.length !== 0){
-//                    var id = ret[0].id;
-//
-//                    return Record.update(id, record)
-//                        .then(function (){
-//                            return id;
-//                        });
-//                }
-//                else{
-                    return Record.save(record);
-//                }
+                return Record.save(record);
             }).then(function (id) {
                 return Record.get(id);
             }).then(function (record) {
