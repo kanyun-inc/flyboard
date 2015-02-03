@@ -3,7 +3,8 @@
 var profileApp = angular.module('profileApp', [
     'ngRoute',
     'services',
-    'directives'
+    'directives',
+    'translate'
 ]);
 
 profileApp.controller('ProfileCtrl', ['$scope', '$q', 'Project', 'CurrentUser', 'UserToken', 'TokenReset', 'User', 'UserRole', 'Role', 'RolePrivilege',

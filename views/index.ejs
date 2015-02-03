@@ -34,29 +34,29 @@
                                 <a href="" class="project-name" ng-click="selectProject(project)">{{project.name}}</a>
                                 <a href="" class="edit-project" ng-click="open(projects, project)"><i class="fa fa-pencil-square-o"></i></a>
                             </li>
-                            <li ng-if="user.scope === 2"><a href="" class="new-project" ng-click="open(projects)">-------- 新建 --------</a></li>
+                            <li ng-if="user.scope === 2"><a href="" class="new-project" ng-click="open(projects)">-------- {{ 'CREATE' | translate }} --------</a></li>
                         </ul>
                     </div>
 
                     <div class="btn-group dropdown-btn right-divider-vertical select-project" ng-if="project === null && user && user.scope === 2">
                         <button type="button" class="btn btn-default dropdown-toggle" ng-click="open(projects, project)">
-                            ＋项目
+                            ＋{{ 'PROJECT' | translate }}
                         </button>
                     </div>
 
                     <ul class="nav navbar-nav">
-                        <li><a ng-href="{{NavUrl('stat')}}">数据</a></li>
-                        <li><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
+                        <li><a ng-href="{{NavUrl('stat')}}">{{ 'DATA' | translate }}</a></li>
+                        <li><a ng-href="{{NavUrl('admin')}}">{{ 'DATASOURCE_ADMINISTRATION' | translate }}</a></li>
                     </ul>
 
                     <div class="switch-slide navbar-right-btn" ng-if="project">
-                        <a href="" title="轮播开关"  class="fa fa-lg"
+                        <a href="" title="{{ 'SLIDE_SWITCH' | translate }}"  class="fa fa-lg"
                            ng-class="{'fa-toggle-on': slideMode, 'fa-toggle-off': !slideMode, 'fa-toggle-disabled': editLayoutMode}"
                            ng-click="toggleSlideMode()"></a>
                     </div>
 
                     <div class="edit-layout navbar-right-btn" ng-if="project">
-                        <a href="" title="编辑布局" class="glyphicon glyphicon-cog fa-lg"
+                        <a href="" title="{{ 'EDIT_LAYOUT' | translate }}" class="glyphicon glyphicon-cog fa-lg"
                            ng-class="{'edit-on': !slideMode && editLayoutMode, 'edit-off': !slideMode && !editLayoutMode, 'edit-disabled': slideMode}"
                            ng-click="toggleEditLayoutMode()"></a>
                     </div>
@@ -67,8 +67,8 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="/profile">个人信息</a></li>
-                            <li><a href="/logout">退出</a></li>
+                            <li><a href="/profile">{{ 'PERSONAL_INFORMATION' | translate }}</a></li>
+                            <li><a href="/logout">{{ 'LOGOUT' | translate }}</a></li>
                         </ul>
                     </div>
 
@@ -85,13 +85,17 @@
                 </a>
                 <div ng-if="unfold" class="dashboard-filter">
                     <span>
-                        <a href="" ng-click="togglePublicSelection()"><i class="fa" ng-class="{'fa-check-square-o': publicSelected, 'fa-square-o': !publicSelected}"></i>
-                        公有</a>
+                        <a href="" ng-click="togglePublicSelection()">
+                            <i class="fa" ng-class="{'fa-check-square-o': publicSelected, 'fa-square-o': !publicSelected}"></i>
+                            {{ 'PUBLIC' | translate }}
+                        </a>
                     </span>
 
                     <span>
-                        <a href="" ng-click="togglePrivateSelection()"><i class="fa" ng-class="{'fa-check-square-o': privateSelected, 'fa-square-o': !privateSelected}"></i>
-                        私有</a>
+                        <a href="" ng-click="togglePrivateSelection()">
+                            <i class="fa" ng-class="{'fa-check-square-o': privateSelected, 'fa-square-o': !privateSelected}"></i>
+                            {{ 'PRIVATE' | translate }}
+                        </a>
                     </span>
                 </div>
             </div>

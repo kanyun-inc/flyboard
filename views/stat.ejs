@@ -21,15 +21,15 @@
     <div class="stat">
         <div class="stat-nav selected-datasource"  ng-controller="StatNavCtrl" ng-if="project">
             <div class="stat-btn-groups">
-                <button type="button" class="btn btn-default" ng-click="addContrastDataSource()">添加对比数据源</button>
-                <button type="button" class="btn btn-primary" ng-click="submitChange()">提交修改</button>
+                <button type="button" class="btn btn-default" ng-click="addContrastDataSource()">{{ 'ADD_CONTRAST_DATASOURCE' | translate }}</button>
+                <button type="button" class="btn btn-primary" ng-click="submitChange()">{{ 'SUBMIT' | translate }}</button>
 
                 <div class="btn-group default-period">
-                    <button type="button" class="btn btn-default" ng-class="{'active': selectedPeriod === period.value}" ng-repeat="period in periodTypes" ng-click="setPeriod(period.value)">{{period.text}}</button>
+                    <button type="button" class="btn btn-default" ng-class="{'active': selectedPeriod === period.value}" ng-repeat="period in periodTypes" ng-click="setPeriod(period.value)">{{ period.text | translate }}</button>
                 </div>
 
                 <div class="input-group custom-period">
-                  <input type="text" class="form-control" placeholder="天数" ng-model="customPeriod">
+                  <input type="text" class="form-control" placeholder="{{ 'DAYS' | translate }}" ng-model="customPeriod">
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="setCustomPeriod()">GO</button>
                   </div>

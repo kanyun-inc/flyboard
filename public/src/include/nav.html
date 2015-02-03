@@ -16,8 +16,8 @@
             </div>
 
             <ul class="nav navbar-nav">
-                <li ng-class="{'active': title === 'stat'}"><a ng-href="{{NavUrl('stat')}}">数据</a></li>
-                <li ng-class="{'active': title === 'admin'}"><a ng-href="{{NavUrl('admin')}}">数据源管理</a></li>
+                <li ng-class="{'active': title === 'stat'}"><a ng-href="{{NavUrl('stat')}}">{{ 'DATA' | translate }}</a></li>
+                <li ng-class="{'active': title === 'admin'}"><a ng-href="{{NavUrl('admin')}}">{{ 'DATASOURCE_ADMINISTRATION' | translate }}</a></li>
             </ul>
 
             <div class="btn-group dropdown-btn navbar-right-btn user-account" ng-if="user">
@@ -26,8 +26,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right" role="menu">
-                    <li><a href="/profile">个人信息</a></li>
-                    <li><a href="/logout">退出</a></li>
+                    <li><a href="/profile">{{ 'PERSONAL_INFORMATION' | translate }}</a></li>
+                    <li><a href="/logout">{{ 'LOGOUT' | translate }}</a></li>
                 </ul>
             </div>
         </div>

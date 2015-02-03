@@ -3,23 +3,23 @@
 var widgetTypes = [
     {
         type: 1,
-        label: '折线图'
+        label: 'SPLINE'
     },
     {
         type: 2,
-        label: '饼图'
+        label: 'PIE'
     },
     {
         type: 3,
-        label: '环形图'
+        label: 'DONUT'
     },
     {
         type: 4,
-        label: '数字'
+        label: 'NUMBER'
     },
     {
         type: 5,
-        label: '柱形图'
+        label: 'COLUMN'
     }
 ];
 
@@ -30,7 +30,8 @@ var indexApp = angular.module('indexApp', [
     'widgets',
     'ngAnimate',
     'ngNumeraljs',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'translate'
 ]);
 
 var gridLayer = {
