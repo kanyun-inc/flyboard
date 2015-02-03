@@ -20,6 +20,7 @@ var staticFiles = {
         'bower_components/angular-numeraljs/dist/angular-numeraljs.min.js',
         'bower_components/highcharts/highcharts.src.js',
         'bower_components/angular-socket-io/socket.js',
+        'bower_components/angular-translate/angular-translate.js',
 
         'controlfrog/js/easypiechart.js',
         'controlfrog/js/excanvas.min.js',
@@ -34,6 +35,7 @@ var staticFiles = {
         'utils.js',
         'services.js',
         'directives.js',
+        'translate.js',
 
         'widgets.js',
         'widget_spline.js',

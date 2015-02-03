@@ -1,14 +1,14 @@
 <div class="modal-header">
     <button ng-click="cancel()" type="button" class="close"><span aria-hidden="true">&times;</span><span
             class="sr-only">Close</span></button>
-    <h4 class="modal-title" id="myModalLabel">添加项目成员</h4>
+    <h4 class="modal-title" id="myModalLabel">{{ 'ADD_PROJECT_MEMBER' | translate }}</h4>
 </div>
 <div class="modal-body">
 
     <form novalidate name="userRoleEditForm" class="form-horizontal css-form" role="form">
         <!---------- User ---------->
         <div class="form-group">
-            <label for="selectUser" class="col-sm-2 control-label">用户</label>
+            <label for="selectUser" class="col-sm-2 control-label">{{ 'USER' | translate }}</label>
 
             <div class="col-sm-10">
                 <select ng-model="newUserRole.user_id"
@@ -21,7 +21,7 @@
 
         <!---------- Role ---------->
         <div class="form-group">
-            <label for="selectRole" class="col-sm-2 control-label">角色</label>
+            <label for="selectRole" class="col-sm-2 control-label">{{ 'ROLE' | translate }}</label>
 
             <div class="col-sm-10">
                 <select ng-model="newUserRole.role_id"
@@ -34,7 +34,7 @@
 
         <!---------- Project ---------->
         <div class="form-group">
-            <label for="selectProject" class="col-sm-2 control-label">项目</label>
+            <label for="selectProject" class="col-sm-2 control-label">{{ 'PROJECT' | translate }}</label>
 
             <div class="col-sm-10">
                 <select ng-model="newUserRole.project_id"
@@ -46,8 +46,8 @@
 
         <div class="form-group">
             <div class="col-sm-offset-9 col-sm-10">
-                <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="userRoleEditForm.$invalid">保存</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">取消</button>
+                <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="userRoleEditForm.$invalid">{{ 'SAVE' | translate }}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">{{ 'CANCEL' | translate }}</button>
             </div>
         </div>
     </form>
