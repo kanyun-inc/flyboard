@@ -1,20 +1,10 @@
 <!DOCTYPE html/>
 <html>
 <head>
-    <% styles.forEach(function (style) { %>
-        <link rel="stylesheet" href="<%= style %>" />
-    <% }) %>
-    <% scripts.forEach(function (script) { %>
-        <script type="text/javascript" href="<%= script %>"></script>
-    <% }) %>
-    <% socketFiles.forEach(function (file) { %>
-    <script type="text/javascript" src="<%= file %>"></script>
-    <% }) %>
 </head>
 <body class="black">
 <div class="cf-container cf-nav-active">
     <h1><%= message%></h1>
-    <h2><%= error.status%></h2>
     <pre><%= error.stack%></pre>
 </div>
 </body>
