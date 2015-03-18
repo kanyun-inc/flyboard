@@ -238,7 +238,7 @@ exports.removeList = function (dataSourceId, query) {
 
     return DataSource.get(dataSourceId)
         .then(function (dataSource) {
-            exports.find({
+            return exports.find({
                 query: findQuery
             }).then(function (records) {
 
