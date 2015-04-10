@@ -137,6 +137,7 @@ exports.save = function (obj) {
 
 exports.update = function (id, obj) {
     obj.private = obj.private ? true : false;
+    delete obj.created_at;
     obj.updated_at = new Date();
 
     if(obj.user_id){

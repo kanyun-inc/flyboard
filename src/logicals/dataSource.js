@@ -81,6 +81,7 @@ exports.save = function (obj) {
 };
 
 exports.update = function (id, obj) {
+    delete obj.created_at;
     obj.updated_at = new Date();
     delete obj.config;
     return knex('data_sources').where('id', id).update(objToDb(obj));
