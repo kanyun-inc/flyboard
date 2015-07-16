@@ -75,14 +75,14 @@ exports.find = function (query) {
                     .whereNull('private')
                     .orWhere('private', false)
                     .andWhere(query_public_dashboards)
-                    .orderBy('rank', 'desc')
+                    .orderByRaw('rank desc, id')
                     .select()
                 : null;
             var ret_private = privateFilter ?
                 knex('dashboards')
                     .where(query_private_dashboards)
                     .where('private', true)
-                    .orderBy('rank', 'desc')
+                    .orderByRaw('rank desc, id')
                     .select()
                 : null;
 
@@ -108,7 +108,9 @@ exports.find = function (query) {
         });
     }
     else{
-        return knex('dashboards').where(query).orderBy('rank', 'desc').select().map(dbToObj);
+        return knex('dashboards').where(query)
+            .orderByRaw('rank desc, id')
+            .select().map(dbToObj);
     }
 };
 
