@@ -6,7 +6,7 @@ var session = require('express-session');
 var mysqlStore = require('express-mysql-session');
 var SQLiteStore = require('connect-sqlite3')(session);
 var path = require('path');
-var favicon = require('static-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
 var passport = require('../configs/app').passport;
 var flash = require('connect-flash');
@@ -18,7 +18,7 @@ var app = express();
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 
-app.use(favicon());
+app.use(favicon(path.join(__dirname, '../public/controlfrog/favicon.ico')));
 if (!process.env.UNIT_TEST) {
     if ('development' === app.get('env')) {
         app.use(logger('dev'));
@@ -38,7 +38,7 @@ if(dbConfig.client === 'sqlite3'){
         cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },  // 1 week
         resave: true,
         saveUninitialized: true
-      }));
+    }));
 }
 /* --------- mysql session ----------- */
 if(dbConfig.client === 'mysql'){
