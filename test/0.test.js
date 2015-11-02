@@ -7,12 +7,12 @@ var Migrate = require('knex/lib/migrate');
 var knex = require('../src/lib/knex');
 var fs = require('fs');
 var assert = require('chai').assert;
-var io = require('../src/lib/io').init();
+require('../src/lib/io').init();
 
 before(function (callback) {
     var migrate = new Migrate(knex);
 
-    fs.unlink(path.join(__dirname, '../flyboard.sqlite'), function () {
+    fs.unlink(path.join(__dirname, './test.db'), function (err) {
         migrate.latest({
             directory: path.join(__dirname, '../migrations')
         }).then(function () {
@@ -27,7 +27,7 @@ after(function (callback) {
     migrate.rollback({
         directory: path.join(__dirname, '../migrations')
     }).then(function () {
-        fs.unlink(path.join(__dirname, '../flyboard.sqlite'), function () {
+        fs.unlink(path.join(__dirname, './test.db'), function () {
             callback();
         });
     }).catch(callback);

@@ -11,7 +11,7 @@ var apiAuthFilter = require('./apiAuthFilter');
 router.get(
     '/api/dashboards/:dashboardId/widgets',
     function(req, res, next){
-        var dashboardId = parseInt(req.param('dashboardId'), 10);
+        var dashboardId = parseInt(req.params('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
 
         Dashboard.get(dashboardId)
@@ -37,8 +37,8 @@ router.get(
 router.get(
     '/api/dashboards/:dashboardId/widgets/:id',
     function(req, res, next){
-        var id = parseInt(req.param('id'), 10);
-        var dashboardId = parseInt(req.param('dashboardId'), 10);
+        var id = parseInt(req.params('id'), 10);
+        var dashboardId = parseInt(req.params('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
 
         Dashboard.get(dashboardId)
@@ -67,7 +67,7 @@ router.post(
     '/api/dashboards/:dashboardId/widgets',
     bodyParser.json(),
     function(req, res, next) {
-        var dashboardId = parseInt(req.param('dashboardId'), 10);
+        var dashboardId = parseInt(req.params('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
         var widget = req.body;
 
@@ -100,8 +100,8 @@ router.put(
     '/api/dashboards/:dashboardId/widgets/:id',
     bodyParser.json(),
     function(req, res, next) {
-        var id = parseInt(req.param('id'), 10);
-        var dashboardId = parseInt(req.param('dashboardId'), 10);
+        var id = parseInt(req.params('id'), 10);
+        var dashboardId = parseInt(req.params('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
         var widget = req.body;
 
@@ -133,8 +133,8 @@ router.put(
 router.delete(
     '/api/dashboards/:dashboardId/widgets/:id',
     function(req, res, next) {
-        var id = parseInt(req.param('id'), 10);
-        var dashboardId = parseInt(req.param('dashboardId'), 10);
+        var id = parseInt(req.params('id'), 10);
+        var dashboardId = parseInt(req.params('dashboardId'), 10);
         var userId = req.user ? req.user.id : null;
 
         Dashboard.get(dashboardId)

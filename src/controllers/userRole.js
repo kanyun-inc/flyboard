@@ -12,9 +12,9 @@ var blueBird = require('bluebird');
 
 //get  user_roles for all users or one user according to user_id
 router.get('/api/user_roles', function (req, res, next) {
-    var userId = req.param('user_id') ? parseInt(req.param('user_id'), 10) : null;
-    var roleId = req.param('role_id') ? parseInt(req.param('role_id'), 10) : null;
-    var projectId = req.param('project_id') ? parseInt(req.param('project_id'), 10) : null;
+    var userId = req.query['user_id'] ? parseInt(req.query['user_id'], 10) : null;
+    var roleId = req.query['role_id'] ? parseInt(req.query['role_id'], 10) : null;
+    var projectId = req.query['project_id'] ? parseInt(req.query['project_id'], 10) : null;
     var query = {};
 
     if(userId){
@@ -33,7 +33,7 @@ router.get('/api/user_roles', function (req, res, next) {
 });
 
 router.get('/api/user_roles/:id', function(req, res, next){
-    var id = parseInt(req.param('id'), 10);
+    var id = parseInt(req.params['id'], 10);
 
     UserRole.get(id).then(function (userRole){
         if (!userRole) {
@@ -93,7 +93,7 @@ router.put(
     bodyParser.json(),
     function(req, res, next){
         var userRole = req.body;
-        var id = parseInt(req.param('id'), 10);
+        var id = parseInt(req.params['id'], 10);
 
         //check id validity
         UserRole.get(id)
@@ -151,7 +151,7 @@ router.put(
 router.delete(
     '/api/user_roles/:id',
     function(req, res, next){
-        var id = parseInt(req.param('id'), 10);
+        var id = parseInt(req.params['id'], 10);
 
         UserRole.remove(id).then(function(){
             return res.send(200);

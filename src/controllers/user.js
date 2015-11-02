@@ -27,7 +27,7 @@ router.put(
     '/api/users/token_reset/:id',
     bodyParser.json(),
     function (req, res, next){
-        var id = parseInt(req.param('id'), 10);
+        var id = parseInt(req.params('id'), 10);
 
         User.get(id).then(function (user) {
             if (!user) {
@@ -46,7 +46,7 @@ router.put(
 );
 
 router.get('/api/users/token/:id', function (req, res, next){
-    var id = parseInt(req.param('id'), 10);
+    var id = parseInt(req.params('id'), 10);
 
     User.get(id).then(function (user){
         if(!user){
@@ -66,7 +66,7 @@ router.get('/api/users', function (req, res, next) {
 });
 
 router.get('/api/users/:id', function (req, res, next) {
-    var id = parseInt(req.param('id'), 10);
+    var id = parseInt(req.params('id'), 10);
 
     User.get(id).then(function (user) {
         if (!user) {
@@ -103,7 +103,7 @@ router.put(
             return res.send(400);
         }
 
-        var id = parseInt(req.param('id'), 10);
+        var id = parseInt(req.params('id'), 10);
 
         User.update(id, user).then(function () {
             return User.get(id);
@@ -116,7 +116,7 @@ router.put(
 router.delete(
     '/api/users/:id',
     function (req, res, next) {
-        var id = parseInt(req.param('id'), 10);
+        var id = parseInt(req.params('id'), 10);
 
         User.get(id).then(function (user){
             if(!user){

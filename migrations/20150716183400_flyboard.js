@@ -6,5 +6,6 @@ exports.up = function(knex) {
     });
 };
 
-exports.down = function() {
+exports.down = function (knex, Promise) {
+    return Promise.resolve(true);
 };

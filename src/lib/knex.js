@@ -12,6 +12,6 @@ if (!fs.existsSync(path.join(__dirname, '../../configs/database.js')) && !proces
 }
 
 var env = process.env.NODE_ENV || 'development';
-config = process.env.UNIT_TEST ? require('../../configs/database.example')[env] : require('../../configs/database')[env];
+config = process.env.UNIT_TEST ? require('../../test/config.db.json') : require('../../configs/database')[env];
 
 module.exports = require('knex')(config);
